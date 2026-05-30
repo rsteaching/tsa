@@ -1,0 +1,309 @@
+---
+title: "Introducing ARMA(p, q) models"
+subtitle: "Topic 2"
+---
+
+[Goals]{.kicker}
+
+-   To look at some simple time series plots.
+-   To introduce WN, MA and AR models.
+-   To define ARMA(*p*, *q*) models.
+-   To understand the lag operator and polynomials in the lag operator.
+
+------------------------------------------------------------------------
+
+## Examples of time series plots
+
+One primary objective of time series analysis is to develop statistical models that provide plausible descriptions for data that are temporally ordered. It is conventional, when displaying such data graphically, to plot values on the vertical axis with the time scale on the horizontal axis, and to connect adjacent values to reconstruct visually the hypothetical continuous series.^[Although we plot data in this fashion, note that (i) we will not study continuous time series models in this course (though they comprise an entire field in financial modelling, e.g. option pricing and high-frequency trading); and (ii) we will not get into issues surrounding the selection of the sampling rate when discretising a continuous time series, even though these issues can be extremely important.]
+
+To formally characterise data that fluctuate randomly over time, statisticians model any real-life sample as a realisation of a stochastic process $\{Y_t\}$ indexed according to the order observations are received in time. In all our lectures, $t$ will be discrete and vary over the integers $t = 0, \pm1, \pm2, \ldots$, or some subset such as $t = 1, \ldots, T$. Observations are assumed equally spaced.
+
+![Yearly average global temperature deviations (1880--2015) in degrees centigrade. *(Source: SS Fig. 1.2)*](figures/GlobalTemp.png)
+
+![Speech recording of the syllable $aaa \cdots hhh$ sampled at 10,000 points per second with $n = 1020$ points. *(Source: SS Fig. 1.3)*](figures/Speech.png)
+
+![Arrival phases from an earthquake (top) and explosion (bottom) at 40 points per second. *(Source: SS Fig. 1.7)*](figures/EarthquakeExplosion.png)
+
+![fMRI data from various locations in the cortex, thalamus, and cerebellum; $n = 128$ points, one observation every 2 seconds. *(Source: SS Fig. 1.6)*](figures/fMRI.png)
+
+![Non-examinable joke!](figures/Joke.png)
+
+------------------------------------------------------------------------
+
+## Building blocks of the ARMA framework
+
+::::: slidebox
+[What is a white noise process?]{.slide-label}
+
+:::: slide-body
+**Definition.** Consider a stochastic process $\{Y_t\}$ where $\mathsf{E}(Y_t) = \mu_Y$ and
+
+$$\text{Cov}(Y_t, Y_s) = \begin{cases} 0 < \sigma^2_Y < \infty, & t = s, \\ 0, & \text{otherwise} \end{cases}$$
+
+for $t, s \in \mathbb{Z}$. We say that $\{Y_t\}$ is a **white noise process** with mean $\mu_Y$ and variance $\sigma^2_Y$, written $Y_t \sim \mathsf{WN}(\mu_Y, \sigma^2_Y)$. The mean $\mu_Y$ is most often assumed zero.
+
+A white noise process is a collection of time-ordered yet **uncorrelated** random variables. An example is $Y_t \overset{\scriptscriptstyle\text{iid}}{\sim} \mathcal{N}(\mu_Y, \sigma^2_Y)$, but note that neither normality nor the iid assumption is needed for a process to be classified as noise.
+::::
+
+::: slide-footer
+A sequence of uncorrelated random variables with constant mean and variance.
+:::
+:::::
+
+::::: slidebox
+[How is noise even relevant? Are we not studying dependent processes?]{.slide-label}
+
+:::: slide-body
+One of the key features of the ARMA framework is that even processes with highly sophisticated dependence structures can be built just by **linearly combining** — or in time series parlance, *filtering through* — uncorrelated random variables. The simple white noise process thus serves as the springboard for the rest of the theory, and this is truly remarkable.
+
+Terms and phrases commonly used in place of "dynamics" that you may encounter include: *inter-temporal dependence*, *persistence*, *smoothness*, and *inertia*.
+::::
+
+::: slide-footer
+Complex dependence structures are built by linearly filtering white noise.
+:::
+:::::
+
+::::: slidebox
+[What is a linear filter?]{.slide-label}
+
+:::: slide-body
+A **linear (time-invariant) filter** or *smoother* converts one time series $\{\varepsilon_t\}$ into another $\{Y_t\}$ by the linear operation
+
+$$Y_t = \sum_{h=-q}^{+s} a_h\,\varepsilon_{t+h},$$
+
+where $\{a_h\}$ for $h = -q, \ldots, s$ is a set of weights for $q, s \in \mathbb{N}$. The filter is symmetric when $s = q$ and $a_h = a_{-h}$.
+
+The simplest symmetric filter uses equal weights $a_h = 1/(2q+1)$ for $h \in \{-q, \ldots, 0, \ldots, q\}$, zero otherwise. For example, $Y_t = (\varepsilon_{t-1} + \varepsilon_t + \varepsilon_{t+1})/3$ gives:
+
+$$\begin{array}{lllll}
+\underbrace{\tfrac{1}{3}\varepsilon_1 \quad \tfrac{1}{3}\varepsilon_2 \quad \tfrac{1}{3}\varepsilon_3}_{Y_2} & \varepsilon_4 & \varepsilon_5 \\[8pt]
+\varepsilon_1 & \underbrace{\tfrac{1}{3}\varepsilon_2 \quad \tfrac{1}{3}\varepsilon_3 \quad \tfrac{1}{3}\varepsilon_4}_{Y_3} & \varepsilon_5 \\[8pt]
+\varepsilon_1 & \varepsilon_2 & \underbrace{\tfrac{1}{3}\varepsilon_3 \quad \tfrac{1}{3}\varepsilon_4 \quad \tfrac{1}{3}\varepsilon_5}_{Y_4}
+\end{array}$$
+
+A completely new series $\{Y_2, Y_3, Y_4\}$ has been created from the original $\{\varepsilon_1, \varepsilon_2, \varepsilon_3, \varepsilon_4, \varepsilon_5\}$.
+::::
+
+::: slide-footer
+A weighted linear combination of current and past (and possibly future) values of $\varepsilon_t$.
+:::
+:::::
+
+The graphs below illustrate the distinction between white noise and the three-point moving average process above.
+
+```{r}
+#| echo: true
+#| label: fig-wn-ma
+#| fig-cap: "Gaussian white noise series (top) and three-point moving average of the Gaussian white noise series (bottom)."
+w <- rnorm(500, 0, 1)                           # 500 iid N(0,1) realisations
+v <- filter(w, sides = 2, filter = rep(1/3, 3)) # three-point moving average
+par(mfrow = c(2, 1))
+plot.ts(w, main = "white noise")
+plot.ts(v, ylim = c(-3, 3), main = "moving average")
+```
+
+Now consider a different example: the one-sided moving average $Y_t = \varepsilon_t + 0.5\varepsilon_{t-1}$:
+
+$$\begin{array}{lllll}
+\underbrace{0.5\varepsilon_1 \quad \varepsilon_2}_{Y_2} & \varepsilon_3 & \varepsilon_4 & \varepsilon_5 \\[8pt]
+\varepsilon_1 & \underbrace{0.5\varepsilon_2 \quad \varepsilon_3}_{Y_3} & \varepsilon_4 & \varepsilon_5 \\[8pt]
+\varepsilon_1 & \varepsilon_2 & \underbrace{0.5\varepsilon_3 \quad \varepsilon_4}_{Y_4} & \varepsilon_5 \\[8pt]
+\varepsilon_1 & \varepsilon_2 & \varepsilon_3 & \underbrace{0.5\varepsilon_4 \quad \varepsilon_5}_{Y_5}
+\end{array}$$
+
+::::: slidebox
+[What is an MA(*q*) process?]{.slide-label}
+
+:::: slide-body
+**Definition.** A process $\{Y_t\}$ is called a **moving average process of order $q$**, written $Y_t \sim \mathsf{MA}(q)$, if there exists a white noise process $\varepsilon_t \sim \mathsf{WN}(0, \sigma^2_\varepsilon)$ and finite constants $\theta_j$ for $j = 1, \ldots, q$ with $\theta_q \neq 0$, such that
+
+$$Y_t = \varepsilon_t + \theta_1\varepsilon_{t-1} + \cdots + \theta_q\varepsilon_{t-q}$$
+
+for $t \in \mathbb{Z}$.
+
+The $\mathsf{MA}(1)$ example $Y_t = \varepsilon_t + 0.5\varepsilon_{t-1}$ exhibits serial correlation even though $\varepsilon_t \sim \mathsf{WN}(0, \sigma^2_\varepsilon)$:
+
+$$\text{Cov}(Y_t, Y_{t-1}) = \text{Cov}(\varepsilon_t + 0.5\varepsilon_{t-1},\, \varepsilon_{t-1} + 0.5\varepsilon_{t-2}) = 0.5\sigma^2_\varepsilon.$$
+
+A completely new process has been created with very different dependence characteristics from $\{\varepsilon_t\}$ — just by linearly combining its elements.
+::::
+
+::: slide-footer
+$Y_t = \varepsilon_t + \theta_1\varepsilon_{t-1} + \cdots + \theta_q\varepsilon_{t-q}$; dependence introduced via lagged noise.
+:::
+:::::
+
+Another way of introducing dynamics is by postulating a linear relationship between $Y_t$ and its own past values $Y_{t-h}$ for $h > 0$. These relationships are called **autoregressions**.
+
+::::: slidebox
+[What is an AR(*p*) process?]{.slide-label}
+
+:::: slide-body
+**Definition.** A process $\{Y_t\}$ is called an **autoregressive process of order $p$**, written $Y_t \sim \mathsf{AR}(p)$, if there exists a white noise process $\varepsilon_t \sim \mathsf{WN}(0, \sigma^2_\varepsilon)$ and finite constants $\phi_j$ for $j = 1, \ldots, p$ with $\phi_p \neq 0$, such that
+
+$$Y_t = \phi_1 Y_{t-1} + \cdots + \phi_p Y_{t-p} + \varepsilon_t$$
+
+for $t \in \mathbb{Z}$.
+
+An example is the $\mathsf{AR}(1)$ process:
+
+$$Y_t = \phi Y_{t-1} + \varepsilon_t, \quad 0 < \phi < 1,$$
+
+where the introduction of dynamics relative to the white noise case can be illustrated by checking the autocovariances, which we will do in detail soon.
+::::
+
+::: slide-footer
+$Y_t = \phi_1 Y_{t-1} + \cdots + \phi_p Y_{t-p} + \varepsilon_t$; dependence via lagged values of the series itself.
+:::
+:::::
+
+::::: slidebox
+[Are we really just linearly combining noise again...?]{.slide-label}
+
+:::: slide-body
+Yes — an AR(1) process can be expressed as a convergent linear combination of noise. By successive substitution:
+
+$$\begin{aligned}
+Y_t &= \phi Y_{t-1} + \varepsilon_t \\
+    &= \phi^2 Y_{t-2} + \phi\varepsilon_{t-1} + \varepsilon_t \\
+    &= \phi^3 Y_{t-3} + \phi^2\varepsilon_{t-2} + \phi\varepsilon_{t-1} + \varepsilon_t \\
+    &\;\;\vdots \\
+    &= \phi^{h+1} Y_{t-h-1} + \sum_{k=0}^{h} \phi^k\varepsilon_{t-k}.
+\end{aligned}$$
+
+Letting $h \to \infty$ and using $|\phi| < 1$:
+
+$$Y_t = \sum_{k=0}^{\infty} \phi^k\varepsilon_{t-k}.$$
+
+This is called the **MA($\infty$) representation** of $\{Y_t\}$.
+::::
+
+::: slide-footer
+Yes — the AR(1) has an MA($\infty$) representation $Y_t = \sum_{k=0}^{\infty}\phi^k\varepsilon_{t-k}$.
+:::
+:::::
+
+::::: slidebox
+[What more intuition can we glean from the algebra?]{.slide-label}
+
+:::: slide-body
+Pay close attention to the MA($\infty$) representation of the AR(1) model, $Y_t = \sum_{k=0}^{\infty}\phi^k\varepsilon_{t-k}$ where $0 < \phi < 1$:
+
+- The current value $Y_t$ is an accumulation of an infinite stream of current and past noise elements $\varepsilon_t, \varepsilon_{t-1}, \varepsilon_{t-2}, \ldots$, where the effects $1, \phi, \phi^2, \ldots$ of the distant past (high $k$) are lower than those of the recent past (low $k$).
+
+- In the AR(1) model the present depends on the **infinite past** — very different from the MA(1) model. The effect of the past on the present is heavily dampened the further back in time we go: the coefficients decay at a **geometrically declining rate**.
+
+- Geometric decay is the discrete equivalent of exponential decay, conventionally considered the benchmark for fast decay.
+::::
+
+::: slide-footer
+The AR(1) depends on the infinite past, but with geometrically decaying weights.
+:::
+:::::
+
+------------------------------------------------------------------------
+
+## The ARMA framework
+
+::::: slidebox
+[What is an ARMA(*p*, *q*) process?]{.slide-label}
+
+:::: slide-body
+**Definition.** A process $\{Y_t\}$ is called an **ARMA process of orders $p$ and $q$**, written $Y_t \sim \mathsf{ARMA}(p, q)$, if there exists a white noise process $\varepsilon_t \sim \mathsf{WN}(0, \sigma^2_\varepsilon)$, finite constants $\phi_j$ for $j = 1, \ldots, p$ with $\phi_p \neq 0$, and finite constants $\theta_k$ for $k = 1, \ldots, q$ with $\theta_q \neq 0$, such that
+
+$$Y_t = \phi_1 Y_{t-1} + \cdots + \phi_p Y_{t-p} + \varepsilon_t + \theta_1\varepsilon_{t-1} + \cdots + \theta_q\varepsilon_{t-q}$$
+
+for $t \in \mathbb{Z}$.
+
+Special cases: $q = 0$ gives $\mathsf{AR}(p)$; $p = 0$ gives $\mathsf{MA}(q)$; $p = q = 0$ gives white noise.
+::::
+
+::: slide-footer
+Combines AR and MA components; nests both as special cases.
+:::
+:::::
+
+::::: slidebox
+[What is the lag operator? Also, what is the first-difference operator?]{.slide-label}
+
+:::: slide-body
+Given any time series $\{Y_t\}_{t \in \mathbb{Z}}$, we define the **lag operator** $L$ by
+
+$$LY_t = Y_{t-1}$$
+
+and extend to powers $L^k Y_t = Y_{t-k}$ for $k = 0, \pm1, \pm2, \ldots$. When $k < 0$ we refer to it as a *lead* rather than a lag.
+
+We define the **first-difference operator** $\Delta := (1 - L)$. It works as expected:
+
+$$\Delta^2 Y_t = (1 - L)^2 Y_t = (1 - 2L + L^2)Y_t = Y_t - 2Y_{t-1} + Y_{t-2} = \Delta(\Delta Y_t).$$
+::::
+
+::: slide-footer
+$LY_t = Y_{t-1}$ and $L^k Y_t = Y_{t-k}$; $\Delta = 1 - L$.
+:::
+:::::
+
+::::: slidebox
+[What are lag polynomials?]{.slide-label}
+
+:::: slide-body
+Define the **AR lag polynomial** of order $p$:
+
+$$\Phi(L) = 1 - \phi_1 L - \phi_2 L^2 - \cdots - \phi_p L^p$$
+
+and the **MA lag polynomial** of order $q$:
+
+$$\Theta(L) = 1 + \theta_1 L + \theta_2 L^2 + \cdots + \theta_q L^q.$$
+
+The order $p$ is the highest power of $L$ appearing in $\Phi(L)$ with a non-zero coefficient; the order $q$ is defined analogously for $\Theta(L)$.
+::::
+
+::: slide-footer
+$\Phi(L) = 1 - \phi_1 L - \cdots - \phi_p L^p$ and $\Theta(L) = 1 + \theta_1 L + \cdots + \theta_q L^q$.
+:::
+:::::
+
+::::: slidebox
+[How can we express the ARMA(*p*, *q*) model using $L$ notation?]{.slide-label}
+
+:::: slide-body
+The ARMA($p$, $q$) process can be written compactly as
+
+$$\Phi(L)Y_t = \Theta(L)\varepsilon_t$$
+
+where $\varepsilon_t \sim \mathsf{WN}(0, \sigma^2_\varepsilon)$ and $\Phi(\cdot)$, $\Theta(\cdot)$ are as defined above.
+
+As an example, the AR(1) process $Y_t = \phi Y_{t-1} + \varepsilon_t$ corresponds to $\Phi(L) = 1 - \phi L$ and $\Theta(L) = 1$.
+::::
+
+::: slide-footer
+$\Phi(L)Y_t = \Theta(L)\varepsilon_t$; a single compact expression for the entire ARMA family.
+:::
+:::::
+
+::: callout-note
+## Remark
+
+We often work with lag polynomials as standard mathematical functions. For instance, to find the root of the AR polynomial we solve $\Phi(z) = 1 - \phi z = 0$ for $z \in \mathbb{C}$. Note that when doing this we switch the argument to an arbitrary $z \in \mathbb{C}$ — it would be incorrect to write $\Phi(L) = 0 \iff L = 1/\phi$ because $L$ is an operator, not a complex number.
+:::
+
+------------------------------------------------------------------------
+
+## Review questions
+
+1.  What are the formal definitions of AR, MA and ARMA models? Ensure to frame each answer in terms of the $L$ operator. Further, give the definition of the order of a polynomial.^[Yes, I do expect my students to memorise all definitions. It is important to do so for your learning in this field.]
+
+2.  Consider the process $(1 - 0.5L)Y_t = \varepsilon_t$ where $\varepsilon_t$ is white noise. Mr Tick Whittington insists that $\{Y_t\}$ is $\mathsf{AR}(1)$, but his brother Tock insists that $\{Y_t\}$ is $\mathsf{MA}(\infty)$. Who is correct?
+
+::: callout-note
+## Note on solutions
+
+Separate solutions will not be provided — answers can be found in these notes. Use these questions to consolidate knowledge and as discussion prompts when studying with others.
+:::
+
+------------------------------------------------------------------------
+
+## Further reading
+
+-   **Main textbook** — Shumway and Stoffer, *Time Series Analysis and Its Applications with R Examples* (**SS**). For Topic 2, see SS Chapters 1.1–1.2 (there is overlap with Topic 1 in the reading).

@@ -1,0 +1,21 @@
+# macOS
+.DS_Store
+
+# R / RStudio
+.Rhistory
+.Rproj.user/
+.RData
+.Ruserdata
+
+# Quarto
+/.quarto/
+/_freeze/
+/_site/
+
+# Rendered output (uncomment if you don't want docs/ tracked)
+# /docs/
+
+# Python
+__pycache__/
+*.pyc
+.ipynb_checkpoints/

@@ -1,0 +1,14 @@
+---
+title: "Econometrics: Time Series Analysis"
+subtitle: "BSc EFDS — Imperial Business School"
+---
+
+Welcome to the course notes for **Econometrics: Time Series Analysis**.
+
+These notes are designed to accompany the lectures and provide a self-contained reference for the module.
+
+## Topics
+
+| Topic | Title                                             |
+|-------|---------------------------------------------------|
+| 1     | [Introducing Time Series Analysis](lecture1.html) |

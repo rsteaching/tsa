@@ -1,0 +1,42 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: "Econometrics"
+  navbar:
+    pinned: true
+    left:
+      - text: "Topic 1"
+        href: Topic1.html
+      - text: "Topic 2"
+        href: Topic2.html
+    right:
+      - text: "<span class='navbar-brand-name'>Dr Ragvir Sabharwal</span><span class='navbar-brand-institution'>Imperial Business School</span>"
+        href: https://profiles.imperial.ac.uk/r.sabharwal23
+  page-footer:
+    center: "Copyright © 2026 Ragvir Sabharwal. All rights reserved."
+
+bibliography: references.bib
+
+format:
+  html:
+    theme: [default, ember.scss]
+    toc: true
+    toc-location: left
+    toc-depth: 2
+    number-sections: true
+    number-depth: 2
+    smooth-scroll: true
+    anchor-sections: true
+    toc-expand: true
+    highlight-style: arrow-dark
+    grid:
+      body-width: 860px
+      margin-width: 180px
+      gutter-width: 1.5rem
+engine: knitr
+filters:
+  - shinylive      
+
+editor: source

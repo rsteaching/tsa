@@ -1,0 +1,510 @@
+/*-- scss:defaults --*/
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300;1,400&family=JetBrains+Mono:wght@400;500&display=swap');
+
+$font-family-sans-serif:  'DM Sans', system-ui, sans-serif;
+$font-family-monospace:   'JetBrains Mono', monospace;
+$font-size-base:          1.05rem;
+$line-height-base:        1.82;
+$body-bg:                 #FAFAF8;
+$body-color:              #2C2420;
+$link-color:              #0D1B2A;
+$link-hover-color:        #0D1B2A;
+$headings-font-family:    'Charter', 'Bitstream Charter', 'Sitka Text', Georgia, serif;
+$headings-font-weight:    700;
+$headings-color:          #0D1B2A;
+$headings-line-height:    1.12;
+$code-bg:                 #F2EDE4;
+$code-color:              #0D1B2A;
+$blockquote-font-size:    1em;
+
+/*-- scss:rules --*/
+
+$navy:     #0D1B2A;
+$amber:    #C8762A;
+$ink:      #2C2420;
+$graphite: #8A7A68;
+$stone:    #B0A494;
+$bg:       #FAFAF8;
+$bg2:      #F5F0E8;
+$bg3:      #F2EDE4;
+$rule:     #E0D8CC;
+$border:   #D8CEBC;
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  font-weight: 300;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+// ── Headings ──────────────────────────────────────────────────
+h1 {
+  font-size: 2.4em;
+  font-weight: 700;
+  color: $navy;
+  letter-spacing: -0.03em;
+  line-height: 1.08;
+  margin-bottom: 0.15em;
+  border: none;
+  &::after {
+    content: '';
+    display: block;
+    width: 48px;
+    height: 3px;
+    background: $amber;
+    margin-top: 0.45rem;
+    margin-bottom: 0.6rem;
+  }
+}
+
+h2 {
+  font-size: 1.55em;
+  font-weight: 700;
+  color: $navy;
+  letter-spacing: -0.02em;
+  border-bottom: 0.5px solid $rule;
+  padding-bottom: 0.2rem;
+  margin-top: 2.4rem;
+  margin-bottom: 0.65rem;
+}
+
+h3 {
+  font-size: 1.18em;
+  font-weight: 700;
+  color: $navy;
+  margin-top: 1.7rem;
+  margin-bottom: 0.4rem;
+  letter-spacing: -0.012em;
+}
+
+h4 {
+  font-size: 1em;
+  font-weight: 400;
+  font-style: italic;
+  color: $graphite;
+  margin-top: 1.2rem;
+}
+
+// ── Prose ─────────────────────────────────────────────────────
+p {
+  font-size: 1.05rem;
+  font-weight: 300;
+  line-height: 1.85;
+  margin-bottom: 0.9rem;
+}
+
+strong { font-weight: 500; color: $amber; }
+em { color: $graphite; }
+
+a {
+  color: $navy;
+  text-decoration-color: $rule;
+  text-underline-offset: 3px;
+  transition: color 0.15s ease;
+  &:hover { color: $navy; }
+}
+
+// ── Lists ─────────────────────────────────────────────────────
+ul, ol {
+  font-size: 1rem;
+  font-weight: 300;
+  line-height: 1.8;
+  padding-left: 1.4rem;
+  li {
+    margin: 0.28rem 0;
+    strong { color: $amber; font-weight: 500; }
+  }
+}
+
+// ── Blockquote ────────────────────────────────────────────────
+blockquote {
+  border-left: 3px solid $amber;
+  padding: 0.55rem 1rem;
+  background: $bg3;
+  border-radius: 0 4px 4px 0;
+  font-style: italic;
+  color: $graphite;
+  margin: 1.1rem 0;
+}
+
+// ── Code ──────────────────────────────────────────────────────
+code {
+  font-size: 0.87em;
+  padding: 0.13em 0.4em;
+  border-radius: 3px;
+  background: $bg3;
+  color: $navy;
+}
+
+pre {
+  background: $navy !important;
+  border-radius: 5px;
+  padding: 1.1rem 1.3rem;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.15) transparent;
+  &::-webkit-scrollbar { height: 4px; }
+  &::-webkit-scrollbar-track { background: transparent; }
+  &::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.18); border-radius: 2px; }
+  code {
+    font-size: 0.85em;
+    color: #E8E4DC !important;
+    background: transparent !important;
+    padding: 0 !important;
+    line-height: 1.65;
+  }
+}
+
+div.sourceCode { background: transparent !important; border: none !important; }
+
+// ── Tables ────────────────────────────────────────────────────
+table { font-size: 0.95rem; font-weight: 300; border-collapse: collapse; width: 100%; margin: 0.9rem 0; }
+thead th {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: $stone;
+  border-bottom: 1.5px solid $navy;
+  padding: 0.5rem 0.75rem;
+  font-weight: 500;
+  text-align: left;
+}
+tbody td { padding: 0.48rem 0.75rem; border-bottom: 0.5px solid $rule; font-weight: 300; }
+tbody tr:last-child td { border-bottom: none; }
+
+// ── Callouts ──────────────────────────────────────────────────
+.callout {
+  background: $bg2;
+  border-radius: 4px;
+  font-size: 0.95rem;
+  font-weight: 300;
+  margin: 1rem 0;
+  border-left: none !important;
+  .callout-title-container {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.13em;
+    font-weight: 500;
+  }
+}
+
+div.callout { border-left: none !important; }
+
+.callout-note      { border-top: 2px solid $navy !important; border-left: none !important; }
+.callout-tip       { border-top: 2px solid $navy !important; border-left: none !important; }
+.callout-warning   { border-top: 2px solid $navy !important; border-left: none !important; }
+.callout-important { border-top: 2px solid $navy !important; border-left: none !important; }
+
+// ── Equation boxes ────────────────────────────────────────────
+.eq-box {
+  background: $bg3;
+  border-left: 3px solid $amber;
+  border-radius: 0 5px 5px 0;
+  padding: 0.9rem 1.2rem;
+  margin: 0.9rem 0;
+  overflow: hidden;
+  .eq-label {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.58rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: $amber;
+    margin-bottom: 0.3rem;
+    user-select: none;
+  }
+  mjx-container[display="true"] {
+    display: block !important;
+    overflow-x: auto !important;
+    overflow-y: visible !important;
+    max-width: 100% !important;
+    scrollbar-width: none;
+    &::-webkit-scrollbar { display: none; }
+  }
+  &:hover mjx-container[display="true"] {
+    scrollbar-width: thin;
+    scrollbar-color: $border transparent;
+    &::-webkit-scrollbar { display: block; height: 3px; }
+    &::-webkit-scrollbar-track { background: transparent; }
+    &::-webkit-scrollbar-thumb { background: $border; border-radius: 2px; }
+  }
+  .math.display {
+    display: block;
+    overflow-x: auto;
+    max-width: 100%;
+    scrollbar-width: none;
+    &::-webkit-scrollbar { display: none; }
+  }
+}
+
+.eq-box.result {
+  border-left-color: $navy;
+  .eq-label { color: $navy; }
+}
+
+mjx-container[display="true"]:not(.eq-box mjx-container) {
+  display: block !important;
+  overflow-x: auto !important;
+  overflow-y: visible !important;
+  max-width: 100%;
+  scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
+  &:hover {
+    scrollbar-width: thin;
+    scrollbar-color: $border transparent;
+    &::-webkit-scrollbar { display: block; height: 3px; }
+    &::-webkit-scrollbar-track { background: transparent; }
+    &::-webkit-scrollbar-thumb { background: $border; border-radius: 2px; }
+  }
+}
+
+mjx-container:not([display="true"]) {
+  display: inline !important;
+  overflow: visible !important;
+  max-width: none !important;
+  vertical-align: 0.04em;
+}
+
+// ── Dark insight block ────────────────────────────────────────
+.insight {
+  background: $navy;
+  border-radius: 5px;
+  padding: 0.85rem 1.15rem;
+  margin: 1rem 0;
+  .insight-label {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #E8A456;
+    font-weight: 700;
+    margin-bottom: 0.3rem;
+  }
+  .insight-text {
+    font-family: 'Charter', 'Bitstream Charter', 'Sitka Text', Georgia, serif;
+    font-style: italic;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #FAFAF8;
+    line-height: 1.6;
+  }
+  mjx-container { color: #FAFAF8 !important; }
+}
+
+// ── Closing statement ─────────────────────────────────────────
+.closing {
+  font-family: 'Charter', 'Bitstream Charter', 'Sitka Text', Georgia, serif;
+  font-style: italic;
+  font-size: 1.05rem;
+  font-weight: 400;
+  color: $amber;
+  border-top: 0.5px solid $rule;
+  padding-top: 0.6rem;
+  margin-top: 1.1rem;
+  line-height: 1.65;
+}
+
+// ── Kicker label ──────────────────────────────────────────────
+.kicker {
+  display: block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: $stone;
+  margin-bottom: 0.28rem;
+}
+
+// ── Video card ────────────────────────────────────────────────
+.video-card {
+  margin: 1.4rem 0;
+  box-shadow: 0 4px 16px rgba(13,27,42,0.09), 0 1px 4px rgba(13,27,42,0.05);
+  video { display: block; width: 100%; }
+}
+
+// ── Slidebox ──────────────────────────────────────────────────
+.slidebox {
+  background: #FFFFFF;
+  border: 0.5px solid $border;
+  border-top: 4px solid $amber;
+  padding: 1.3rem 1.5rem;
+  margin: 1.4rem 0;
+  box-shadow: 0 4px 16px rgba(13,27,42,0.09), 0 1px 4px rgba(13,27,42,0.05);
+  .slide-label {
+    display: block;
+    font-family: 'Charter', 'Bitstream Charter', 'Sitka Text', Georgia, serif;
+    font-size: 1.18em;
+    font-weight: 700;
+    color: $navy;
+    letter-spacing: -0.012em;
+    margin-bottom: 0.6rem;
+    line-height: 1.2;
+  }
+  .slide-body {
+    font-family: 'Charter', 'Bitstream Charter', 'Sitka Text', Georgia, serif;
+    font-size: 1rem;
+    color: $navy;
+    line-height: 1.72;
+    font-weight: 400;
+    p:last-child { margin-bottom: 0; }
+  }
+  mjx-container[display="true"] {
+    display: block !important;
+    overflow-x: auto !important;
+    max-width: 100% !important;
+    scrollbar-width: none;
+    &::-webkit-scrollbar { display: none; }
+  }
+  .slide-footer {
+    margin-top: 0.85rem;
+    padding-top: 0.55rem;
+    border-top: 0.5px solid $rule;
+    font-family: 'Charter', 'Bitstream Charter', 'Sitka Text', Georgia, serif;
+    font-size: 0.88rem;
+    font-style: italic;
+    color: $amber;
+    line-height: 1.6;
+  }
+}
+
+// ── Italic aside ──────────────────────────────────────────────
+.aside-text {
+  font-style: italic;
+  color: $graphite;
+  font-size: 0.95rem;
+  font-weight: 300;
+  line-height: 1.7;
+  border-left: 1.5px solid $rule;
+  padding-left: 0.65rem;
+  margin: 0.5rem 0;
+}
+
+// ── Navbar ────────────────────────────────────────────────────
+.navbar {
+  background-color: $navy !important;
+  border-bottom: none;
+  padding-top: 0.35rem !important;
+  padding-bottom: 0.35rem !important;
+  padding-left: 1rem !important;
+  padding-right: 1rem !important;
+
+  .navbar-book-title {
+    display: block;
+    font-family: 'Charter', 'Bitstream Charter', 'Sitka Text', Georgia, serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #FAFAF8 !important;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+  .navbar-book-subtitle {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.45);
+    line-height: 1.4;
+  }
+  .navbar-brand {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    text-decoration: none !important;
+    &::after {
+      content: '';
+      display: block;
+      width: 20px;
+      height: 1.5px;
+      background: $amber;
+      margin-top: 3px;
+    }
+  }
+  .navbar-brand-name {
+    display: block;
+    font-family: 'Charter', 'Bitstream Charter', 'Sitka Text', Georgia, serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #FAFAF8 !important;
+    letter-spacing: -0.01em;
+    line-height: 1.1;
+  }
+  .navbar-brand-institution {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+    line-height: 1;
+  }
+  .navbar-nav .nav-link {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.55) !important;
+    transition: color 0.15s ease;
+    &:hover { color: #FAFAF8 !important; }
+  }
+  .navbar-nav .nav-link span.navbar-brand-name,
+  .navbar-nav .nav-link span.navbar-brand-institution {
+    font-family: 'Charter', 'Bitstream Charter', 'Sitka Text', Georgia, serif;
+  }
+}
+
+// ── TOC ───────────────────────────────────────────────────────
+#quarto-margin-sidebar {
+  background: $bg !important;
+}
+
+#quarto-margin-sidebar a {
+  color: $graphite;
+  text-decoration: none;
+  font-size: 0.82rem;
+  font-weight: 300;
+}
+
+#quarto-margin-sidebar a:hover {
+  color: $navy;
+}
+
+#quarto-margin-sidebar a.active,
+#quarto-margin-sidebar li.active > a {
+  color: $navy;
+  font-weight: 500;
+}
+
+// ── Mobile ────────────────────────────────────────────────────
+@media (max-width: 768px) {
+  body { font-size: 0.95rem; }
+  h1 { font-size: 1.8em; &::after { width: 32px; } }
+  h2 { font-size: 1.3em; }
+  h3 { font-size: 1.1em; }
+  p, li { font-size: 0.95rem; line-height: 1.75; }
+  .eq-box { padding: 0.7rem 0.85rem; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .callout { font-size: 0.88rem; }
+  .insight { padding: 0.7rem 0.9rem; }
+  pre { padding: 0.85rem 1rem; }
+  table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+}
+
+// ── Print ─────────────────────────────────────────────────────
+@media print {
+  nav#TOC, .navbar { display: none !important; }
+  body { font-size: 11pt; background: white; color: black; }
+  h1 { font-size: 18pt; }
+  h2 { font-size: 14pt; }
+  h3 { font-size: 12pt; }
+  p, li { font-size: 11pt; line-height: 1.55; }
+  .eq-box { background: #F5F5F5; border-left: 2px solid #888; overflow: visible; }
+  mjx-container { overflow: visible !important; }
+  pre { background: $navy !important; }
+  .insight { background: #1a1a2e; }
+  .slidebox { box-shadow: none; }
+}

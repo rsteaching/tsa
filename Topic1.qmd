@@ -1,0 +1,552 @@
+---
+title: "Introducing Time Series Analysis"
+subtitle: "Topic 1"
+---
+
+
+<video autoplay muted playsinline style="width:100%; height:auto; display:block;">
+  <source src="GrangerQuoteV3.mp4" type="video/mp4">
+</video>
+
+------------------------------------------------------------------------
+
+[Goals]{.kicker}
+
+- To review basic, but crucial, statistical concepts
+- To introduce what is time series analysis
+- To motivate why we need special techniques for analysing time series
+- To start exercising our analytical skills with algebra that steadily increases in complexity
+
+## Background knowledge
+
+### Statistics
+
+It is assumed that you have previously studied basic probability theory and statistical inference and have a sound understanding of the following:
+
+- Distinction between a population and a sample
+- Descriptive statistics — sample mean, median, quartiles, variance
+- Random variables and stochastic processes
+- CDFs, PMFs, and PDFs of random variables
+- Expected values and linearity of the $\mathsf{E}(\cdot)$ operator
+- Population variance, covariance, and correlation
+- Sampling theory, estimation, unbiasedness, and efficiency
+- Mean square error and Markov/Chebyshev inequalities
+- Normal distribution
+- Hypothesis testing — Type I and II errors, significance level, power, $p$-value
+- Confidence intervals
+- Convergence in probability, LLN, $p$lim operator, and consistency
+- Convergence in distribution, CLT, and limiting distributions
+
+### Econometrics
+
+It is assumed that you have previously studied basic econometrics and have familiarity with:
+
+- Multiple linear regression models — classical and generalised settings
+- Estimation via OLS, MME, and MLE
+- Asymptotic evaluation of estimators — consistency, asymptotic efficiency, asymptotic normality
+
+::: {.callout-important collapse="true"}
+## 
+
+- If any of these topics are unclear to you, please seek my help in office hours as early in the term as possible.
+- Alternatively, review any good introductory statistics/econometrics book of your choice. I can suggest *Larsen and Marx* and/or *Jeffrey Wooldridge* for self-study.
+:::
+
+## Basic concepts
+
+::::: slidebox
+[What is a random variable?]{.slide-label}
+
+::: slide-body
+- A random variable is a **function** $Y : \Omega \mapsto \mathbb{R}$ that maps the outcomes of an experiment to a real number.
+
+- Random variables are denoted by capital italicised Roman letters such as $Y = Y(\omega)$, where $\omega \in \Omega$.
+
+- For example, suppose $H$ and $T$ are the two possible outcomes of a coin-tossing experiment. The statement $$\begin{align} Y = 1 \text{ if }H\text{ occurs and }Y = 0\text{ if }T\text{ occurs} \end{align}$$ defines a random variable.
+:::
+
+::: slide-footer
+A real-valued function of the sample space.
+:::
+:::::
+
+::::: slidebox
+[What is a stochastic process?]{.slide-label}
+
+::: slide-body
+- Consider a **collection** of random variables denoted by the set $$\{Y_i : i \in \mathbb{Z}\} \quad \text{or} \quad \{Y_i\}_{i \in \mathbb{Z}},$$ commonly referred to as a stochastic process. The indexation $i$ represents an arbitrary dimension along which the random variables are ordered within the collection.
+
+- Given data $\{y_1, \ldots, y_N\}$, the standard approach models the dataset as a finite-length $N$ realisation of this stochastic process.
+
+- The relationship among the random variables is one of its critical defining features — for instance, $\{y_1, \ldots, y_N\}$ is a random sample if the random variables are iid.
+:::
+
+::: slide-footer
+A collection of random variables.
+:::
+:::::
+
+::::: slidebox
+[What is a time series?]{.slide-label}
+
+::: slide-body
+- Consider what happens when we switch notation from $i$ to $t$, characterising our dataset as $\{y_t\}_{t=1}^{N}$ instead of $\{y_i\}_{i=1}^{N}$.
+
+- We now think of the subscript as denoting a point in time. The sampling dimension is now **temporal**.
+
+- Algebraically this switch looks inconsequential. Conceptually, the change is monumental.
+
+- If we think of the data as a collection of observations over time, three issues immediately arise that cannot be ignored from a modelling perspective.
+:::
+
+::: slide-footer
+A stochastic process indexed over time.
+:::
+:::::
+
+::::::: slidebox
+[What key issues emerge when considering time series?]{.slide-label}
+
+::::: slide-body
+**Issue 1 — Ordering.** There exists a natural fixed ordering of the data. Re-shuffling, for whatever statistical reason, would not be advisable.
+
+**Issue 2 — Stability.** There exists a clear logical requirement to characterise stability of the data-generating process over time. Otherwise our sample is an amalgamation of data from distinct probabilistic regimes.
+
+:::: {.callout-note collapse="true"}
+## Watch: Illustration
+
+::: video-card
+**Estimation under Instability** <video autoplay muted playsinline loop> <source src="StructuralBreak.mp4" type="video/mp4"> </video>
+:::
+::::
+
+**Issue 3 — Dependence.** There exists an overriding need to manage the presence of dependence. One may be willing to assume independence over the cross-section, but one could never justify independence over time. Dependence is the defining feature of the field of time series analysis.
+
+
+:::::
+
+::: slide-footer
+Issues 2 and 3 may seem abstract at present, but their meaning will become clear when we discuss stationarity and ergodicity later.
+:::
+:::::::
+
+
+
+:::::: slidebox
+[What is the defining feature of (stable) time series?]{.slide-label}
+
+::: slide-body
+- Consider again an earlier statement: dependence is the defining feature of the field of time series analysis. What does this statement mean?
+
+- It means that we will distinguish one time series model from another by reference precisely to their dependence characteristics.
+
+- In particular, our primary tool will be with so-called autocovariances. These functions (of lag length) capture the linear dependence characteristics between the random variables comprising a time series.
+:::
+
+:::: slide-footer
+::: insight
+[We characterise time series via their dependence characteristics. In this course, as in most introductory courses, we will focus solely on linear dependence (autocovariances).]{.insight-text}
+:::
+::::
+::::::
+
+::::: slidebox
+[Illustrative examples of (stable) time series]{.slide-label}
+
+:::: slide-body
+- An $iid$ process $\{Y_t\}_{t \in \mathbb{Z}}$ has no linear or non-linear dependence on the past — since the random variables are independent, the lag $h$ autocovariance, $\gamma_Y(h) := \text{Cov}(Y_t, Y_{t+h})$, satisfies $\gamma_Y(h) = 0$ for any $h \neq 0$. We will later refer to an $iid$ process as **strong white noise**.
+
+- By contrast, consider a process where $Y_t = \varepsilon_t + 0.5\varepsilon_{t-1}$ and $\{\varepsilon_t\}$ is white noise. We have $$\gamma_Y(-1) = \text{Cov}(Y_t, Y_{t-1}) = \text{Cov}(\varepsilon_t + 0.5\varepsilon_{t-1},\, \varepsilon_{t-1} + 0.5\varepsilon_{t-2}) = 0.5\,\text{Var}(\varepsilon_{t-1}) \neq 0.$$ Notice that $\gamma_Y(1) = \gamma_Y(-1) \neq 0$ and $\gamma_Y(h) = 0$ for all $|h| \geq 2$. We will later refer to this as a **moving average process of order 1**.
+
+::: slide-footer
+These are examples of processes with and without serial correlation, respectively. 
+:::
+::::
+:::::
+
+::: {.callout-note collapse="true"}
+## Watch: Live Simulation
+
+```{shinylive-r}
+#| standalone: true
+#| viewerHeight: 560
+
+library(shiny)
+
+NAVY   <- "#0D1B2A"
+AMBER  <- "#C8762A"
+BG     <- "#FAFAF8"
+BG2    <- "#F5F0E8"
+INK    <- "#2C2420"
+GRAPH  <- "#8A7A68"
+STONE  <- "#B0A494"
+RULE   <- "#E0D8CC"
+BORDER <- "#D8CEBC"
+
+ui <- fluidPage(
+
+  tags$head(tags$style(HTML(paste0("
+    body, .shiny-frame { background:", BG, "; color:", INK, "; }
+
+    .ctrl-panel {
+      background:", BG2, ";
+      border: 0.5px solid ", BORDER, ";
+      border-top: 3px solid ", AMBER, ";
+      border-radius: 4px;
+      padding: 1.1rem 1.2rem;
+      margin-top: 0.5rem;
+    }
+    .ctrl-label {
+      font-family: 'Courier New', monospace;
+      font-size: 0.85rem;
+      letter-spacing: 0.15em;
+      color: ", STONE, ";
+      margin-bottom: 0.15rem;
+      display: block;
+    }
+    .gamma-val {
+      font-family: 'Courier New', monospace;
+      font-size: 0.82rem;
+      color: ", AMBER, ";
+      margin-top: -0.3rem;
+      margin-bottom: 0.6rem;
+    }
+    .ctrl-divider {
+      border: none;
+      border-top: 0.5px solid ", RULE, ";
+      margin: 0.75rem 0;
+    }
+    .irs--shiny .irs-bar { background:", NAVY, "; border-color:", NAVY, "; }
+    .irs--shiny .irs-handle { border-color:", AMBER, "; }
+    .irs--shiny .irs-single { background:", NAVY, "; }
+    .irs--shiny .irs-from,
+    .irs--shiny .irs-to   { background:", NAVY, "; }
+    .irs--shiny .irs-grid-pol { background:", RULE, "; }
+    .irs--shiny .irs-line { background:", RULE, "; border-color:", RULE, "; }
+    label.control-label { display: none; }
+  ")))),
+
+  fluidRow(
+    column(12,
+      plotOutput("upper_plot", height = "230px"),
+      div(style = "height:6px"),
+      plotOutput("lower_plot", height = "230px")
+    )
+  ),
+  fluidRow(
+    column(12,
+      div(class = "ctrl-panel",
+        span(class = "ctrl-label", style = "font-size: 1.5rem;", "Coefficient"),
+        div(style = "width: 100%;",
+          sliderInput("theta",
+                      label = NULL, min = -1, max = 1, value = 0.5,
+                      step = 0.05, ticks = FALSE, width = "100%")
+        )
+      )
+    )
+  )
+)
+
+server <- function(input, output, session) {
+
+  series <- reactive({
+    set.seed(42L)
+    n     <- 100L
+    theta <- input$theta
+    eps   <- rnorm(n + 1L)
+    list(
+      iid = eps[-1L],
+      ma1 = eps[-1L] + theta * eps[-(n + 1L)],
+      t   = seq_len(n)
+    )
+  })
+
+  output$gamma_display <- renderText({
+    paste0("γ(1) = ", format(input$theta, nsmall = 2))
+  })
+
+  base_par <- function() {
+    par(
+      bg        = BG,
+      col.axis  = GRAPH,
+      col.lab   = INK,
+      col.main  = NAVY,
+      family    = "serif",
+      mar       = c(3, 3.8, 2.2, 0.8),
+      mgp       = c(2.2, 0.5, 0),
+      tcl       = -0.25,
+      cex.axis  = 0.75,
+      cex.lab   = 0.82,
+      cex.main  = 0.88,
+      font.main = 1
+    )
+  }
+
+  ylims <- reactive({
+    s   <- series()
+    rng <- range(c(s$iid, s$ma1))
+    pad <- diff(rng) * 0.06
+    c(rng[1] - pad, rng[2] + pad)
+  })
+
+  output$upper_plot <- renderPlot({
+    s <- series()
+    base_par()
+    plot(s$t, s$iid,
+         type = "l", lwd = 1.0, col = NAVY,
+         ylim = ylims(),
+         main = expression(paste("iid  ", N(0,1), "  noise")),
+         xlab = "", ylab = expression(Y[t]),
+         bty = "l", xaxt = "n")
+    abline(h = 0, col = RULE, lwd = 0.9)
+  }, bg = BG)
+
+  output$lower_plot <- renderPlot({
+    s     <- series()
+    theta <- input$theta
+    base_par()
+    plot(s$t, s$ma1,
+         type = "l", lwd = 1.2, col = AMBER,
+         ylim = ylims(),
+         main = bquote(
+           MA(1): ~ Y[t] == epsilon[t] + .(theta) ~ epsilon[t-1] ~
+           "    " ~ gamma(1) == .(theta)
+         ),
+         xlab = expression(t), ylab = expression(Y[t]),
+         bty = "l")
+    abline(h = 0, col = RULE, lwd = 0.9)
+  }, bg = BG)
+}
+
+shinyApp(ui, server)
+```
+:::
+
+Students occasionally ask me why I'm presenting an $iid$ process as an example of a time series after emphasising so heavily that time series are characterised by dependence. The answer is that an $iid$ process, where the indexation represents time periods, can be thought of as a special case of a time series where the lag $h$ autocovariances are zero for all $h \neq 0$. It's just a matter of perspective whether you think of it as a genuine time series or not. 
+
+::::: slidebox
+[What is time series analysis?]{.slide-label}
+
+:::: slide-body
+- We will soon see (see "[A stark message](#a-stark-message)" below) that the analysis of time series data can lead to new and unique problems in statistical modelling and inference.
+
+- Specifically, the obvious possibility of dependence introduced by the sampling of adjacent points in time can severely restrict the applicability of the many conventional statistical methods traditionally dependent on the assumption that these adjacent observations are independent and identically distributed.
+
+::: slide-footer
+The systematic approach by which one goes about answering econometric questions posed in the presence of time-ordered data exhibiting inter-temporal depen-dence is commonly referred to as time series analysis.
+
+:::
+::::
+::::: 
+
+Two approaches to time series analysis exist. The **time domain** approach studies lagged relationships — e.g. how today's value affects tomorrow's. The **frequency domain** approach studies cycles by, in effect, regressing the series on sinusoids at different frequencies. This module focuses exclusively on the time domain approach.
+
+:::: {.callout-note collapse="true"}
+## Watch: Illustration
+
+::: video-card
+**Time vs. Frequency Domains** <video autoplay muted playsinline loop> <source src="FourierWaterfall.mp4" type="video/mp4"> </video>
+:::
+::::
+------------------------------------------------------------------------
+
+## Variance, covariance, and correlation
+
+Covariances — and their time-series counterpart, autocovariances — are central to everything that follows. In this section we recap the key concepts summarising the second-order structure of the probabilistic behaviour of random variables.
+
+### Definitions
+
+Consider univariate random variables $Y_1$ and $Y_2$. The $r$-th **raw moment** of $Y_1$ is $\mathsf{E}(Y_1^r)$ and the $r$-th **central moment** is $\mathsf{E}\!\left[(Y_1 - \mathsf{E}(Y_1))^r\right]$, for $r \in \mathbb{N}$.
+
+::: eq-box
+[Population variance]{.eq-label} $$\text{Var}(Y_1) := \mathsf{E}\!\left[(Y_1 - \mathsf{E}(Y_1))^2\right] = \mathsf{E}(Y_1^2) - (\mathsf{E}(Y_1))^2$$
+:::
+
+The variance is the second central moment of $Y_1$ — a measure of dispersion.
+
+::: eq-box
+[Population covariance]{.eq-label} $$\text{Cov}(Y_1, Y_2) := \mathsf{E}\!\left[(Y_1 - \mathsf{E}(Y_1))(Y_2 - \mathsf{E}(Y_2))\right] = \mathsf{E}(Y_1 Y_2) - \mathsf{E}(Y_1)\mathsf{E}(Y_2)$$
+:::
+
+Note that $\text{Var}(Y_1) = \text{Cov}(Y_1, Y_1)$ trivially — variance is a special case of covariance where both indices are equal.
+
+::: eq-box
+[Population correlation]{.eq-label} $$\text{Corr}(Y_1, Y_2) := \frac{\text{Cov}(Y_1, Y_2)}{\sqrt{\text{Var}(Y_1)\,\text{Var}(Y_2)}}$$
+:::
+
+Correlation is a scale-free measure of the strength of linear association, and $|\text{Corr}(Y_1, Y_2)| \leq 1$ by the Cauchy-Schwarz inequality.
+
+::::: slidebox
+[What is the variance of a linear combination?]{.slide-label}
+
+::: slide-body
+Consider random variables $Y_1$ and $Y_2$ and constants $a_1$ and $a_2$. The familiar variance rule states
+
+$$\text{Var}(a_1 Y_1 + a_2 Y_2) = a_1^2\,\text{Var}(Y_1) + 2a_1 a_2\,\text{Cov}(Y_1, Y_2) + a_2^2\,\text{Var}(Y_2).$$
+But if you allow me to rewrite the above as: 
+
+$$\text{Var}(a_1 Y_1 + a_2 Y_2) = a_1 a_1 \,\text{Cov}(Y_1,Y_1) + a_1 a_2\,\text{Cov}(Y_1, Y_2) + a_2 a_1\,\text{Cov}(Y_2, Y_1) +  a_2a_2\,\text{Cov}(Y_2,Y_2),$$
+then you can see that we can also use summation notation to express the result as:
+
+$$\text{Var}(a_1 Y_1 + a_2 Y_2) = \sum_{t=1}^{2}\sum_{s=1}^{2} a_t a_s\,\text{Cov}(Y_t, Y_s).$$
+
+Indeed, it should come as no surprise then that 
+
+$$\text{Var}\!\left(\sum_{t=1}^{T} a_t Y_t\right) = \sum_{t=1}^{T}\sum_{s=1}^{T} a_t a_s\,\text{Cov}(Y_t, Y_s).$$
+
+which is an expression we will see repeatedly.
+:::
+
+::: slide-footer
+Never omit the covariance terms! 
+:::
+:::::
+
+::: {.callout-note collapse="true"}
+## Intuition
+ 
+- Students don't always find variance/covariance manipulations intuitive. However, the same students would never make the mistake of omitting cross-terms in a squaring operation! The sum of two terms squared must yield a sum of four terms. Three terms must yield nine. Let's look at an example: 
+$$(a + b + c)^2 = \begin{align}&a^2 + ab + ac \\+ &ba + b^2 + bc \\ + &ca + cb + c^2\end{align}$$
+This is nine terms, right? You would never say $$(a+b+c)^2 = a^2 + b^2 + c^2.\quad \text{❌}$$ It just looks wrong!
+
+- But students make this mistake all the time with variances. They say $\mathsf{Var}(X+Y) = \mathsf{Var}(X) + \mathsf{Var}(Y)$. Don't forget that a variance is a squared concept (see algebra below). You cannot just assume that the cross-terms are zero unless you are told or you know explicitly that they are zero. 
+:::
+
+::: {.callout-note collapse="true"}
+## Algebra
+
+- Consider $\mathsf{Var}(Z) := \mathsf{E}(Z-\mathsf{E}(Z))^2$. Now suppose $Z = X+Y$. Then, 
+$$\begin{align}\mathsf{Var}(Z)=\mathsf{Var}(X+Y)&=\mathsf{E}\left((X+Y) - \mathsf{E}(X+Y)\right)^2 \\ &= \mathsf{E}(X - \mathsf{E}(X) + Y - \mathsf{E}(Y))^2\\&=\mathsf{E}\left(\tilde{X} + \tilde{Y}\right)^2, \text{ where }\tilde{X} := X- \mathsf{E}(X)\text{ and }\tilde{Y} := Y - \mathsf{E}(Y)\\&=\mathsf{E}\left(\tilde{X}^2 + \tilde{Y}^2 + 2\tilde{X}\tilde{Y}\right) \\&=\mathsf{E}\left(\tilde{X}^2\right) + \mathsf{E}\left(\tilde{Y}^2\right) + 2\mathsf{E}\left(\tilde{X}\tilde{Y}\right)\\&=\mathsf{E}(X-\mathsf{E}(X))^2 +\mathsf{E}(Y-\mathsf{E}(Y))^2 + 2 \mathsf{E}((X-\mathsf{E}(X))(Y-\mathsf{E}(Y)))\\&=\mathsf{Var}(X)+\mathsf{Var}(Y) + 2\mathsf{Cov}(X,Y).\end{align}$$
+- Never omit the covariance terms! 
+:::
+
+
+We are now ready for the final section.
+
+------------------------------------------------------------------------
+
+## A stark message
+
+::::: slidebox
+[What is the sample mean?]{.slide-label}
+
+::: slide-body
+Recall the humble yet ubiquitous sample mean $\bar{Y}_N$:
+
+$$\bar{Y}_N = \frac{1}{N}\sum_{i=1}^{N} Y_i$$
+
+The subscript $N$ appears explicitly to emphasise the dependence of the sample mean on sample size.
+
+Why do we turn so often to this statistic? The answer is **Chebyshev's LLN**: $\bar{Y}_N$ converges in probability to $\mathsf{E}(Y)$ as $N \to \infty$. Under suitable conditions, a sample moment is a consistent estimator of its population counterpart.
+
+The sample mean appears embedded throughout econometric estimation. For OLS in $Y_t = \alpha + \beta X_t + \varepsilon_t$:
+
+$$\hat{\alpha}_{\scriptscriptstyle OLS} = \bar{Y}_T - \hat{\beta}_{\scriptscriptstyle OLS}\bar{X}_T, \qquad \hat{\beta}_{\scriptscriptstyle OLS} = \frac{\frac{1}{T}\sum_{t=1}^{T}(X_t - \bar{X}_T)(Y_t - \bar{Y}_T)}{\frac{1}{T}\sum_{t=1}^{T}(X_t - \bar{X}_T)^2}$$
+:::
+
+::: slide-footer
+$(1/N)\sum Y_i$; the most widely-used statistic in econometrics.
+:::
+:::::
+
+::::: slidebox
+[Why is the sample mean ubiquitous? Chebyshev's LLN]{.slide-label}
+
+::: slide-body
+The generic $F_Y$ notation denotes deliberate agnosticism about the distribution — the result holds for any distribution with finite variance.
+
+**Theorem — Chebyshev's LLN.** $$\text{Suppose } Y_t \overset{\scriptscriptstyle\text{iid}}{\sim} F_Y(\mu_Y, \sigma_Y^2) \text{ for } t = 1,\ldots,T \text{ where } 0 < \sigma_Y^2 < \infty. \text{ Then } \operatorname*{plim}_{T\to\infty}\bar{Y}_T = \mu_Y.$$
+
+Estimator $\hat{\theta}_T$ **converges in probability** to $\theta$ if and only if for any $e > 0$:
+
+$$\lim_{T\to\infty} \Pr\!\left(|\hat{\theta}_T - \theta| > e\right) = 0.$$
+
+We write $\hat{\theta}_T \overset{p}{\to} \theta$ and say $\hat{\theta}_T$ is **consistent** for $\theta$. Convergence in mean-square implies convergence in probability via Chebyshev's inequality:
+
+$$\lim_{T\to\infty} \text{MSE}(\hat{\theta}_T) = \lim_{T\to\infty}\left[\text{Var}(\hat{\theta}_T) + \text{Bias}^2(\hat{\theta}_T)\right] = 0 \implies \hat{\theta}_T \overset{p}{\to} \theta.$$
+:::
+
+::: slide-footer
+If $\text{MSE}(\hat\theta_T) \to 0$ then $\hat\theta_T \overset{p}{\to} \theta$; the sample mean achieves this because $\text{Var}(\bar{Y}_T) = \sigma^2_Y / T \to 0$.
+:::
+:::::
+
+::::: slidebox
+[What is the mechanism behind Chebyshev's LLN?]{.slide-label}
+
+::: slide-body
+Consider $\bar{Y}_T = (1/T)\sum_{t=1}^{T} Y_t$. By linearity of expectations:
+
+$$\mathsf{E}(\bar{Y}_T) = \frac{1}{T}\sum_{t=1}^{T}\mathsf{E}(Y_t) = \frac{T\mu_Y}{T} = \mu_Y,$$
+
+so $\bar{Y}_T$ is unbiased for $\mu_Y$. For the variance, using independence then identical distributions:
+
+$$\text{Var}(\bar{Y}_T) = \frac{1}{T^2}\sum_{t=1}^{T}\sum_{s=1}^{T}\text{Cov}(Y_t, Y_s) = \frac{1}{T^2}\sum_{t=1}^{T}\text{Cov}(Y_t, Y_t) = \frac{\sigma_Y^2}{T}.$$
+
+It follows that $\lim_{T\to\infty}\text{MSE}(\bar{Y}_T) = \lim_{T\to\infty}\sigma_Y^2/T = 0$. By Chebyshev's inequality, for any $e > 0$:
+
+$$\lim_{T\to\infty}\Pr\!\left(|\bar{Y}_T - \mu_Y| > e\right) \leq \frac{\sigma_Y^2}{Te^2} = 0 \qquad \square$$
+:::
+
+::: slide-footer
+Unbiasedness plus $\text{Var}(\bar{Y}_T) = \sigma^2_Y/T \to 0$ gives convergence in m.s., hence in probability.
+:::
+:::::
+
+::::: slidebox
+[Why might Chebyshev's LLN fail for time series?]{.slide-label}
+
+::: slide-body
+Under independence the double-sum variance collapses:
+
+$$\text{Var}(\bar{Y}_T) = \frac{1}{T^2}\sum_{t=1}^{T}\sum_{s=1}^{T}\text{Cov}(Y_t, Y_s) = \frac{1}{T^2}\sum_{t=1}^{T}\text{Var}(Y_t).$$
+
+The denominator is $O(T^2)$ and the numerator is $O(T)$ — so $\text{Var}(\bar{Y}_T) = O(1/T)$. But if we allow for an arbitrarily high degree of temporal correlation, the cross terms no longer vanish. The numerator is no longer $O(T)$, and our crucial consistency result risks falling to pieces.
+:::
+
+::: slide-footer
+Temporal dependence inflates $\text{Var}(\bar{Y}_T)$; the numerator is no longer $O(T)$ and the LLN can fail.
+:::
+:::::
+
+::: callout-note
+## Big-O notation
+
+The sequence $\{b_T\}$ is said to be **at most of order** $T^\alpha$, written $b_T = O(T^\alpha)$, if there exists a finite constant $C > 0$ and integer $T^*$ such that for all $T \geq T^*$, $|T^{-\alpha}b_T| \leq C$.
+:::
+
+::: insight
+[The stark message]{.insight-label} [The sample mean — the most widely used statistic in all of econometrics — can fail to converge when observations are temporally dependent. This is why time series analysis requires its own toolkit.]{.insight-text}
+:::
+
+::: closing
+Dependence is not merely an inconvenience — it strikes at the heart of statistical inference. We will return to this when we study the ergodic theorem.
+:::
+
+------------------------------------------------------------------------
+
+## Review questions
+
+1.  Explain formally what is a random variable, a stochastic process, a time series, and what is meant by the analysis of time series.
+
+2.  Explain what is a population moment; what is the population variance of a random variable; and what are the covariance and correlation between two random variables.
+
+3.  State Chebyshev's LLN for an iid process. Prove it. Give an intuitive explanation of how and why it works. Explain its empirical relevance.
+
+4.  Explain with explicit reference to $\text{Var}(\bar{Y}_T)$ why the LLN can potentially fail for time series data.
+
+::: callout-note
+## Note on solutions
+
+Separate solutions will not be provided — answers can be found in these notes. Use these questions to consolidate knowledge and as discussion prompts when studying with others.
+:::
+
+------------------------------------------------------------------------
+
+## Further reading
+
+- **Statistical fundamentals** — Appendix B and C of Wooldridge, *Introductory Econometrics*, or any solid undergraduate statistics textbook.
+- **Main textbook** — Shumway and Stoffer, *Time Series Analysis and Its Applications with R Examples* (**SS**). For Topic 1, see SS Chapters 1.1–1.2.
+- The material in the stark message section is not directly from SS — it represents a specific arrangement of ideas for this course.
+
+------------------------------------------------------------------------
