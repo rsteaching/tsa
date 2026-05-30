@@ -35,8 +35,22 @@ format:
       body-width: 860px
       margin-width: 180px
       gutter-width: 1.5rem
+    include-after-body:
+      text: |
+        <script>
+        document.querySelectorAll('div.audio').forEach(div => {
+          const file = div.textContent.trim();
+          div.innerHTML = '<p>' + (div.dataset.label || 'Listen') + '</p>'
+                        + '<audio controls src="' + file + '"></audio>';
+          div.addEventListener('click', e => {
+            if (e.target.tagName !== 'AUDIO') div.classList.toggle('open');
+          });
+        });
+        </script>
+
 engine: knitr
+
 filters:
-  - shinylive      
+  - shinylive
 
 editor: source
