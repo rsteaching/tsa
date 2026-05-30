@@ -2,7 +2,7 @@
  "cells": [
   {
    "cell_type": "markdown",
-   "id": "60bbb8b7",
+   "id": "bc21f2ce",
    "metadata": {},
    "source": [
     "---\n",
@@ -56,7 +56,7 @@
     "## \n",
     "\n",
     "- If any of these topics are unclear to you, please seek my help in office hours as early in the term as possible.\n",
-    "- Alternatively, review any good introductory statistics/econometrics book of your choice. I can suggest *Larsen and Marx* and/or *Jeffrey Wooldridge*.\n",
+    "- Alternatively, review any good introductory statistics/econometrics book of your choice. I can suggest *Larsen and Marx* and/or *Jeffrey Wooldridge* for self-study.\n",
     ":::\n",
     "\n",
     "## Basic concepts\n",
@@ -151,9 +151,7 @@
     ":::\n",
     "\n",
     ":::: slide-footer\n",
-    "::: insight\n",
     "[We characterise time series via their dependence characteristics. In this course, as in most introductory courses, we will focus solely on linear dependence (autocovariances).]{.insight-text}\n",
-    ":::\n",
     "::::\n",
     "::::::\n",
     "\n",
@@ -329,7 +327,7 @@
     "```\n",
     ":::\n",
     "\n",
-    "Students occasionally ask me why I'm presenting an $iid$ process as an example of a time series after emphasising so heavily that time series are characterised by dependence. The answer is that an $iid$ process, where the indexation represents time periods, can be thought of as a special case of a time series where the lag $h$ autocovariances are zero for all $h \\neq 0$. It's just a matter of perspective whether you think of it as a genuine time series or not. \n",
+    "Students sometimes ask why I present an $iid$ process as a time series example after emphasising that time series are characterised by dependence. The answer: an $iid$ process indexed by time is a special case of a time series — one where the dependence happens to be zero. Whether you call it a \"genuine\" time series is a matter of perspective.\n",
     "\n",
     "::::: slidebox\n",
     "[What is time series analysis?]{.slide-label}\n",
