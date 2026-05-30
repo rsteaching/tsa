@@ -154,7 +154,7 @@ Issues 2 and 3 may seem abstract at present, but their meaning will become clear
 :::: slide-body
 - An $iid$ process $\{Y_t\}_{t \in \mathbb{Z}}$ has no linear or non-linear dependence on the past — since the random variables are independent, the lag $h$ autocovariance, $\gamma_Y(h) := \text{Cov}(Y_t, Y_{t+h})$, satisfies $\gamma_Y(h) = 0$ for any $h \neq 0$. We will later refer to an $iid$ process as **strong white noise**.
 
-- By contrast, consider a process where $Y_t = \varepsilon_t + 0.5\varepsilon_{t-1}$ and $\{\varepsilon_t\}$ is white noise. We have $$\begin{align} \gamma_Y(-1) &= \text{Cov}(Y_t, Y_{t-1})\\ &= \text{Cov}(\varepsilon_t + 0.5\varepsilon_{t-1},\, \varepsilon_{t-1} + 0.5\varepsilon_{t-2})\\ &= 0.5\,\text{Var}(\varepsilon_{t-1}) \text{ since }\{\varepsilon_t\}\text{ is $iid$}\\ &\neq 0.\end{align}$$ Notice that $\gamma_Y(1) = \gamma_Y(-1) \neq 0$ and $\gamma_Y(h) = 0$ for all $|h| \geq 2$. We will later refer to this as a **moving average process of order 1**.
+- By contrast, consider a process where $Y_t = \varepsilon_t + 0.5\varepsilon_{t-1}$ and $\{\varepsilon_t\}$ is strong white noise. We have $$\begin{align} \gamma_Y(-1) &= \text{Cov}(Y_t, Y_{t-1})\\ &= \text{Cov}(\varepsilon_t + 0.5\varepsilon_{t-1},\, \varepsilon_{t-1} + 0.5\varepsilon_{t-2})\\ &= 0.5\,\text{Var}(\varepsilon_{t-1}) \text{ since }\{\varepsilon_t\}\text{ is $iid$}\\ &\neq 0.\end{align}$$ Notice that $\gamma_Y(1) = \gamma_Y(-1) \neq 0$ and $\gamma_Y(h) = 0$ for all $|h| \geq 2$. We will later refer to this as a **moving average process of order 1**.
 
 ::: slide-footer
 These are examples of processes with and without serial correlation, respectively. 
