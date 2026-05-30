@@ -3,6 +3,7 @@ title: "Introducing Time Series Analysis"
 subtitle: "Topic 1"
 ---
 
+<!-- git add . && git commit -m "update" && git push  -->
 
 <video autoplay muted playsinline style="width:100%; height:auto; display:block;">
   <source src="GrangerQuoteV3.mp4" type="video/mp4">
@@ -370,6 +371,8 @@ $$\text{Corr}(Y_1, Y_2) := \frac{\text{Cov}(Y_1, Y_2)}{\sqrt{\text{Var}(Y_1)\,\t
 
 
 Correlation is a scale-free measure of the strength of linear association, and $|\text{Corr}(Y_1, Y_2)| \leq 1$ by the Cauchy-Schwarz inequality.
+
+---
 
 ::::: slidebox
 [What is the variance of a linear combination?]{.slide-label}
