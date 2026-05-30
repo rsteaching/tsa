@@ -322,7 +322,7 @@ shinyApp(ui, server)
 ```
 :::
 
-Students occasionally ask me why I'm presenting an $iid$ process as an example of a time series after emphasising so heavily that time series are characterised by dependence. The answer is that an $iid$ process, where the indexation represents time periods, can be thought of as a special case of a time series where the lag $h$ autocovariances are zero for all $h \neq 0$. It's just a matter of perspective whether you think of it as a genuine time series or not. 
+Students sometimes ask why I present an $iid$ process as a time series example after emphasising that time series are characterised by dependence. The answer: an $iid$ process indexed by time is a special case of a time series — one where the dependence happens to be zero. Whether you call it a "genuine" time series is a matter of perspective.
 
 ::::: slidebox
 [What is time series analysis?]{.slide-label}
