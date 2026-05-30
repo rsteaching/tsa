@@ -356,21 +356,18 @@ Covariances — and their time-series counterpart, autocovariances — are centr
 
 Consider univariate random variables $Y_1$ and $Y_2$. The $r$-th **raw moment** of $Y_1$ is $\mathsf{E}(Y_1^r)$ and the $r$-th **central moment** is $\mathsf{E}\!\left[(Y_1 - \mathsf{E}(Y_1))^r\right]$, for $r \in \mathbb{N}$.
 
-::: eq-box
-[Population variance]{.eq-label} $$\text{Var}(Y_1) := \mathsf{E}\!\left[(Y_1 - \mathsf{E}(Y_1))^2\right] = \mathsf{E}(Y_1^2) - (\mathsf{E}(Y_1))^2$$
-:::
+$$\text{Var}(Y_1) := \mathsf{E}\!\left[(Y_1 - \mathsf{E}(Y_1))^2\right] = \mathsf{E}(Y_1^2) - (\mathsf{E}(Y_1))^2$$
+
 
 The variance is the second central moment of $Y_1$ — a measure of dispersion.
 
-::: eq-box
-[Population covariance]{.eq-label} $$\text{Cov}(Y_1, Y_2) := \mathsf{E}\!\left[(Y_1 - \mathsf{E}(Y_1))(Y_2 - \mathsf{E}(Y_2))\right] = \mathsf{E}(Y_1 Y_2) - \mathsf{E}(Y_1)\mathsf{E}(Y_2)$$
-:::
+
+$$\text{Cov}(Y_1, Y_2) := \mathsf{E}\!\left[(Y_1 - \mathsf{E}(Y_1))(Y_2 - \mathsf{E}(Y_2))\right] = \mathsf{E}(Y_1 Y_2) - \mathsf{E}(Y_1)\mathsf{E}(Y_2)$$
 
 Note that $\text{Var}(Y_1) = \text{Cov}(Y_1, Y_1)$ trivially — variance is a special case of covariance where both indices are equal.
 
-::: eq-box
-[Population correlation]{.eq-label} $$\text{Corr}(Y_1, Y_2) := \frac{\text{Cov}(Y_1, Y_2)}{\sqrt{\text{Var}(Y_1)\,\text{Var}(Y_2)}}$$
-:::
+$$\text{Corr}(Y_1, Y_2) := \frac{\text{Cov}(Y_1, Y_2)}{\sqrt{\text{Var}(Y_1)\,\text{Var}(Y_2)}}$$
+
 
 Correlation is a scale-free measure of the strength of linear association, and $|\text{Corr}(Y_1, Y_2)| \leq 1$ by the Cauchy-Schwarz inequality.
 

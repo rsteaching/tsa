@@ -556,17 +556,11 @@ shinyApp(ui, server)</code></pre>
 <section id="definitions" class="level3">
 <h3 class="anchored" data-anchor-id="definitions">Definitions</h3>
 <p>Consider univariate random variables <span class="math inline">\(Y_1\)</span> and <span class="math inline">\(Y_2\)</span>. The <span class="math inline">\(r\)</span>-th <strong>raw moment</strong> of <span class="math inline">\(Y_1\)</span> is <span class="math inline">\(\mathsf{E}(Y_1^r)\)</span> and the <span class="math inline">\(r\)</span>-th <strong>central moment</strong> is <span class="math inline">\(\mathsf{E}\!\left[(Y_1 - \mathsf{E}(Y_1))^r\right]\)</span>, for <span class="math inline">\(r \in \mathbb{N}\)</span>.</p>
-<div class="eq-box">
-<p><span class="eq-label">Population variance</span> <span class="math display">\[\text{Var}(Y_1) := \mathsf{E}\!\left[(Y_1 - \mathsf{E}(Y_1))^2\right] = \mathsf{E}(Y_1^2) - (\mathsf{E}(Y_1))^2\]</span></p>
-</div>
+<p><span class="math display">\[\text{Var}(Y_1) := \mathsf{E}\!\left[(Y_1 - \mathsf{E}(Y_1))^2\right] = \mathsf{E}(Y_1^2) - (\mathsf{E}(Y_1))^2\]</span></p>
 <p>The variance is the second central moment of <span class="math inline">\(Y_1\)</span> — a measure of dispersion.</p>
-<div class="eq-box">
-<p><span class="eq-label">Population covariance</span> <span class="math display">\[\text{Cov}(Y_1, Y_2) := \mathsf{E}\!\left[(Y_1 - \mathsf{E}(Y_1))(Y_2 - \mathsf{E}(Y_2))\right] = \mathsf{E}(Y_1 Y_2) - \mathsf{E}(Y_1)\mathsf{E}(Y_2)\]</span></p>
-</div>
+<p><span class="math display">\[\text{Cov}(Y_1, Y_2) := \mathsf{E}\!\left[(Y_1 - \mathsf{E}(Y_1))(Y_2 - \mathsf{E}(Y_2))\right] = \mathsf{E}(Y_1 Y_2) - \mathsf{E}(Y_1)\mathsf{E}(Y_2)\]</span></p>
 <p>Note that <span class="math inline">\(\text{Var}(Y_1) = \text{Cov}(Y_1, Y_1)\)</span> trivially — variance is a special case of covariance where both indices are equal.</p>
-<div class="eq-box">
-<p><span class="eq-label">Population correlation</span> <span class="math display">\[\text{Corr}(Y_1, Y_2) := \frac{\text{Cov}(Y_1, Y_2)}{\sqrt{\text{Var}(Y_1)\,\text{Var}(Y_2)}}\]</span></p>
-</div>
+<p><span class="math display">\[\text{Corr}(Y_1, Y_2) := \frac{\text{Cov}(Y_1, Y_2)}{\sqrt{\text{Var}(Y_1)\,\text{Var}(Y_2)}}\]</span></p>
 <p>Correlation is a scale-free measure of the strength of linear association, and <span class="math inline">\(|\text{Corr}(Y_1, Y_2)| \leq 1\)</span> by the Cauchy-Schwarz inequality.</p>
 <div class="slidebox">
 <p><span class="slide-label">What is the variance of a linear combination?</span></p>
