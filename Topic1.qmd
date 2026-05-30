@@ -332,7 +332,7 @@ Students sometimes ask why I present an $iid$ process as a time series example a
 - Specifically, the obvious possibility of dependence introduced by the sampling of adjacent points in time can severely restrict the applicability of the many conventional statistical methods traditionally dependent on the assumption that these adjacent observations are independent and identically distributed.
 
 ::: slide-footer
-The systematic approach by which one goes about answering econometric questions posed in the presence of time-ordered data exhibiting inter-temporal depen-dence is commonly referred to as time series analysis.
+The systematic approach by which one goes about answering econometric questions posed in the presence of time-ordered data exhibiting inter-temporal dependence is commonly referred to as time series analysis.
 
 :::
 ::::
@@ -407,7 +407,9 @@ Never omit the covariance terms!
 $$(a + b + c)^2 = \begin{align}&a^2 + ab + ac \\+ &ba + b^2 + bc \\ + &ca + cb + c^2\end{align}$$
 This is nine terms, right? You would never say $$(a+b+c)^2 = a^2 + b^2 + c^2.\quad \text{❌}$$ It just looks wrong!
 
-- But students make this mistake all the time with variances. They say $\mathsf{Var}(X+Y) = \mathsf{Var}(X) + \mathsf{Var}(Y)$. Don't forget that a variance is a squared concept (see algebra below). You cannot just assume that the cross-terms are zero unless you are told or you know explicitly that they are zero. 
+- But students make this mistake all the time with variances. They say $$\mathsf{Var}(X+Y) = \mathsf{Var}(X) + \mathsf{Var}(Y).\quad \text{❌}$$
+
+   Don't forget that a variance is a squared concept (see algebra below). You cannot just assume that the cross-terms are zero unless you are told or you know explicitly that they are zero.
 :::
 
 ::: {.callout-note collapse="true"}

@@ -526,7 +526,7 @@ shinyApp(ui, server)</code></pre>
 <li><p>Specifically, the obvious possibility of dependence introduced by the sampling of adjacent points in time can severely restrict the applicability of the many conventional statistical methods traditionally dependent on the assumption that these adjacent observations are independent and identically distributed.</p></li>
 </ul>
 <div class="slide-footer">
-<p>The systematic approach by which one goes about answering econometric questions posed in the presence of time-ordered data exhibiting inter-temporal depen-dence is commonly referred to as time series analysis.</p>
+<p>The systematic approach by which one goes about answering econometric questions posed in the presence of time-ordered data exhibiting inter-temporal dependence is commonly referred to as time series analysis.</p>
 </div>
 </div>
 </div>
@@ -593,7 +593,8 @@ shinyApp(ui, server)</code></pre>
 <div class="callout-body-container callout-body">
 <ul>
 <li><p>Students don’t always find variance/covariance manipulations intuitive. However, the same students would never make the mistake of omitting cross-terms in a squaring operation! The sum of two terms squared must yield a sum of four terms. Three terms must yield nine. Let’s look at an example: <span class="math display">\[(a + b + c)^2 = \begin{align}&amp;a^2 + ab + ac \\+ &amp;ba + b^2 + bc \\ + &amp;ca + cb + c^2\end{align}\]</span> This is nine terms, right? You would never say <span class="math display">\[(a+b+c)^2 = a^2 + b^2 + c^2.\quad \text{❌}\]</span> It just looks wrong!</p></li>
-<li><p>But students make this mistake all the time with variances. They say <span class="math inline">\(\mathsf{Var}(X+Y) = \mathsf{Var}(X) + \mathsf{Var}(Y)\)</span>. Don’t forget that a variance is a squared concept (see algebra below). You cannot just assume that the cross-terms are zero unless you are told or you know explicitly that they are zero.</p></li>
+<li><p>But students make this mistake all the time with variances. They say <span class="math display">\[\mathsf{Var}(X+Y) = \mathsf{Var}(X) + \mathsf{Var}(Y).\quad \text{❌}\]</span></p>
+<p>Don’t forget that a variance is a squared concept (see algebra below). You cannot just assume that the cross-terms are zero unless you are told or you know explicitly that they are zero.</p></li>
 </ul>
 </div>
 </div>
