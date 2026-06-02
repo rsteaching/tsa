@@ -11,4 +11,5 @@ These notes are designed to accompany the lectures and provide a self-contained 
 
 | Topic | Title                                             |
 |-------|---------------------------------------------------|
-| 1     | [Introducing Time Series Analysis](lecture1.html) |
+| 1     | [Introducing Time Series Analysis](Topic1.html)   |
+| 2     | [Introducing ARMA(p, q) models](Topic2.html)      |
