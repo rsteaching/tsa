@@ -8,9 +8,15 @@ format:
 
 <!-- git add . && git commit -m "update" && git push  -->
 
+::: {.content-visible when-format="html"}
 <video autoplay muted playsinline style="width:100%; height:auto; display:block;">
   <source src="GrangerQuoteV3.mp4" type="video/mp4">
 </video>
+:::
+
+::: {.content-visible when-format="pdf"}
+*Introductory video — available in the online (HTML) version of these notes.*
+:::
 
 ------------------------------------------------------------------------
 
@@ -119,8 +125,12 @@ A stochastic process indexed over time.
 :::: {.callout-note collapse="true"}
 ## Watch: Illustration
 
-::: video-card
+::: {.video-card .content-visible when-format="html"}
 **Estimation under Instability** <video autoplay muted playsinline loop> <source src="StructuralBreak.mp4" type="video/mp4"> </video>
+:::
+
+::: {.content-visible when-format="pdf"}
+*Estimation under Instability — animation available in the online (HTML) version.*
 :::
 ::::
 
@@ -166,9 +176,10 @@ These are examples of processes with and without serial correlation, respectivel
 ::::
 :::::
 
-::: {.callout-note collapse="true"}
+:::: {.callout-note collapse="true"}
 ## Watch: Live Simulation
 
+::: {.content-visible when-format="html"}
 ```{shinylive-r}
 #| standalone: true
 #| viewerHeight: 560
@@ -330,6 +341,11 @@ shinyApp(ui, server)
 ```
 :::
 
+::: {.content-visible when-format="pdf"}
+*Interactive MA(1) simulation — available in the online (HTML) version of these notes.*
+:::
+::::
+
 Students sometimes ask why I present an $iid$ process as a time series example after emphasising that time series are characterised by dependence. The answer: an $iid$ process indexed by time is a special case of a time series — one where the dependence happens to be zero. Whether you call it a "genuine" time series is a matter of perspective.
 
 ::::: slidebox
@@ -352,8 +368,12 @@ Two approaches to time series analysis exist. The **time domain** approach studi
 :::: {.callout-note collapse="true"}
 ## Watch: Illustration
 
-::: video-card
+::: {.video-card .content-visible when-format="html"}
 **Time vs. Frequency Domains** <video autoplay muted playsinline loop> <source src="FourierWaterfall.mp4" type="video/mp4"> </video>
+:::
+
+::: {.content-visible when-format="pdf"}
+*Time vs. Frequency Domains — animation available in the online (HTML) version.*
 :::
 ::::
 ------------------------------------------------------------------------
@@ -387,7 +407,7 @@ Correlation is a scale-free measure of the strength of linear association, and $
 [What is the variance of a linear combination?]{.slide-label}
 
 ::: slide-body
-::: {.audio}
+::: {.audio .content-visible when-format="html"}
 audio/intro.mp3
 :::
 
