@@ -2,7 +2,7 @@
  "cells": [
   {
    "cell_type": "markdown",
-   "id": "472fbc50",
+   "id": "f174feba",
    "metadata": {},
    "source": [
     "---\n",
@@ -299,6 +299,8 @@
     "  })\n",
     "\n",
     "  output$upper_plot <- renderPlot({\n",
+    "    w <- session$clientData$output_upper_plot_width\n",
+    "    req(w, w > 0)                  # wait until the container is measured\n",
     "    s <- series()\n",
     "    base_par()\n",
     "    plot(s$t, s$iid,\n",
@@ -311,6 +313,8 @@
     "  }, bg = BG)\n",
     "\n",
     "  output$lower_plot <- renderPlot({\n",
+    "    w     <- session$clientData$output_lower_plot_width\n",
+    "    req(w, w > 0)                  # wait until the container is measured\n",
     "    s     <- series()\n",
     "    theta <- input$theta\n",
     "    base_par()\n",
@@ -573,6 +577,18 @@
    "language": "python",
    "name": "python3",
    "path": "/Users/rss13/Library/Python/3.9/share/jupyter/kernels/python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.9.6"
   }
  },
  "nbformat": 4,

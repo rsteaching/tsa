@@ -915,6 +915,16 @@ Y_t &amp;= \phi Y_{t-1} + \varepsilon_t \\
     </div>
   </div>
 </footer>
+<script>
+document.querySelectorAll('div.audio').forEach(div => {
+  const file = div.textContent.trim();
+  div.innerHTML = '<p>' + (div.dataset.label || 'Listen') + '</p>'
+                + '<audio controls src="' + file + '"></audio>';
+  div.addEventListener('click', e => {
+    if (e.target.tagName !== 'AUDIO') div.classList.toggle('open');
+  });
+});
+</script>
 
 
 

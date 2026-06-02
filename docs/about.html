@@ -76,7 +76,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-4b3ae02ca3d2c990793b4a58c5ee5acf.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-0b3d6fd898fa146b1dcf11a2d4120ee0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-d04756128200765ba1697e0daf182690.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -109,7 +109,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </head>
 
-<body class="nav-fixed quarto-light">
+<body class="floating nav-fixed quarto-light">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -127,15 +127,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./index.html"> 
-<span class="menu-text"><span class="navbar-book-title">Econometrics</span><span class="navbar-book-subtitle">Time Series Analysis</span></span></a>
+    <a class="nav-link" href="./Topic1.html"> 
+<span class="menu-text">Topic 1</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./Topic2.html"> 
+<span class="menu-text">Topic 2</span></a>
   </li>  
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
-  <li class="nav-item">
-    <a class="nav-link" href="./lecture1.html"> 
-<span class="menu-text">Topic 1</span></a>
-  </li>  
   <li class="nav-item">
     <a class="nav-link" href="https://profiles.imperial.ac.uk/r.sabharwal23"> 
 <span class="menu-text"><span class="navbar-brand-name">Dr Ragvir Sabharwal</span><span class="navbar-brand-institution">Imperial Business School</span></span></a>
@@ -150,9 +150,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -601,6 +604,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </div>
   </div>
 </footer>
+<script>
+document.querySelectorAll('div.audio').forEach(div => {
+  const file = div.textContent.trim();
+  div.innerHTML = '<p>' + (div.dataset.label || 'Listen') + '</p>'
+                + '<audio controls src="' + file + '"></audio>';
+  div.addEventListener('click', e => {
+    if (e.target.tagName !== 'AUDIO') div.classList.toggle('open');
+  });
+});
+</script>
 
 
 

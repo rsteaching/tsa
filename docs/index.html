@@ -165,7 +165,11 @@ ul.task-list li input[type="checkbox"] {
 <tbody>
 <tr class="odd">
 <td>1</td>
-<td><a href="lecture1.html">Introducing Time Series Analysis</a></td>
+<td><a href="Topic1.html">Introducing Time Series Analysis</a></td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td><a href="Topic2.html">Introducing ARMA(p, q) models</a></td>
 </tr>
 </tbody>
 </table>
@@ -588,6 +592,16 @@ ul.task-list li input[type="checkbox"] {
     </div>
   </div>
 </footer>
+<script>
+document.querySelectorAll('div.audio').forEach(div => {
+  const file = div.textContent.trim();
+  div.innerHTML = '<p>' + (div.dataset.label || 'Listen') + '</p>'
+                + '<audio controls src="' + file + '"></audio>';
+  div.addEventListener('click', e => {
+    if (e.target.tagName !== 'AUDIO') div.classList.toggle('open');
+  });
+});
+</script>
 
 
 
