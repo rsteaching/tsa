@@ -292,6 +292,8 @@ server <- function(input, output, session) {
   })
 
   output$upper_plot <- renderPlot({
+    w <- session$clientData$output_upper_plot_width
+    req(w, w > 0)                  # wait until the container is measured
     s <- series()
     base_par()
     plot(s$t, s$iid,
@@ -304,6 +306,8 @@ server <- function(input, output, session) {
   }, bg = BG)
 
   output$lower_plot <- renderPlot({
+    w     <- session$clientData$output_lower_plot_width
+    req(w, w > 0)                  # wait until the container is measured
     s     <- series()
     theta <- input$theta
     base_par()
