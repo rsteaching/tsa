@@ -166,9 +166,10 @@ These are examples of processes with and without serial correlation, respectivel
 ::::
 :::::
 
-::: {.callout-note collapse="true"}
+:::: {.callout-note collapse="true"}
 ## Watch: Live Simulation
 
+::: {.content-visible when-format="html"}
 ```{shinylive-r}
 #| standalone: true
 #| viewerHeight: 560
@@ -301,7 +302,10 @@ server <- function(input, output, session) {
          xlab = "", ylab = expression(Y[t]),
          bty = "l", xaxt = "n")
     abline(h = 0, col = RULE, lwd = 0.9)
-  }, bg = BG)
+  },
+  bg = BG,
+  width  = function() { w <- session$clientData$output_upper_plot_width;  if (is.null(w) || w < 1) 700 else w },
+  height = function() { h <- session$clientData$output_upper_plot_height; if (is.null(h) || h < 1) 230 else h })
 
   output$lower_plot <- renderPlot({
     s     <- series()
@@ -317,12 +321,20 @@ server <- function(input, output, session) {
          xlab = expression(t), ylab = expression(Y[t]),
          bty = "l")
     abline(h = 0, col = RULE, lwd = 0.9)
-  }, bg = BG)
+  },
+  bg = BG,
+  width  = function() { w <- session$clientData$output_lower_plot_width;  if (is.null(w) || w < 1) 700 else w },
+  height = function() { h <- session$clientData$output_lower_plot_height; if (is.null(h) || h < 1) 230 else h })
 }
 
 shinyApp(ui, server)
 ```
 :::
+
+::: {.content-visible when-format="pdf"}
+*Interactive MA(1) simulation — available in the online (HTML) version of these notes.*
+:::
+::::
 
 Students sometimes ask why I present an $iid$ process as a time series example after emphasising that time series are characterised by dependence. The answer: an $iid$ process indexed by time is a special case of a time series — one where the dependence happens to be zero. Whether you call it a "genuine" time series is a matter of perspective.
 
