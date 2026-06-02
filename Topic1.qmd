@@ -301,10 +301,7 @@ server <- function(input, output, session) {
          xlab = "", ylab = expression(Y[t]),
          bty = "l", xaxt = "n")
     abline(h = 0, col = RULE, lwd = 0.9)
-  },
-  bg = BG,
-  width  = function() { w <- session$clientData$output_upper_plot_width;  if (is.null(w) || w < 1) 700 else w },
-  height = function() { h <- session$clientData$output_upper_plot_height; if (is.null(h) || h < 1) 230 else h })
+  }, bg = BG)
 
   output$lower_plot <- renderPlot({
     s     <- series()
@@ -320,10 +317,7 @@ server <- function(input, output, session) {
          xlab = expression(t), ylab = expression(Y[t]),
          bty = "l")
     abline(h = 0, col = RULE, lwd = 0.9)
-  },
-  bg = BG,
-  width  = function() { w <- session$clientData$output_lower_plot_width;  if (is.null(w) || w < 1) 700 else w },
-  height = function() { h <- session$clientData$output_lower_plot_height; if (is.null(h) || h < 1) 230 else h })
+  }, bg = BG)
 }
 
 shinyApp(ui, server)
