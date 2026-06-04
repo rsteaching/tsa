@@ -190,7 +190,7 @@ window.Quarto = {
   <li><a href="#review-questions" id="toc-review-questions" class="nav-link" data-scroll-target="#review-questions"><span class="header-section-number">4</span> Review questions</a></li>
   <li><a href="#further-reading" id="toc-further-reading" class="nav-link" data-scroll-target="#further-reading"><span class="header-section-number">5</span> Further reading</a></li>
   </ul>
-</nav>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="Topic2.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
@@ -219,48 +219,54 @@ window.Quarto = {
 </header>
 
 
+<!-- git add . && git commit -m "update" && git push  -->
 <p><span class="kicker">Goals</span></p>
 <ul>
-<li>To look at some simple time series plots.</li>
-<li>To introduce WN, MA and AR models.</li>
-<li>To define ARMA(<em>p</em>, <em>q</em>) models.</li>
-<li>To understand the lag operator and polynomials in the lag operator.</li>
+<li>To look at some simple time series plots</li>
+<li>To introduce <span class="math inline">\(\mathsf{WN}\)</span>, <span class="math inline">\(\mathsf{MA}\)</span> and <span class="math inline">\(\mathsf{AR}\)</span> models</li>
+<li>To define <span class="math inline">\(\mathsf{ARMA}(p, q)\)</span> models</li>
+<li>To understand the lag operator and polynomials in the lag operator</li>
 </ul>
+<p><span class="kicker">Key Equation</span></p>
+<p><span class="math display">\[\Phi(L) Y_t = \Theta(L)\varepsilon_t, \text{ where } \varepsilon_t \sim \mathsf{WN}(0, \sigma_\varepsilon^2) \text{ and } \Phi(L) \text{ and } \Theta(L) \text{ are lag polynomials}\]</span></p>
 <hr>
 <section id="examples-of-time-series-plots" class="level2" data-number="1">
 <h2 data-number="1" class="anchored" data-anchor-id="examples-of-time-series-plots"><span class="header-section-number">1</span> Examples of time series plots</h2>
-<p>One primary objective of time series analysis is to develop statistical models that provide plausible descriptions for data that are temporally ordered. It is conventional, when displaying such data graphically, to plot values on the vertical axis with the time scale on the horizontal axis, and to connect adjacent values to reconstruct visually the hypothetical continuous series.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
-<p>To formally characterise data that fluctuate randomly over time, statisticians model any real-life sample as a realisation of a stochastic process <span class="math inline">\(\{Y_t\}\)</span> indexed according to the order observations are received in time. In all our lectures, <span class="math inline">\(t\)</span> will be discrete and vary over the integers <span class="math inline">\(t = 0, \pm1, \pm2, \ldots\)</span>, or some subset such as <span class="math inline">\(t = 1, \ldots, T\)</span>. Observations are assumed equally spaced.</p>
+<ul>
+<li>We learned that one primary objective of time series analysis is to develop statistical models that provide plausible descriptions for data that are temporally ordered. Let us look at an (arbitrarily-chosen) example now.</li>
+</ul>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="figures/GlobalTemp.png" class="img-fluid figure-img"></p>
-<figcaption>Yearly average global temperature deviations (1880–2015) in degrees centigrade. <em>(Source: SS Fig. 1.2)</em></figcaption>
+<p><img src="sample_globaltemp.png" class="img-fluid figure-img"></p>
+<figcaption>Yearly average global temperature deviations (1880–2015) in degrees centigrade.</figcaption>
+</figure>
+</div>
+<ul>
+<li><p>Notice that it is conventional, when displaying such data graphically, to plot the values of the data points on the vertical or <span class="math inline">\(y\)</span> axis, with the time scale on the horizontal or <span class="math inline">\(x\)</span> axis. It is also common practice to connect the values at adjacent time periods to reconstruct visually some original hypothetical continuous time series that might have produced these values as a discrete sample.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p></li>
+<li><p>To formally characterise data that seemingly fluctuate in random fashion over time, statisticians assume that any real-life sample considered is obtained as a realisation of a collection of random variables (i.e.&nbsp;a stochastic process) indexed according to the order they are obtained in time.</p></li>
+<li><p>For example, we may consider as a time series the sequence of random variables, <span class="math inline">\(Y_1, Y_2, Y_3, \ldots\)</span>, where <span class="math inline">\(Y_1\)</span> denotes the value taken by the series at the first time point, the variable <span class="math inline">\(Y_2\)</span> denotes the value for the second time point, and so on. The stochastic process is denoted <span class="math inline">\(\{Y_t\}\)</span>. Note that in all our lectures, <span class="math inline">\(t\)</span> will be discrete and vary over the integers, <span class="math inline">\(t = 0, \pm 1, \pm 2, \ldots\)</span>, or some subset of the integers, such as <span class="math inline">\(t = 1, \ldots, T\)</span>. It will also be assumed that our observations are spaced equally.</p></li>
+<li><p>The next step is to <strong>understand how to specify a (parametric) statistical model that suitably characterises the inter-temporal dependence structure</strong> between the random variables within the (presumably stable) stochastic process. These are the models we will study shortly. (We will subsequently also explore the key ideas behind model selection and parameter estimation.)</p></li>
+<li><p>On the next page, we briefly contemplate the visual patterns that arise in a few more examples of time series data (chosen by me for reasons that will become clearer in future weeks). In case you are interested, the contextual details about these graphs are in <strong>SS (Chapter 1.1)</strong>.</p></li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="sample_speech.png" class="img-fluid figure-img"></p>
+<figcaption>Speech recording of the syllable aaa···hhh sampled at 10,000 points per second with n = 1020 points.</figcaption>
 </figure>
 </div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="figures/Speech.png" class="img-fluid figure-img"></p>
-<figcaption>Speech recording of the syllable <span class="math inline">\(aaa \cdots hhh\)</span> sampled at 10,000 points per second with <span class="math inline">\(n = 1020\)</span> points. <em>(Source: SS Fig. 1.3)</em></figcaption>
+<p><img src="sample_disaster.png" class="img-fluid figure-img"></p>
+<figcaption>Arrival phases from an earthquake (top) and explosion (bottom) at 40 points per second.</figcaption>
 </figure>
 </div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="figures/EarthquakeExplosion.png" class="img-fluid figure-img"></p>
-<figcaption>Arrival phases from an earthquake (top) and explosion (bottom) at 40 points per second. <em>(Source: SS Fig. 1.7)</em></figcaption>
+<p><img src="sample_fmri.png" class="img-fluid figure-img"></p>
+<figcaption>fMRI data from various locations in the cortex, thalamus, and cerebellum; n = 128 points, one observation taken every 2 seconds.</figcaption>
 </figure>
 </div>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="figures/fMRI.png" class="img-fluid figure-img"></p>
-<figcaption>fMRI data from various locations in the cortex, thalamus, and cerebellum; <span class="math inline">\(n = 128\)</span> points, one observation every 2 seconds. <em>(Source: SS Fig. 1.6)</em></figcaption>
-</figure>
-</div>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="figures/Joke.png" class="img-fluid figure-img"></p>
-<figcaption>Non-examinable joke!</figcaption>
-</figure>
-</div>
+<p><img src="mountain.jpeg" class="img-fluid"></p>
 <hr>
 </section>
 <section id="building-blocks-of-the-arma-framework" class="level2" data-number="2">
@@ -268,130 +274,111 @@ window.Quarto = {
 <div class="slidebox">
 <p><span class="slide-label">What is a white noise process?</span></p>
 <div class="slide-body">
-<p><strong>Definition.</strong> Consider a stochastic process <span class="math inline">\(\{Y_t\}\)</span> where <span class="math inline">\(\mathsf{E}(Y_t) = \mu_Y\)</span> and</p>
-<p><span class="math display">\[\text{Cov}(Y_t, Y_s) = \begin{cases} 0 &lt; \sigma^2_Y &lt; \infty, &amp; t = s, \\ 0, &amp; \text{otherwise} \end{cases}\]</span></p>
-<p>for <span class="math inline">\(t, s \in \mathbb{Z}\)</span>. We say that <span class="math inline">\(\{Y_t\}\)</span> is a <strong>white noise process</strong> with mean <span class="math inline">\(\mu_Y\)</span> and variance <span class="math inline">\(\sigma^2_Y\)</span>, written <span class="math inline">\(Y_t \sim \mathsf{WN}(\mu_Y, \sigma^2_Y)\)</span>. The mean <span class="math inline">\(\mu_Y\)</span> is most often assumed zero.</p>
-<p>A white noise process is a collection of time-ordered yet <strong>uncorrelated</strong> random variables. An example is <span class="math inline">\(Y_t \overset{\scriptscriptstyle\text{iid}}{\sim} \mathcal{N}(\mu_Y, \sigma^2_Y)\)</span>, but note that neither normality nor the iid assumption is needed for a process to be classified as noise.</p>
+<p><strong>Definition.</strong> Consider a stochastic process <span class="math inline">\(\{Y_t\}\)</span> where <span class="math inline">\(\mathsf{E}(Y_t) = \mu_Y\)</span> and <span class="math display">\[\text{Cov}(Y_t, Y_s) = \begin{cases} 0 &lt; \sigma_Y^2 &lt; \infty, &amp; t = s, \\ 0, &amp; \text{otherwise} \end{cases}\]</span> for <span class="math inline">\(t, s \in \mathbb{Z}\)</span>. We say that <span class="math inline">\(\{Y_t\}\)</span> is a white noise process with mean <span class="math inline">\(\mu_Y\)</span> and variance <span class="math inline">\(\sigma_Y^2\)</span>, or simply <span class="math inline">\(Y_t \sim \mathsf{WN}\left(\mu_Y, \sigma_Y^2\right)\)</span>. (The mean <span class="math inline">\(\mu_Y\)</span> is most often assumed zero.) <span class="math inline">\(\qquad\square\)</span></p>
+<ul>
+<li>A white noise process (or informally, just “noise”) is a collection of time-ordered yet <strong>uncorrelated</strong> random variables. An example would be the typical <span class="math inline">\(Y_t \overset{\scriptscriptstyle\text{iid}}{\sim} \mathcal{N}\left(\mu_Y, \sigma_Y^2\right),\ t \in \mathbb{Z}\)</span> process that you’ve worked with but note that neither is normality (or “Gaussianity”) nor is the <span class="math inline">\(iid\)</span> assumption needed for a process to be classified as noise.</li>
+</ul>
 </div>
 <div class="slide-footer">
-<p>A sequence of uncorrelated random variables with constant mean and variance.</p>
+<p>A collection of time-ordered yet uncorrelated random variables.</p>
 </div>
 </div>
 <div class="slidebox">
 <p><span class="slide-label">How is noise even relevant? Are we not studying dependent processes?</span></p>
 <div class="slide-body">
-<p>One of the key features of the ARMA framework is that even processes with highly sophisticated dependence structures can be built just by <strong>linearly combining</strong> — or in time series parlance, <em>filtering through</em> — uncorrelated random variables. The simple white noise process thus serves as the springboard for the rest of the theory, and this is truly remarkable.</p>
-<p>Terms and phrases commonly used in place of “dynamics” that you may encounter include: <em>inter-temporal dependence</em>, <em>persistence</em>, <em>smoothness</em>, and <em>inertia</em>.</p>
+<ul>
+<li><p>The perceptive student may wonder why a white noise process gets prime billing in a course whose central concern is serial correlation. It seems odd, does it not? Indeed, if the stochastic behaviour of all time series could be explained in terms of the white noise model, classical statistical methods would suffice!</p></li>
+<li><p>I would like you to appreciate that one of the key features of the <span class="math inline">\(\mathsf{ARMA}\)</span> framework (which we are about to study) is that even <strong>processes with highly-sophisticated dependence structures can be built just by linearly combining — or in time series parlance, “filtering” through — uncorrelated random variables</strong>. The simple white noise process thus serves as the springboard for the rest of the theory, and this is truly remarkable!</p></li>
+<li><p>Let’s see how it works. Ways of introducing dynamics are discussed below. But first, let us define a linear filter…</p></li>
+</ul>
 </div>
 <div class="slide-footer">
-<p>Complex dependence structures are built by linearly filtering white noise.</p>
+<p>Noise is the springboard: rich dependence is built by filtering uncorrelated random variables.</p>
 </div>
 </div>
+<p>Terms and phrases commonly-used in place of “dynamics” that you might encounter in your studies include “inter-temporal dependence”, “persistence”, “smoothness”, and “inertia”, to name a few.</p>
 <div class="slidebox">
 <p><span class="slide-label">What is a linear filter?</span></p>
 <div class="slide-body">
-<p>A <strong>linear (time-invariant) filter</strong> or <em>smoother</em> converts one time series <span class="math inline">\(\{\varepsilon_t\}\)</span> into another <span class="math inline">\(\{Y_t\}\)</span> by the linear operation</p>
-<p><span class="math display">\[Y_t = \sum_{h=-q}^{+s} a_h\,\varepsilon_{t+h},\]</span></p>
-<p>where <span class="math inline">\(\{a_h\}\)</span> for <span class="math inline">\(h = -q, \ldots, s\)</span> is a set of weights for <span class="math inline">\(q, s \in \mathbb{N}\)</span>. The filter is symmetric when <span class="math inline">\(s = q\)</span> and <span class="math inline">\(a_h = a_{-h}\)</span>.</p>
-<p>The simplest symmetric filter uses equal weights <span class="math inline">\(a_h = 1/(2q+1)\)</span> for <span class="math inline">\(h \in \{-q, \ldots, 0, \ldots, q\}\)</span>, zero otherwise. For example, <span class="math inline">\(Y_t = (\varepsilon_{t-1} + \varepsilon_t + \varepsilon_{t+1})/3\)</span> gives:</p>
-<p><span class="math display">\[\begin{array}{lllll}
-\underbrace{\tfrac{1}{3}\varepsilon_1 \quad \tfrac{1}{3}\varepsilon_2 \quad \tfrac{1}{3}\varepsilon_3}_{Y_2} &amp; \varepsilon_4 &amp; \varepsilon_5 \\[8pt]
-\varepsilon_1 &amp; \underbrace{\tfrac{1}{3}\varepsilon_2 \quad \tfrac{1}{3}\varepsilon_3 \quad \tfrac{1}{3}\varepsilon_4}_{Y_3} &amp; \varepsilon_5 \\[8pt]
-\varepsilon_1 &amp; \varepsilon_2 &amp; \underbrace{\tfrac{1}{3}\varepsilon_3 \quad \tfrac{1}{3}\varepsilon_4 \quad \tfrac{1}{3}\varepsilon_5}_{Y_4}
-\end{array}\]</span></p>
-<p>A completely new series <span class="math inline">\(\{Y_2, Y_3, Y_4\}\)</span> has been created from the original <span class="math inline">\(\{\varepsilon_1, \varepsilon_2, \varepsilon_3, \varepsilon_4, \varepsilon_5\}\)</span>.</p>
+<p>A linear (time-invariant) filter or “smoother” converts one time series, <span class="math inline">\(\{\varepsilon_t\}\)</span>, into another, <span class="math inline">\(\{Y_t\}\)</span>, by the linear operation <span class="math display">\[Y_t = \sum_{h=-q}^{+s} a_h\,\varepsilon_{t+h},\]</span> where <span class="math inline">\(\{a_h\}\)</span>, for <span class="math inline">\(h = -q, \ldots, s\)</span> is a set of weights for <span class="math inline">\(q, s \in \mathbb{N}\)</span>. Notice that the filter is symmetric when <span class="math inline">\(s = q\)</span> and <span class="math inline">\(a_h = a_{-h}\)</span>.</p>
+<ul>
+<li><p>Formally, a linear filter is a polynomial in the lag operator, but we will see the formal definition after we introduce the concept of a lag operator (in <a href="#the-arma-framework">The ARMA framework</a> below).</p></li>
+<li><p>The simplest example of a two-sided symmetric filter is when <span class="math display">\[a_h = \begin{cases} \frac{1}{2q+1}, &amp; h \in \{-q, \ldots, 0, \ldots, q\} \\ 0, &amp; \text{otherwise}, \end{cases}\]</span> so that the filtered value of <span class="math inline">\(Y_t\)</span> is given by <span class="math display">\[Y_t = \frac{1}{2q+1}\sum_{h=-q}^{q}\varepsilon_{t+h}.\]</span></p></li>
+<li><p>Can you try to visualise the given operation and determine for yourself why a linear filter might synonymously be referred to as a smoother?</p></li>
+</ul>
 </div>
 <div class="slide-footer">
-<p>A weighted linear combination of current and past (and possibly future) values of <span class="math inline">\(\varepsilon_t\)</span>.</p>
+<p>A weighted sum of neighbouring noise terms; equal weights give a smoother.</p>
 </div>
 </div>
-<p>The graphs below illustrate the distinction between white noise and the three-point moving average process above.</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>w <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">500</span>, <span class="dv">0</span>, <span class="dv">1</span>)                           <span class="co"># 500 iid N(0,1) realisations</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>v <span class="ot">&lt;-</span> <span class="fu">filter</span>(w, <span class="at">sides =</span> <span class="dv">2</span>, <span class="at">filter =</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">/</span><span class="dv">3</span>, <span class="dv">3</span>)) <span class="co"># three-point moving average</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">1</span>))</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot.ts</span>(w, <span class="at">main =</span> <span class="st">"white noise"</span>)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot.ts</span>(v, <span class="at">ylim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">3</span>, <span class="dv">3</span>), <span class="at">main =</span> <span class="st">"moving average"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<div id="fig-wn-ma" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-wn-ma-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="Topic2_files/figure-html/fig-wn-ma-1.png" class="img-fluid figure-img" width="672">
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-wn-ma-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1: Gaussian white noise series (top) and three-point moving average of the Gaussian white noise series (bottom).
-</figcaption>
+<p>Consider, for example, <span class="math inline">\(Y_t = (\varepsilon_{t-1} + \varepsilon_t + \varepsilon_{t+1})/3\)</span>. We have the following schematic to help describe this two-sided symmetric smoothing operation:</p>
+<p><span class="math display">\[\begin{aligned} \underset{Y_2}{\underbrace{\tfrac{1}{3}\varepsilon_1 \quad \tfrac{1}{3}\varepsilon_2 \quad \tfrac{1}{3}\varepsilon_3}} \quad \varepsilon_4 \quad \varepsilon_5 \\ \varepsilon_1 \quad \underset{Y_3}{\underbrace{\tfrac{1}{3}\varepsilon_2 \quad \tfrac{1}{3}\varepsilon_3 \quad \tfrac{1}{3}\varepsilon_4}} \quad \varepsilon_5 \\ \varepsilon_1 \quad \varepsilon_2 \quad \underset{Y_4}{\underbrace{\tfrac{1}{3}\varepsilon_3 \quad \tfrac{1}{3}\varepsilon_4 \quad \tfrac{1}{3}\varepsilon_5}} \end{aligned}\]</span></p>
+<p>Do you see how we created a completely new series, <span class="math inline">\(\{Y_2, Y_3, Y_4\}\)</span>, from the original, <span class="math inline">\(\{\varepsilon_1, \varepsilon_2, \varepsilon_3, \varepsilon_4, \varepsilon_5\}\)</span>?</p>
+<p>Let us look at some graphs that help illustrate the distinction between white noise and the three-point moving average process above.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="sample_wnma.png" class="img-fluid figure-img"></p>
+<figcaption>Gaussian white noise series (top) and three-point moving average of the Gaussian white noise series (bottom).</figcaption>
 </figure>
 </div>
-</div>
-</div>
-<p>Now consider a different example: the one-sided moving average <span class="math inline">\(Y_t = \varepsilon_t + 0.5\varepsilon_{t-1}\)</span>:</p>
-<p><span class="math display">\[\begin{array}{lllll}
-\underbrace{0.5\varepsilon_1 \quad \varepsilon_2}_{Y_2} &amp; \varepsilon_3 &amp; \varepsilon_4 &amp; \varepsilon_5 \\[8pt]
-\varepsilon_1 &amp; \underbrace{0.5\varepsilon_2 \quad \varepsilon_3}_{Y_3} &amp; \varepsilon_4 &amp; \varepsilon_5 \\[8pt]
-\varepsilon_1 &amp; \varepsilon_2 &amp; \underbrace{0.5\varepsilon_3 \quad \varepsilon_4}_{Y_4} &amp; \varepsilon_5 \\[8pt]
-\varepsilon_1 &amp; \varepsilon_2 &amp; \varepsilon_3 &amp; \underbrace{0.5\varepsilon_4 \quad \varepsilon_5}_{Y_5}
-\end{array}\]</span></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> w <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="dv">500</span>,<span class="dv">0</span>,<span class="dv">1</span>) <span class="co"># creates realisations of 500 iid N(0,1) RVs</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> v <span class="ot">=</span> <span class="fu">filter</span>(w, <span class="at">sides=</span><span class="dv">2</span>, <span class="at">filter=</span><span class="fu">rep</span>(<span class="dv">1</span><span class="sc">/</span><span class="dv">3</span>,<span class="dv">3</span>)) <span class="co"># creates a moving average</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">1</span>)) <span class="co"># specifies a 2 by 1 panel layout for graphs</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">plot.ts</span>(w, <span class="at">main=</span><span class="st">"white noise"</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">plot.ts</span>(v, <span class="at">ylim=</span><span class="fu">c</span>(<span class="sc">-</span><span class="dv">3</span>,<span class="dv">3</span>), <span class="at">main=</span><span class="st">"moving average"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Consider, as a different example of a moving average, <span class="math inline">\(Y_t = \varepsilon_t + 0.5\varepsilon_{t-1}\)</span>. We have the following schematic to help describe this one-sided smoothing operation:</p>
+<p><span class="math display">\[\begin{aligned} \underset{Y_2}{\underbrace{0.5\,\varepsilon_1 \quad \varepsilon_2}} \quad \varepsilon_3 \quad \varepsilon_4 \quad \varepsilon_5 \\ \varepsilon_1 \quad \underset{Y_3}{\underbrace{0.5\,\varepsilon_2 \quad \varepsilon_3}} \quad \varepsilon_4 \quad \varepsilon_5 \\ \varepsilon_1 \quad \varepsilon_2 \quad \underset{Y_4}{\underbrace{0.5\,\varepsilon_3 \quad \varepsilon_4}} \quad \varepsilon_5 \\ \varepsilon_1 \quad \varepsilon_2 \quad \varepsilon_3 \quad \underset{Y_5}{\underbrace{0.5\,\varepsilon_4 \quad \varepsilon_5}} \end{aligned}\]</span></p>
+<p>This example brings us now to the definition of <span class="math inline">\(\mathsf{MA}(q)\)</span> processes.</p>
 <div class="slidebox">
-<p><span class="slide-label">What is an MA(<em>q</em>) process?</span></p>
+<p><span class="slide-label">What is an MA(q) process?</span></p>
 <div class="slide-body">
-<p><strong>Definition.</strong> A process <span class="math inline">\(\{Y_t\}\)</span> is called a <strong>moving average process of order <span class="math inline">\(q\)</span></strong>, written <span class="math inline">\(Y_t \sim \mathsf{MA}(q)\)</span>, if there exists a white noise process <span class="math inline">\(\varepsilon_t \sim \mathsf{WN}(0, \sigma^2_\varepsilon)\)</span> and finite constants <span class="math inline">\(\theta_j\)</span> for <span class="math inline">\(j = 1, \ldots, q\)</span> with <span class="math inline">\(\theta_q \neq 0\)</span>, such that</p>
-<p><span class="math display">\[Y_t = \varepsilon_t + \theta_1\varepsilon_{t-1} + \cdots + \theta_q\varepsilon_{t-q}\]</span></p>
-<p>for <span class="math inline">\(t \in \mathbb{Z}\)</span>.</p>
-<p>The <span class="math inline">\(\mathsf{MA}(1)\)</span> example <span class="math inline">\(Y_t = \varepsilon_t + 0.5\varepsilon_{t-1}\)</span> exhibits serial correlation even though <span class="math inline">\(\varepsilon_t \sim \mathsf{WN}(0, \sigma^2_\varepsilon)\)</span>:</p>
-<p><span class="math display">\[\text{Cov}(Y_t, Y_{t-1}) = \text{Cov}(\varepsilon_t + 0.5\varepsilon_{t-1},\, \varepsilon_{t-1} + 0.5\varepsilon_{t-2}) = 0.5\sigma^2_\varepsilon.\]</span></p>
-<p>A completely new process has been created with very different dependence characteristics from <span class="math inline">\(\{\varepsilon_t\}\)</span> — just by linearly combining its elements.</p>
+<p><strong>Definition.</strong> A process <span class="math inline">\(\{Y_t\}\)</span> is called a moving average process of order <span class="math inline">\(q\)</span>, with shorthand <span class="math inline">\(Y_t \sim \mathsf{MA}(q)\)</span>, if there exists a white noise process <span class="math inline">\(\varepsilon_t \sim \mathsf{WN}\left(0, \sigma_\varepsilon^2\right)\)</span> and a set of finite constants <span class="math inline">\(\theta_j\)</span>, for <span class="math inline">\(j = 1, \ldots, q\)</span>, with <span class="math inline">\(\theta_q \neq 0\)</span>, such that <span class="math display">\[Y_t = \varepsilon_t + \theta_1\varepsilon_{t-1} + \cdots + \theta_q\varepsilon_{t-q},\]</span> for <span class="math inline">\(t \in \mathbb{Z}\)</span>. <span class="math inline">\(\qquad\square\)</span></p>
+<ul>
+<li><p>An example (which we already saw) is the simple <strong><span class="math inline">\(\mathsf{MA}(1)\)</span> process</strong> given by <span class="math display">\[Y_t = \varepsilon_t + 0.5\varepsilon_{t-1}\]</span> where it is clear that <span class="math inline">\(Y_t\)</span> is serially correlated, since <span class="math display">\[\text{Cov}(Y_t, Y_{t-1}) = \text{Cov}(\varepsilon_t + 0.5\varepsilon_{t-1}, \varepsilon_{t-1} + 0.5\varepsilon_{t-2}) = 0.5\sigma_\varepsilon^2,\]</span> even though <span class="math inline">\(\varepsilon_t \sim \mathsf{WN}\left(0, \sigma_\varepsilon^2\right)\)</span>.</p></li>
+<li><p>It is worth re-emphasising that we have created in <span class="math inline">\(\{Y_t\}\)</span> a completely new process that exhibits very different dependence characteristics from serially uncorrelated process <span class="math inline">\(\{\varepsilon_t\}\)</span> just by linearly combining elements of the latter.</p></li>
+</ul>
 </div>
 <div class="slide-footer">
-<p><span class="math inline">\(Y_t = \varepsilon_t + \theta_1\varepsilon_{t-1} + \cdots + \theta_q\varepsilon_{t-q}\)</span>; dependence introduced via lagged noise.</p>
+<p>A finite linear combination of current and past noise terms.</p>
 </div>
 </div>
-<p>Another way of introducing dynamics is by postulating a linear relationship between <span class="math inline">\(Y_t\)</span> and its own past values <span class="math inline">\(Y_{t-h}\)</span> for <span class="math inline">\(h &gt; 0\)</span>. These relationships are called <strong>autoregressions</strong>.</p>
+<p>Another way of introducing dynamics is by explicitly postulating a linear relationship between a random variable, <span class="math inline">\(Y_t\)</span>, and its past values, <span class="math inline">\(Y_{t-h}\)</span> for <span class="math inline">\(h &gt; 0\)</span>. These relationships are referred to as autoregressions.</p>
 <div class="slidebox">
-<p><span class="slide-label">What is an AR(<em>p</em>) process?</span></p>
+<p><span class="slide-label">What is an AR(p) process?</span></p>
 <div class="slide-body">
-<p><strong>Definition.</strong> A process <span class="math inline">\(\{Y_t\}\)</span> is called an <strong>autoregressive process of order <span class="math inline">\(p\)</span></strong>, written <span class="math inline">\(Y_t \sim \mathsf{AR}(p)\)</span>, if there exists a white noise process <span class="math inline">\(\varepsilon_t \sim \mathsf{WN}(0, \sigma^2_\varepsilon)\)</span> and finite constants <span class="math inline">\(\phi_j\)</span> for <span class="math inline">\(j = 1, \ldots, p\)</span> with <span class="math inline">\(\phi_p \neq 0\)</span>, such that</p>
-<p><span class="math display">\[Y_t = \phi_1 Y_{t-1} + \cdots + \phi_p Y_{t-p} + \varepsilon_t\]</span></p>
-<p>for <span class="math inline">\(t \in \mathbb{Z}\)</span>.</p>
-<p>An example is the <span class="math inline">\(\mathsf{AR}(1)\)</span> process:</p>
-<p><span class="math display">\[Y_t = \phi Y_{t-1} + \varepsilon_t, \quad 0 &lt; \phi &lt; 1,\]</span></p>
-<p>where the introduction of dynamics relative to the white noise case can be illustrated by checking the autocovariances, which we will do in detail soon.</p>
+<p><strong>Definition.</strong> A process <span class="math inline">\(\{Y_t\}\)</span> is called an autoregressive process of order <span class="math inline">\(p\)</span>, with shorthand <span class="math inline">\(Y_t \sim \mathsf{AR}(p)\)</span>, if there exists a white noise process <span class="math inline">\(\varepsilon_t \sim \mathsf{WN}\left(0, \sigma_\varepsilon^2\right)\)</span> and a set of finite constants <span class="math inline">\(\phi_j\)</span>, for <span class="math inline">\(j = 1, \ldots, p\)</span>, with <span class="math inline">\(\phi_p \neq 0\)</span>, such that <span class="math display">\[Y_t = \phi_1 Y_{t-1} + \cdots + \phi_p Y_{t-p} + \varepsilon_t,\]</span> for <span class="math inline">\(t \in \mathbb{Z}\)</span>. <span class="math inline">\(\qquad\square\)</span></p>
+<ul>
+<li>An example is the <strong><span class="math inline">\(\mathsf{AR}(1)\)</span> process</strong> given by <span class="math display">\[Y_t = \phi Y_{t-1} + \varepsilon_t, \qquad 0 &lt; \phi &lt; 1,\]</span> where the introduction of dynamics (relative to the <span class="math inline">\(\mathsf{WN}\)</span> case) can be illustrated by checking the autocovariances, which we will do in detail soon.</li>
+</ul>
 </div>
 <div class="slide-footer">
-<p><span class="math inline">\(Y_t = \phi_1 Y_{t-1} + \cdots + \phi_p Y_{t-p} + \varepsilon_t\)</span>; dependence via lagged values of the series itself.</p>
+<p>The present regressed on its own finite past, plus noise.</p>
 </div>
 </div>
 <div class="slidebox">
 <p><span class="slide-label">Are we really just linearly combining noise again…?</span></p>
 <div class="slide-body">
-<p>Yes — an AR(1) process can be expressed as a convergent linear combination of noise. By successive substitution:</p>
-<p><span class="math display">\[\begin{aligned}
-Y_t &amp;= \phi Y_{t-1} + \varepsilon_t \\
-    &amp;= \phi^2 Y_{t-2} + \phi\varepsilon_{t-1} + \varepsilon_t \\
-    &amp;= \phi^3 Y_{t-3} + \phi^2\varepsilon_{t-2} + \phi\varepsilon_{t-1} + \varepsilon_t \\
-    &amp;\;\;\vdots \\
-    &amp;= \phi^{h+1} Y_{t-h-1} + \sum_{k=0}^{h} \phi^k\varepsilon_{t-k}.
-\end{aligned}\]</span></p>
-<p>Letting <span class="math inline">\(h \to \infty\)</span> and using <span class="math inline">\(|\phi| &lt; 1\)</span>:</p>
-<p><span class="math display">\[Y_t = \sum_{k=0}^{\infty} \phi^k\varepsilon_{t-k}.\]</span></p>
-<p>This is called the <strong>MA(<span class="math inline">\(\infty\)</span>) representation</strong> of <span class="math inline">\(\{Y_t\}\)</span>.</p>
+<p>Understand that yet again we are <strong>filtering through noise</strong> in order to generate a complicated dynamic structure. To see this, try the following exercise:</p>
+<p><span class="math display">\[\begin{aligned} Y_t &amp;= \phi Y_{t-1} + \varepsilon_t \\ &amp;= \phi^2 Y_{t-2} + \phi\varepsilon_{t-1} + \varepsilon_t \quad \text{by lagging/substituting once,} \\ &amp;= \phi^3 Y_{t-3} + \phi^2\varepsilon_{t-2} + \phi\varepsilon_{t-1} + \varepsilon_t \quad \text{by lagging/substituting twice,} \\ &amp;= \ldots \\ &amp;= \phi^{h+1} Y_{t-h-1} + \sum_{k=0}^{h}\phi^k\varepsilon_{t-k} \quad \text{by lagging/substituting } h &gt; 2 \text{ times.} \end{aligned}\]</span></p>
+<p>Letting <span class="math inline">\(h \to \infty\)</span>, we observe (since <span class="math inline">\(|\phi| &lt; 1\)</span>) that <span class="math display">\[Y_t = \sum_{k=0}^{\infty}\phi^k\varepsilon_{t-k},\]</span> which tells us that <strong>the given <span class="math inline">\(\mathsf{AR}(1)\)</span> process can clearly be interpreted as a (convergent) linear combination of (an infinite number of) uncorrelated random variables</strong>.</p>
+<p>The expression above is called the <span class="math inline">\(\mathsf{MA}(\infty)\)</span> representation of <span class="math inline">\(\{Y_t\}\)</span>.</p>
 </div>
 <div class="slide-footer">
-<p>Yes — the AR(1) has an MA(<span class="math inline">\(\infty\)</span>) representation <span class="math inline">\(Y_t = \sum_{k=0}^{\infty}\phi^k\varepsilon_{t-k}\)</span>.</p>
+<p>Yes — an <span class="math inline">\(\mathsf{AR}(1)\)</span> unfolds into an <span class="math inline">\(\mathsf{MA}(\infty)\)</span>: a convergent infinite filter of noise.</p>
 </div>
 </div>
 <div class="slidebox">
 <p><span class="slide-label">What more intuition can we glean from the algebra?</span></p>
 <div class="slide-body">
-<p>Pay close attention to the MA(<span class="math inline">\(\infty\)</span>) representation of the AR(1) model, <span class="math inline">\(Y_t = \sum_{k=0}^{\infty}\phi^k\varepsilon_{t-k}\)</span> where <span class="math inline">\(0 &lt; \phi &lt; 1\)</span>:</p>
+<p>Pay very close attention to the <span class="math inline">\(\mathsf{MA}(\infty)\)</span> representation of our <span class="math inline">\(\mathsf{AR}(1)\)</span> model, <span class="math display">\[Y_t = \sum_{k=0}^{\infty}\phi^k\varepsilon_{t-k} \quad \text{where } 0 &lt; \phi &lt; 1,\]</span> as you read the bullets below:</p>
 <ul>
-<li><p>The current value <span class="math inline">\(Y_t\)</span> is an accumulation of an infinite stream of current and past noise elements <span class="math inline">\(\varepsilon_t, \varepsilon_{t-1}, \varepsilon_{t-2}, \ldots\)</span>, where the effects <span class="math inline">\(1, \phi, \phi^2, \ldots\)</span> of the distant past (high <span class="math inline">\(k\)</span>) are lower than those of the recent past (low <span class="math inline">\(k\)</span>).</p></li>
-<li><p>In the AR(1) model the present depends on the <strong>infinite past</strong> — very different from the MA(1) model. The effect of the past on the present is heavily dampened the further back in time we go: the coefficients decay at a <strong>geometrically declining rate</strong>.</p></li>
-<li><p>Geometric decay is the discrete equivalent of exponential decay, conventionally considered the benchmark for fast decay.</p></li>
+<li><p>The current value of our <span class="math inline">\(\mathsf{AR}(1)\)</span> series (“<span class="math inline">\(Y_t\)</span>”) is (“<span class="math inline">\(=\)</span>”) an accumulation of an infinite stream (“<span class="math inline">\(\sum_{k=0}^{\infty}\)</span>”) of current and past noise elements (“<span class="math inline">\(\varepsilon_t, \varepsilon_{t-1}, \varepsilon_{t-2}, \ldots\)</span>”) where the effects (coefficients “<span class="math inline">\(1, \phi, \phi^2, \ldots\)</span>”) of the distant past (high <span class="math inline">\(k\)</span>) are lower (since <span class="math inline">\(|\phi| &lt; 1\)</span>) than the effects of the recent past (low <span class="math inline">\(k\)</span>).</p></li>
+<li><p>In other words, in the <span class="math inline">\(\mathsf{AR}(1)\)</span> model, the present depends on the <em>infinite</em> past, which is <strong>very different to the <span class="math inline">\(\mathsf{MA}(1)\)</span></strong> model. Nevertheless, the effect of the past on the present is <em>heavily dampened</em> the further back in time we go. Indeed, the coefficients in the <span class="math inline">\(\mathsf{MA}(\infty)\)</span> representation of our <span class="math inline">\(\mathsf{AR}(1)\)</span> process decay at a geometrically declining rate.</p></li>
+<li><p>Try to appreciate the speed of dampening that is built into an <span class="math inline">\(\mathsf{AR}(1)\)</span> model. Recall that geometric decay is the discrete equivalent of exponential decay (which is conventionally considered to be quite the benchmark for fast decay).</p></li>
 </ul>
 </div>
 <div class="slide-footer">
-<p>The AR(1) depends on the infinite past, but with geometrically decaying weights.</p>
+<p>The <span class="math inline">\(\mathsf{AR}(1)\)</span> depends on the infinite past, but with geometrically decaying weights.</p>
 </div>
 </div>
 <hr>
@@ -399,53 +386,53 @@ Y_t &amp;= \phi Y_{t-1} + \varepsilon_t \\
 <section id="the-arma-framework" class="level2" data-number="3">
 <h2 data-number="3" class="anchored" data-anchor-id="the-arma-framework"><span class="header-section-number">3</span> The ARMA framework</h2>
 <div class="slidebox">
-<p><span class="slide-label">What is an ARMA(<em>p</em>, <em>q</em>) process?</span></p>
+<p><span class="slide-label">What is an ARMA(p, q) process?</span></p>
 <div class="slide-body">
-<p><strong>Definition.</strong> A process <span class="math inline">\(\{Y_t\}\)</span> is called an <strong>ARMA process of orders <span class="math inline">\(p\)</span> and <span class="math inline">\(q\)</span></strong>, written <span class="math inline">\(Y_t \sim \mathsf{ARMA}(p, q)\)</span>, if there exists a white noise process <span class="math inline">\(\varepsilon_t \sim \mathsf{WN}(0, \sigma^2_\varepsilon)\)</span>, finite constants <span class="math inline">\(\phi_j\)</span> for <span class="math inline">\(j = 1, \ldots, p\)</span> with <span class="math inline">\(\phi_p \neq 0\)</span>, and finite constants <span class="math inline">\(\theta_k\)</span> for <span class="math inline">\(k = 1, \ldots, q\)</span> with <span class="math inline">\(\theta_q \neq 0\)</span>, such that</p>
-<p><span class="math display">\[Y_t = \phi_1 Y_{t-1} + \cdots + \phi_p Y_{t-p} + \varepsilon_t + \theta_1\varepsilon_{t-1} + \cdots + \theta_q\varepsilon_{t-q}\]</span></p>
-<p>for <span class="math inline">\(t \in \mathbb{Z}\)</span>.</p>
-<p>Special cases: <span class="math inline">\(q = 0\)</span> gives <span class="math inline">\(\mathsf{AR}(p)\)</span>; <span class="math inline">\(p = 0\)</span> gives <span class="math inline">\(\mathsf{MA}(q)\)</span>; <span class="math inline">\(p = q = 0\)</span> gives white noise.</p>
+<p><strong>Definition.</strong> A process <span class="math inline">\(\{Y_t\}\)</span> is called an <span class="math inline">\(\mathsf{ARMA}\)</span> process of orders <span class="math inline">\(p\)</span> and <span class="math inline">\(q\)</span>, with shorthand <span class="math inline">\(Y_t \sim \mathsf{ARMA}(p, q)\)</span>, if there exists a white noise process <span class="math inline">\(\varepsilon_t \sim \mathsf{WN}\left(0, \sigma_\varepsilon^2\right)\)</span>, a set of finite constants <span class="math inline">\(\phi_j\)</span>, for <span class="math inline">\(j = 1, \ldots, p\)</span>, with <span class="math inline">\(\phi_p \neq 0\)</span>, and another set of finite constants <span class="math inline">\(\theta_k\)</span>, for <span class="math inline">\(k = 1, \ldots, q\)</span>, with <span class="math inline">\(\theta_q \neq 0\)</span>, such that <span class="math display">\[Y_t = \phi_1 Y_{t-1} + \cdots + \phi_p Y_{t-p} + \varepsilon_t + \theta_1\varepsilon_{t-1} + \cdots + \theta_q\varepsilon_{t-q},\]</span> for <span class="math inline">\(t \in \mathbb{Z}\)</span>. <span class="math inline">\(\qquad\square\)</span></p>
+<ul>
+<li><p>Examples are as follows: when <strong><span class="math inline">\(q = 0\)</span>, we have an <span class="math inline">\(\mathsf{AR}(p)\)</span> process</strong>, and when <strong><span class="math inline">\(p = 0\)</span>, we have an <span class="math inline">\(\mathsf{MA}(q)\)</span> process</strong>. When <strong><span class="math inline">\(p = q = 0\)</span>, we have noise</strong>.</p></li>
+<li><p>Let us express our modelling framework with more succinct lag polynomial notation. First, we must study what is the lag operator.</p></li>
+</ul>
 </div>
 <div class="slide-footer">
-<p>Combines AR and MA components; nests both as special cases.</p>
+<p>An autoregression plus a moving average; <span class="math inline">\(\mathsf{AR}\)</span>, <span class="math inline">\(\mathsf{MA}\)</span> and noise are special cases.</p>
 </div>
 </div>
 <div class="slidebox">
 <p><span class="slide-label">What is the lag operator? Also, what is the first-difference operator?</span></p>
 <div class="slide-body">
-<p>Given any time series <span class="math inline">\(\{Y_t\}_{t \in \mathbb{Z}}\)</span>, we define the <strong>lag operator</strong> <span class="math inline">\(L\)</span> by</p>
-<p><span class="math display">\[LY_t = Y_{t-1}\]</span></p>
-<p>and extend to powers <span class="math inline">\(L^k Y_t = Y_{t-k}\)</span> for <span class="math inline">\(k = 0, \pm1, \pm2, \ldots\)</span>. When <span class="math inline">\(k &lt; 0\)</span> we refer to it as a <em>lead</em> rather than a lag.</p>
-<p>We define the <strong>first-difference operator</strong> <span class="math inline">\(\Delta := (1 - L)\)</span>. It works as expected:</p>
-<p><span class="math display">\[\Delta^2 Y_t = (1 - L)^2 Y_t = (1 - 2L + L^2)Y_t = Y_t - 2Y_{t-1} + Y_{t-2} = \Delta(\Delta Y_t).\]</span></p>
+<ul>
+<li><p>Given any time series, <span class="math inline">\(\{Y_t\}_{t \in \mathbb{Z}}\)</span>, we <strong>define the lag operator <span class="math inline">\(L\)</span></strong> by <span class="math display">\[LY_t = Y_{t-1}\]</span> and extend the definition to powers <span class="math display">\[L^2 Y_t = L(LY_t) = LY_{t-1} = Y_{t-2},\]</span> and so on. Thus, <span class="math display">\[L^k Y_t = Y_{t-k}\]</span> for <span class="math inline">\(k = 0, \pm 1, \pm 2, \ldots\)</span>.</p></li>
+<li><p>Note that when <span class="math inline">\(k &lt; 0\)</span>, we refer to it as a “<strong>lead</strong>” rather than a lag.</p></li>
+<li><p>We <strong>define the first-difference operator, <span class="math inline">\(\Delta\)</span>, by <span class="math inline">\(\Delta := (1 - L)\)</span></strong> and it works as expected. For example, <span class="math display">\[\begin{aligned} \Delta^2 Y_t &amp;= (1 - L)^2 Y_t = (1 - 2L + L^2)Y_t = Y_t - 2Y_{t-1} + Y_{t-2} = \Delta Y_t - \Delta Y_{t-1} \\ &amp;= \Delta(\Delta Y_t) \end{aligned}\]</span></p></li>
+</ul>
 </div>
 <div class="slide-footer">
-<p><span class="math inline">\(LY_t = Y_{t-1}\)</span> and <span class="math inline">\(L^k Y_t = Y_{t-k}\)</span>; <span class="math inline">\(\Delta = 1 - L\)</span>.</p>
+<p><span class="math inline">\(L\)</span> shifts the series back one period; <span class="math inline">\(\Delta := (1 - L)\)</span> takes first differences.</p>
 </div>
 </div>
 <div class="slidebox">
 <p><span class="slide-label">What are lag polynomials?</span></p>
 <div class="slide-body">
-<p>Define the <strong>AR lag polynomial</strong> of order <span class="math inline">\(p\)</span>:</p>
-<p><span class="math display">\[\Phi(L) = 1 - \phi_1 L - \phi_2 L^2 - \cdots - \phi_p L^p\]</span></p>
-<p>and the <strong>MA lag polynomial</strong> of order <span class="math inline">\(q\)</span>:</p>
-<p><span class="math display">\[\Theta(L) = 1 + \theta_1 L + \theta_2 L^2 + \cdots + \theta_q L^q.\]</span></p>
-<p>The order <span class="math inline">\(p\)</span> is the highest power of <span class="math inline">\(L\)</span> appearing in <span class="math inline">\(\Phi(L)\)</span> with a non-zero coefficient; the order <span class="math inline">\(q\)</span> is defined analogously for <span class="math inline">\(\Theta(L)\)</span>.</p>
+<ul>
+<li><p>Define the <strong><span class="math inline">\(\mathsf{AR}\)</span> lag polynomial</strong> of order <span class="math inline">\(p\)</span> to be <span class="math display">\[\Phi(L) = 1 - \phi_1 L - \phi_2 L^2 - \ldots - \phi_p L^p\]</span> and the <strong><span class="math inline">\(\mathsf{MA}\)</span> lag polynomial</strong> of order <span class="math inline">\(q\)</span> to be <span class="math display">\[\Theta(L) = 1 + \theta_1 L + \theta_2 L^2 + \ldots + \theta_q L^q.\]</span></p></li>
+<li><p>The <strong>order</strong> <span class="math inline">\(p\)</span> is thus the highest power with which the lag operator appears in the <span class="math inline">\(\mathsf{AR}\)</span> lag polynomial with a non-zero coefficient. The order <span class="math inline">\(q\)</span> is defined analogously on the basis of the <span class="math inline">\(\mathsf{MA}\)</span> lag polynomial.</p></li>
+</ul>
 </div>
 <div class="slide-footer">
-<p><span class="math inline">\(\Phi(L) = 1 - \phi_1 L - \cdots - \phi_p L^p\)</span> and <span class="math inline">\(\Theta(L) = 1 + \theta_1 L + \cdots + \theta_q L^q\)</span>.</p>
+<p>Polynomials in <span class="math inline">\(L\)</span> that package the <span class="math inline">\(\mathsf{AR}\)</span> and <span class="math inline">\(\mathsf{MA}\)</span> coefficients.</p>
 </div>
 </div>
 <div class="slidebox">
-<p><span class="slide-label">How can we express the ARMA(<em>p</em>, <em>q</em>) model using <span class="math inline">\(L\)</span> notation?</span></p>
+<p><span class="slide-label">How can we express the ARMA(p, q) model using L notation?</span></p>
 <div class="slide-body">
-<p>The ARMA(<span class="math inline">\(p\)</span>, <span class="math inline">\(q\)</span>) process can be written compactly as</p>
-<p><span class="math display">\[\Phi(L)Y_t = \Theta(L)\varepsilon_t\]</span></p>
-<p>where <span class="math inline">\(\varepsilon_t \sim \mathsf{WN}(0, \sigma^2_\varepsilon)\)</span> and <span class="math inline">\(\Phi(\cdot)\)</span>, <span class="math inline">\(\Theta(\cdot)\)</span> are as defined above.</p>
-<p>As an example, the AR(1) process <span class="math inline">\(Y_t = \phi Y_{t-1} + \varepsilon_t\)</span> corresponds to <span class="math inline">\(\Phi(L) = 1 - \phi L\)</span> and <span class="math inline">\(\Theta(L) = 1\)</span>.</p>
+<ul>
+<li><p>The <span class="math inline">\(\mathsf{ARMA}(p, q)\)</span> process <span class="math inline">\(\{Y_t\}\)</span> can be expressed simply as <span class="math display">\[\Phi(L) Y_t = \Theta(L)\varepsilon_t\]</span> where <span class="math inline">\(\varepsilon_t \sim \mathsf{WN}\left(0, \sigma_\varepsilon^2\right)\)</span> and polynomials <span class="math inline">\(\Phi(\cdot)\)</span> and <span class="math inline">\(\Theta(\cdot)\)</span> are as defined previously. Now is that not a lot more concise?!</p></li>
+<li><p>As an example, consider again the <span class="math inline">\(\mathsf{AR}(1)\)</span> process <span class="math display">\[Y_t = \phi Y_{t-1} + \varepsilon_t,\]</span> which can be written using the above notation with <span class="math inline">\(\Phi(L) = 1 - \phi L\)</span> and <span class="math inline">\(\Theta(L) = 1\)</span>.</p></li>
+</ul>
 </div>
 <div class="slide-footer">
-<p><span class="math inline">\(\Phi(L)Y_t = \Theta(L)\varepsilon_t\)</span>; a single compact expression for the entire ARMA family.</p>
+<p><span class="math inline">\(\Phi(L) Y_t = \Theta(L)\varepsilon_t\)</span> — the whole framework in one line.</p>
 </div>
 </div>
 <div class="callout callout-style-default callout-note callout-titled">
@@ -458,7 +445,7 @@ Y_t &amp;= \phi Y_{t-1} + \varepsilon_t \\
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>We often work with lag polynomials as standard mathematical functions. For instance, to find the root of the AR polynomial we solve <span class="math inline">\(\Phi(z) = 1 - \phi z = 0\)</span> for <span class="math inline">\(z \in \mathbb{C}\)</span>. Note that when doing this we switch the argument to an arbitrary <span class="math inline">\(z \in \mathbb{C}\)</span> — it would be incorrect to write <span class="math inline">\(\Phi(L) = 0 \iff L = 1/\phi\)</span> because <span class="math inline">\(L\)</span> is an operator, not a complex number.</p>
+<p>We often will work with these polynomials in the lag operator as though they are standard mathematical functions — i.e.&nbsp;outside the realm of time series analysis. For instance, we may want to mechanically find the root of the <span class="math inline">\(\mathsf{AR}\)</span> polynomial in the previous example, that is to solve for <span class="math inline">\(\Phi(z) = 1 - \phi z = 0\)</span> where <span class="math inline">\(z \in \mathbb{C}\)</span>. Notice, when we do this, that we switch the argument to considering some arbitrary <span class="math inline">\(z \in \mathbb{C}\)</span>. The reason is that it would be silly, for instance, to say something like <span class="math display">\[\text{“}\Phi(L) = 0 \iff L = 1/\phi\text{”}\]</span> because <span class="math inline">\(L\)</span> is a lag operator, not a complex number. <span class="math inline">\(\qquad\square\)</span></p>
 </div>
 </div>
 <hr>
@@ -466,29 +453,17 @@ Y_t &amp;= \phi Y_{t-1} + \varepsilon_t \\
 <section id="review-questions" class="level2" data-number="4">
 <h2 data-number="4" class="anchored" data-anchor-id="review-questions"><span class="header-section-number">4</span> Review questions</h2>
 <ol type="1">
-<li><p>What are the formal definitions of AR, MA and ARMA models? Ensure to frame each answer in terms of the <span class="math inline">\(L\)</span> operator. Further, give the definition of the order of a polynomial.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p></li>
-<li><p>Consider the process <span class="math inline">\((1 - 0.5L)Y_t = \varepsilon_t\)</span> where <span class="math inline">\(\varepsilon_t\)</span> is white noise. Mr Tick Whittington insists that <span class="math inline">\(\{Y_t\}\)</span> is <span class="math inline">\(\mathsf{AR}(1)\)</span>, but his brother Tock insists that <span class="math inline">\(\{Y_t\}\)</span> is <span class="math inline">\(\mathsf{MA}(\infty)\)</span>. Who is correct?</p></li>
+<li><p>What are the formal definitions of <span class="math inline">\(\mathsf{AR}\)</span>, <span class="math inline">\(\mathsf{MA}\)</span> and <span class="math inline">\(\mathsf{ARMA}\)</span> models? Ensure to frame each of your answers in terms of the <span class="math inline">\(L\)</span> operator. Further, give the definition of the order of a polynomial.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p></li>
+<li><p>Consider the process given by <span class="math display">\[(1 - 0.5L)Y_t = \varepsilon_t\]</span> where <span class="math inline">\(\varepsilon_t\)</span> is our usual noise. Mr Tick Whittington insists that <span class="math inline">\(\{Y_t\}\)</span> is <span class="math inline">\(\mathsf{AR}(1)\)</span>, but his brother, Tock, insists that <span class="math inline">\(\{Y_t\}\)</span> is <span class="math inline">\(\mathsf{MA}(\infty)\)</span>. Who is correct? Tick…? Tock…?</p></li>
 </ol>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Note on solutions
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Separate solutions will not be provided — answers can be found in these notes. Use these questions to consolidate knowledge and as discussion prompts when studying with others.</p>
-</div>
-</div>
 <hr>
 </section>
 <section id="further-reading" class="level2" data-number="5">
 <h2 data-number="5" class="anchored" data-anchor-id="further-reading"><span class="header-section-number">5</span> Further reading</h2>
 <ul>
-<li><strong>Main textbook</strong> — Shumway and Stoffer, <em>Time Series Analysis and Its Applications with R Examples</em> (<strong>SS</strong>). For Topic 2, see SS Chapters 1.1–1.2 (there is overlap with Topic 1 in the reading).</li>
+<li>There is overlap with Topic 1 in the reading. See <strong>SS (Chapter 1.1–1.2)</strong> also for Topic 2.</li>
 </ul>
+<hr>
 
 
 </section>
@@ -497,8 +472,8 @@ Y_t &amp;= \phi Y_{t-1} + \varepsilon_t \\
 <div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
 
 <ol>
-<li id="fn1"><p>Although we plot data in this fashion, note that (i) we will not study continuous time series models in this course (though they comprise an entire field in financial modelling, e.g.&nbsp;option pricing and high-frequency trading); and (ii) we will not get into issues surrounding the selection of the sampling rate when discretising a continuous time series, even though these issues can be extremely important.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>Yes, I do expect my students to memorise all definitions. It is important to do so for your learning in this field.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1"><p>Although we plot data in this fashion, note that (i) we will NOT study continuous time series models in this course (nevertheless, do be aware that they comprise an entire field of study in financial modelling — e.g.&nbsp;for use in option pricing and/or high-frequency trading); and (ii) we will NOT get into issues surrounding selection of the sampling rate when discretising a continuous time series even though these issues can be extremely important.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Yes, I do expect my students to memorise all definitions. (It is important to do so for your learning in this field.)<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

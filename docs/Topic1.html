@@ -158,8 +158,9 @@ window.Quarto = {
   <li><a href="#basic-concepts" id="toc-basic-concepts" class="nav-link" data-scroll-target="#basic-concepts"><span class="header-section-number">2</span> Basic concepts</a></li>
   <li><a href="#variance-covariance-and-correlation" id="toc-variance-covariance-and-correlation" class="nav-link" data-scroll-target="#variance-covariance-and-correlation"><span class="header-section-number">3</span> Variance, covariance, and correlation</a></li>
   <li><a href="#a-stark-message" id="toc-a-stark-message" class="nav-link" data-scroll-target="#a-stark-message"><span class="header-section-number">4</span> A stark message</a></li>
-  <li><a href="#review-questions" id="toc-review-questions" class="nav-link" data-scroll-target="#review-questions"><span class="header-section-number">5</span> Review questions</a></li>
-  <li><a href="#further-reading" id="toc-further-reading" class="nav-link" data-scroll-target="#further-reading"><span class="header-section-number">6</span> Further reading</a></li>
+  <li><a href="#closing-remarks" id="toc-closing-remarks" class="nav-link" data-scroll-target="#closing-remarks"><span class="header-section-number">5</span> Closing remarks</a></li>
+  <li><a href="#review-questions" id="toc-review-questions" class="nav-link" data-scroll-target="#review-questions"><span class="header-section-number">6</span> Review questions</a></li>
+  <li><a href="#further-reading" id="toc-further-reading" class="nav-link" data-scroll-target="#further-reading"><span class="header-section-number">7</span> Further reading</a></li>
   </ul>
 <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="Topic1.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
 </nav>
@@ -636,40 +637,43 @@ shinyApp(ui, server)</code></pre>
 <div class="slidebox">
 <p><span class="slide-label">What is the sample mean?</span></p>
 <div class="slide-body">
-<p>Recall the humble yet ubiquitous sample mean <span class="math inline">\(\bar{Y}_N\)</span>:</p>
-<p><span class="math display">\[\bar{Y}_N = \frac{1}{N}\sum_{i=1}^{N} Y_i\]</span></p>
-<p>The subscript <span class="math inline">\(N\)</span> appears explicitly to emphasise the dependence of the sample mean on sample size.</p>
-<p>Why do we turn so often to this statistic? The answer is <strong>Chebyshev’s LLN</strong>: <span class="math inline">\(\bar{Y}_N\)</span> converges in probability to <span class="math inline">\(\mathsf{E}(Y)\)</span> as <span class="math inline">\(N \to \infty\)</span>. Under suitable conditions, a sample moment is a consistent estimator of its population counterpart.</p>
-<p>The sample mean appears embedded throughout econometric estimation. For OLS in <span class="math inline">\(Y_t = \alpha + \beta X_t + \varepsilon_t\)</span>:</p>
-<p><span class="math display">\[\hat{\alpha}_{\scriptscriptstyle OLS} = \bar{Y}_T - \hat{\beta}_{\scriptscriptstyle OLS}\bar{X}_T, \qquad \hat{\beta}_{\scriptscriptstyle OLS} = \frac{\frac{1}{T}\sum_{t=1}^{T}(X_t - \bar{X}_T)(Y_t - \bar{Y}_T)}{\frac{1}{T}\sum_{t=1}^{T}(X_t - \bar{X}_T)^2}\]</span></p>
+<ul>
+<li><p>Recall one of the most <strong>widely-used</strong> tools in a statistician’s toolkit, <span class="math inline">\(\bar{Y}_N\)</span>, the humble yet ubiquitous <strong>sample mean</strong> defined as <span class="math display">\[\bar{Y}_N = \frac{1}{N}\sum_{i=1}^{N} Y_i,\]</span> where <span class="math inline">\(\{Y_i\}_{i=1}^{N}\)</span> denotes a set of random variables.</p></li>
+<li><p>Notice that <span class="math inline">\(N\)</span> appears explicitly as a subscript in the notation for <span class="math inline">\(\bar{Y}_N\)</span> in order to explicitly emphasise the <strong>dependence of the sample mean on the sample size</strong>.</p></li>
+</ul>
 </div>
 <div class="slide-footer">
 <p><span class="math inline">\((1/N)\sum Y_i\)</span>; the most widely-used statistic in econometrics.</p>
 </div>
 </div>
+<ul>
+<li><p>Just take a moment to appreciate how widespread in your education, and in your private and professional lives generally, has been the concept of a sample mean.</p></li>
+<li><p>It was so long ago that I cannot remember the first time I was taught to add up a set of observations and divide by their total number; and I cannot even begin to count how many times I have used this operation to get a sense of central tendency (or location) of the data-generating process behind my sample (even if I have not always used those words to describe what I was doing)!</p></li>
+<li><p>Have you ever wondered why we all turn so often to this statistic specifically? As opposed to say a sample mode, or a sample median, or a trimmed mean, or even just an arbitrary single observation?</p></li>
+<li><p>The simple answer, whether you have been taught this or not, is Chebyshev’s LLN. In other words, it is because the sample mean, <span class="math inline">\(\bar{Y}_N\)</span>, converges (in probability) to the population mean, <span class="math inline">\(\mathsf{E}(Y)\)</span>, as <span class="math inline">\(N \to \infty\)</span>. In other words, under suitable conditions, a sample moment is a consistent estimator of its population counterpart. We will study Chebyshev’s LLN in a lot of detail in the slides below.</p></li>
+<li><p>For now, we briefly contemplate the ubiquity of the sample mean. In addition to all the applications that you can undoubtedly think of yourself, let us also consider the OLS estimator for a simple linear regression model. That is, suppose <span class="math display">\[Y_t = \alpha + \beta X_t + \varepsilon_t,\]</span> and our sample is such that <span class="math inline">\(\sum_{t=1}^{T} (X_t - \bar{X}_T)^2 &gt; 0\)</span>, for <span class="math inline">\(t = 1,\ldots,T\)</span>. The OLS estimators are <span class="math display">\[(\hat{\alpha}_{\scriptscriptstyle OLS}, \hat{\beta}_{\scriptscriptstyle OLS})' = \arg\min_{a,b} \sum_{t=1}^{T}\left(Y_t - a - bX_t\right)^2,\]</span> whereby we obtain via calculus the first order conditions: <span class="math display">\[\begin{aligned} \sum_{t=1}^{T}(Y_t - \hat{\alpha}_{\scriptscriptstyle OLS} - \hat{\beta}_{\scriptscriptstyle OLS}X_t) &amp;= 0 \\ \sum_{t=1}^{T} X_t(Y_t - \hat{\alpha}_{\scriptscriptstyle OLS} - \hat{\beta}_{\scriptscriptstyle OLS}X_t) &amp;= 0. \end{aligned}\]</span> Solving the two equations above for our two unknowns, we obtain <span class="math display">\[\begin{aligned} \hat{\alpha}_{\scriptscriptstyle OLS} &amp;= \bar{Y}_T - \hat{\beta}_{\scriptscriptstyle OLS}\bar{X}_T, \text{ where} \\ \hat{\beta}_{\scriptscriptstyle OLS} &amp;= \frac{\frac{1}{T}\sum_{t=1}^{T}(X_t - \bar{X}_T)(Y_t - \bar{Y}_T)}{\frac{1}{T}\sum_{t=1}^{T}(X_t - \bar{X}_T)^2}. \end{aligned}\]</span> Technically, one would also need to check second order conditions for minimisation, but that is not our current focus. Rather, our goal is to take a moment instead to appreciate how the sample mean appears repeatedly embedded throughout the OLS (and also other estimation) procedure(s).</p></li>
+</ul>
 <div class="slidebox">
-<p><span class="slide-label">Why is the sample mean ubiquitous? Chebyshev’s LLN</span></p>
+<p><span class="slide-label">Why is the sample mean ubiquitous?</span></p>
 <div class="slide-body">
-<p>The generic <span class="math inline">\(F_Y\)</span> notation denotes deliberate agnosticism about the distribution — the result holds for any distribution with finite variance.</p>
-<p><strong>Theorem — Chebyshev’s LLN.</strong> <span class="math display">\[\text{Suppose } Y_t \overset{\scriptscriptstyle\text{iid}}{\sim} F_Y(\mu_Y, \sigma_Y^2) \text{ for } t = 1,\ldots,T \text{ where } 0 &lt; \sigma_Y^2 &lt; \infty. \text{ Then } \operatorname*{plim}_{T\to\infty}\bar{Y}_T = \mu_Y.\]</span></p>
-<p>Estimator <span class="math inline">\(\hat{\theta}_T\)</span> <strong>converges in probability</strong> to <span class="math inline">\(\theta\)</span> if and only if for any <span class="math inline">\(e &gt; 0\)</span>:</p>
-<p><span class="math display">\[\lim_{T\to\infty} \Pr\!\left(|\hat{\theta}_T - \theta| &gt; e\right) = 0.\]</span></p>
-<p>We write <span class="math inline">\(\hat{\theta}_T \overset{p}{\to} \theta\)</span> and say <span class="math inline">\(\hat{\theta}_T\)</span> is <strong>consistent</strong> for <span class="math inline">\(\theta\)</span>. Convergence in mean-square implies convergence in probability via Chebyshev’s inequality:</p>
-<p><span class="math display">\[\lim_{T\to\infty} \text{MSE}(\hat{\theta}_T) = \lim_{T\to\infty}\left[\text{Var}(\hat{\theta}_T) + \text{Bias}^2(\hat{\theta}_T)\right] = 0 \implies \hat{\theta}_T \overset{p}{\to} \theta.\]</span></p>
+<p><strong>Theorem — Chebyshev’s LLN.</strong> Suppose <span class="math inline">\(Y_t \overset{\scriptscriptstyle\text{iid}}{\sim} F_Y(\mu_Y, \sigma_Y^2)\)</span> for <span class="math inline">\(t = 1,\ldots,T\)</span> where <span class="math inline">\(0 &lt; \sigma_Y^2 &lt; \infty\)</span>. Then, it holds that <span class="math display">\[\operatorname*{plim}_{T\to\infty}\bar{Y}_T = \mu_Y.\]</span></p>
+<p><em>Proof.</em> [See next slide.] <span class="math inline">\(\qquad\square\)</span></p>
+<ul>
+<li><p>The generic “<span class="math inline">\(F_Y\)</span>” notation denotes deliberate agnosticism about the distribution.</p></li>
+<li><p>The result is one of convergence in probability of <span class="math inline">\(\bar{Y}_T\)</span> to <span class="math inline">\(\mu_Y\)</span>. What does it mean? Estimator <span class="math inline">\(\hat{\theta}_T\)</span> is said to converge in probability to parameter <span class="math inline">\(\theta\)</span> if and only if there exists an arbitrarily small <span class="math inline">\(e &gt; 0\)</span> such that <span class="math display">\[\lim_{T\to\infty} \Pr\!\left(\left|\hat{\theta}_T - \theta\right| &gt; e\right) = 0.\]</span> We alternatively say that <span class="math inline">\(\hat{\theta}_T \overset{p}{\to} \theta\)</span> as <span class="math inline">\(T \to \infty\)</span>, or that <span class="math inline">\(\hat{\theta}_T\)</span> is <strong>consistent</strong> for <span class="math inline">\(\theta\)</span>.</p></li>
+</ul>
 </div>
 <div class="slide-footer">
-<p>If <span class="math inline">\(\text{MSE}(\hat\theta_T) \to 0\)</span> then <span class="math inline">\(\hat\theta_T \overset{p}{\to} \theta\)</span>; the sample mean achieves this because <span class="math inline">\(\text{Var}(\bar{Y}_T) = \sigma^2_Y / T \to 0\)</span>.</p>
+<p>A sample moment converges in probability to its population counterpart — this is why the sample mean is ubiquitous.</p>
 </div>
 </div>
+<p>Note, before proceeding, that convergence in mean-square, as defined by <span class="math display">\[\lim_{T\to\infty} \text{MSE}(\hat{\theta}_T) = \lim_{T\to\infty}\left(\text{Var}(\hat{\theta}_T) + \text{Bias}^2(\hat{\theta}_T)\right) = 0 \text{ given an arbitrary estimator } \hat{\theta}_T,\]</span> implies convergence in probability due to Chebyshev’s inequality (see next slide).</p>
 <div class="slidebox">
 <p><span class="slide-label">What is the mechanism behind Chebyshev’s LLN?</span></p>
 <div class="slide-body">
-<p>Consider <span class="math inline">\(\bar{Y}_T = (1/T)\sum_{t=1}^{T} Y_t\)</span>. By linearity of expectations:</p>
-<p><span class="math display">\[\mathsf{E}(\bar{Y}_T) = \frac{1}{T}\sum_{t=1}^{T}\mathsf{E}(Y_t) = \frac{T\mu_Y}{T} = \mu_Y,\]</span></p>
-<p>so <span class="math inline">\(\bar{Y}_T\)</span> is unbiased for <span class="math inline">\(\mu_Y\)</span>. For the variance, using independence then identical distributions:</p>
-<p><span class="math display">\[\text{Var}(\bar{Y}_T) = \frac{1}{T^2}\sum_{t=1}^{T}\sum_{s=1}^{T}\text{Cov}(Y_t, Y_s) = \frac{1}{T^2}\sum_{t=1}^{T}\text{Cov}(Y_t, Y_t) = \frac{\sigma_Y^2}{T}.\]</span></p>
-<p>It follows that <span class="math inline">\(\lim_{T\to\infty}\text{MSE}(\bar{Y}_T) = \lim_{T\to\infty}\sigma_Y^2/T = 0\)</span>. By Chebyshev’s inequality, for any <span class="math inline">\(e &gt; 0\)</span>:</p>
-<p><span class="math display">\[\lim_{T\to\infty}\Pr\!\left(|\bar{Y}_T - \mu_Y| &gt; e\right) \leq \frac{\sigma_Y^2}{Te^2} = 0 \qquad \square\]</span></p>
+<p><strong>Theorem — Chebyshev’s LLN.</strong> Suppose <span class="math inline">\(Y_t \overset{\scriptscriptstyle\text{iid}}{\sim} F_Y(\mu_Y, \sigma_Y^2)\)</span> for <span class="math inline">\(t = 1,\ldots,T\)</span> where <span class="math inline">\(0 &lt; \sigma_Y^2 &lt; \infty\)</span>. Then, it holds that <span class="math display">\[\operatorname*{plim}_{T\to\infty}\bar{Y}_T = \mu_Y.\]</span></p>
+<p><em>Proof.</em> Consider <span class="math inline">\(\bar{Y}_T = (1/T)\sum_{t=1}^{T} Y_t\)</span>. We have, by linearity of expectations, that <span class="math display">\[\mathsf{E}(\bar{Y}_T) = \mathsf{E}\!\left(\frac{1}{T}\sum_{t=1}^{T} Y_t\right) = \frac{1}{T}\sum_{t=1}^{T}\mathsf{E}(Y_t) = \frac{T\mu_Y}{T} = \mu_Y,\]</span> so the estimator <span class="math inline">\(\bar{Y}_T\)</span> is unbiased for <span class="math inline">\(\mu_Y\)</span>. Further, <span class="math display">\[\begin{aligned} \text{Var}(\bar{Y}_T) &amp;= \text{Var}\!\left(\frac{1}{T}\sum_{t=1}^{T} Y_t\right) \\ &amp;= \frac{1}{T^2}\sum_{t=1}^{T}\sum_{s=1}^{T}\text{Cov}(Y_t, Y_s) \\ &amp;= \frac{1}{T^2}\sum_{t=1}^{T}\text{Cov}(Y_t, Y_t) \text{ due to independence,} \\ &amp;= \frac{T}{T^2}\text{Var}(Y_t) \text{ due to identical distributions,} \\ &amp;= \frac{\sigma_Y^2}{T}. \end{aligned}\]</span> It follows (recall what is mean-square error, or “MSE”, of an estimator) that <span class="math display">\[\lim_{T\to\infty}\text{MSE}(\bar{Y}_T) = \lim_{T\to\infty}\frac{\sigma_Y^2}{T} = 0\]</span> since <span class="math inline">\(\sigma_Y^2\)</span> is finite. By Chebyshev’s inequality, we obtain that for any <span class="math inline">\(e &gt; 0\)</span>, <span class="math display">\[\Pr\!\left(\left|\bar{Y}_T - \mu_Y\right| &gt; e\right) \leq \frac{\sigma_Y^2}{Te^2},\]</span> which, together with convergence in <span class="math inline">\(m.s.\)</span>, completes the proof. <span class="math inline">\(\qquad\square\)</span></p>
+<p>(Please work on PS1, Q2 if you cannot understand these two final steps.)</p>
 </div>
 <div class="slide-footer">
 <p>Unbiasedness plus <span class="math inline">\(\text{Var}(\bar{Y}_T) = \sigma^2_Y/T \to 0\)</span> gives convergence in m.s., hence in probability.</p>
@@ -678,65 +682,104 @@ shinyApp(ui, server)</code></pre>
 <div class="slidebox">
 <p><span class="slide-label">Why might Chebyshev’s LLN fail for time series?</span></p>
 <div class="slide-body">
-<p>Under independence the double-sum variance collapses:</p>
-<p><span class="math display">\[\text{Var}(\bar{Y}_T) = \frac{1}{T^2}\sum_{t=1}^{T}\sum_{s=1}^{T}\text{Cov}(Y_t, Y_s) = \frac{1}{T^2}\sum_{t=1}^{T}\text{Var}(Y_t).\]</span></p>
-<p>The denominator is <span class="math inline">\(O(T^2)\)</span> and the numerator is <span class="math inline">\(O(T)\)</span> — so <span class="math inline">\(\text{Var}(\bar{Y}_T) = O(1/T)\)</span>. But if we allow for an arbitrarily high degree of temporal correlation, the cross terms no longer vanish. The numerator is no longer <span class="math inline">\(O(T)\)</span>, and our crucial consistency result risks falling to pieces.</p>
+<p>Notice that we had <span class="math display">\[\begin{aligned} \text{Var}(\bar{Y}_T) &amp;= \frac{1}{T^2}\sum_{t=1}^{T}\sum_{s=1}^{T}\text{Cov}(Y_t, Y_s) \\ &amp;= \frac{1}{T^2}\sum_{t=1}^{T}\text{Var}(Y_t) \text{ under independence.} \end{aligned}\]</span></p>
+<ul>
+<li><p>The key point is that when we consider <span class="math inline">\(\text{Var}(\bar{Y}_T)\)</span>, the denominator is <span class="math inline">\(O(T^2)\)</span> but the numerator is <span class="math inline">\(O(T)\)</span> due to our explicit assumption that <span class="math inline">\(\text{Cov}(Y_t, Y_s) = 0\)</span> for <span class="math inline">\(t \neq s\)</span>. So <span class="math inline">\(\text{Var}(\bar{Y}_T)\)</span> is <span class="math inline">\(O(1/T)\)</span>. (See supporting notes below this slide for what is <span class="math inline">\(O(\cdot)\)</span> notation if you have not seen it before.)</p></li>
+<li><p>But what happens if we allow for an arbitrarily high degree of temporal correlation? Indeed, as you can see now, <strong>our crucial consistency result risks falling to pieces!</strong></p></li>
+<li><p>We will return to the discussion above when we investigate the ergodic theorem.</p></li>
+</ul>
 </div>
 <div class="slide-footer">
 <p>Temporal dependence inflates <span class="math inline">\(\text{Var}(\bar{Y}_T)\)</span>; the numerator is no longer <span class="math inline">\(O(T)\)</span> and the LLN can fail.</p>
 </div>
 </div>
+<p>What is <span class="math inline">\(O(\cdot)\)</span> notation in the slide above?</p>
+<ul>
+<li>Often, it is useful to have a measure of the order of magnitude of a particular sequence. The following definition compares the behaviour of a sequence <span class="math inline">\(\{b_T\}\)</span> with the behaviour of a power of <span class="math inline">\(T\)</span>, say <span class="math inline">\(T^\alpha\)</span>, where <span class="math inline">\(\alpha\)</span> is chosen so that <span class="math inline">\(\{b_T\}\)</span> and <span class="math inline">\(\{T^\alpha\}\)</span> behave similarly.</li>
+</ul>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Big-O notation
+<span class="screen-reader-only">Note</span>Definition — Big-O notation
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>The sequence <span class="math inline">\(\{b_T\}\)</span> is said to be <strong>at most of order</strong> <span class="math inline">\(T^\alpha\)</span>, written <span class="math inline">\(b_T = O(T^\alpha)\)</span>, if there exists a finite constant <span class="math inline">\(C &gt; 0\)</span> and integer <span class="math inline">\(T^*\)</span> such that for all <span class="math inline">\(T \geq T^*\)</span>, <span class="math inline">\(|T^{-\alpha}b_T| \leq C\)</span>.</p>
+<p>The sequence <span class="math inline">\(\{b_T\}\)</span> is said to be <strong>at most of order</strong> <span class="math inline">\(T^\alpha\)</span>, denoted <span class="math inline">\(b_T = O(T^\alpha)\)</span>, if for a finite constant <span class="math inline">\(C &gt; 0\)</span>, there exists a finite integer <span class="math inline">\(T^*\)</span> such that for all <span class="math inline">\(T \geq T^*\)</span>, <span class="math inline">\(|T^{-\alpha}b_T| \leq C\)</span>. <span class="math inline">\(\qquad\square\)</span></p>
 </div>
-</div>
-<div class="insight">
-<p><span class="insight-label">The stark message</span> <span class="insight-text">The sample mean — the most widely used statistic in all of econometrics — can fail to converge when observations are temporally dependent. This is why time series analysis requires its own toolkit.</span></p>
-</div>
-<div class="closing">
-<p>Dependence is not merely an inconvenience — it strikes at the heart of statistical inference. We will return to this when we study the ergodic theorem.</p>
 </div>
 <hr>
 </section>
-<section id="review-questions" class="level2" data-number="5">
-<h2 data-number="5" class="anchored" data-anchor-id="review-questions"><span class="header-section-number">5</span> Review questions</h2>
+<section id="closing-remarks" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="closing-remarks"><span class="header-section-number">5</span> Closing remarks</h2>
+<div class="slidebox">
+<p><span class="slide-label">Big picture questions</span></p>
+<div class="slide-body">
+<ol type="i">
+<li><p>What is time series analysis?</p></li>
+<li><p>Why do we hate time series analysis?</p></li>
+<li><p>Why do we love time series analysis?</p></li>
+<li><p>How do we think like time series analysts?</p></li>
+<li><p>What is some practical advice for students of time series analysis?</p></li>
+</ol>
+</div>
+</div>
+<div class="slidebox">
+<p><span class="slide-label">Regular-sized picture questions</span></p>
+<div class="slide-body">
+<ol type="i">
+<li><p>How are the tutorials going to be structured?</p></li>
+<li><p>When are the office hours for this term?</p></li>
+<li><p>What is the assessment criteria for this module?</p></li>
+<li><p>Is there anything else you would like to ask?</p></li>
+</ol>
+</div>
+</div>
+<div class="slidebox">
+<p><span class="slide-label">Personal comment from Ragvir</span></p>
+<div class="slide-body">
+<ul>
+<li><p>Finally, all, I really hope you enjoy the course. I plan not only to teach you time series but also to demonstrate throughout <em>how to think</em> like a time series analyst.</p></li>
+<li><p>Time series analysis is necessarily hard (for reasons I will explain) but it is an amazing field that has applications well beyond the spheres of economics and finance. This includes seismology, space travel, submarine detection, medical diagnosis, speech recognition, meteorology, and so on.</p></li>
+<li><p>If you have never studied it before, you may find these weeks to be a little intense. Please seek assistance from your class teacher(s) and/or myself when needed.</p></li>
+</ul>
+</div>
+</div>
+<hr>
+</section>
+<section id="review-questions" class="level2" data-number="6">
+<h2 data-number="6" class="anchored" data-anchor-id="review-questions"><span class="header-section-number">6</span> Review questions</h2>
 <ol type="1">
 <li><p>Explain formally what is a random variable, a stochastic process, a time series, and what is meant by the analysis of time series.</p></li>
-<li><p>Explain what is a population moment; what is the population variance of a random variable; and what are the covariance and correlation between two random variables.</p></li>
-<li><p>State Chebyshev’s LLN for an iid process. Prove it. Give an intuitive explanation of how and why it works. Explain its empirical relevance.</p></li>
-<li><p>Explain with explicit reference to <span class="math inline">\(\text{Var}(\bar{Y}_T)\)</span> why the LLN can potentially fail for time series data.</p></li>
+<li><p>Explain what is a population moment and what is the population variance of a random variable, and what is the covariance and/or correlation between two random variables.</p></li>
+<li><p>State Chebyshev’s law of large numbers (“the LLN”) for an <span class="math inline">\(iid\)</span> process. Prove the LLN. Give an intuitive explanation of how/why the LLN works. Explain what is the empirical relevance of the LLN.</p></li>
+<li><p>Explain with explicit reference to <span class="math inline">\(\text{Var}(\bar{Y}_T)\)</span> why the LLN can potentially fail when we consider time series data.</p></li>
 </ol>
+<p><em>Separate solutions will <strong>not</strong> be provided (answers can be found in the lecture notes). I encourage you to use my topic review questions both to help consolidate your knowledge and as discussion prompts when you study with each other and/or you wish to interact with your teacher(s).</em></p>
+<hr>
+</section>
+<section id="further-reading" class="level2" data-number="7">
+<h2 data-number="7" class="anchored" data-anchor-id="further-reading"><span class="header-section-number">7</span> Further reading</h2>
+<ul>
+<li><p>For fundamentals, I can suggest Appendix B and Appendix C from Wooldridge’s <em>Introductory Econometrics</em>. (In case it helps, I would say you can actually just pick any decent undergraduate statistics textbook of your choice.)</p></li>
+<li><p>I do not have any specific reading to assign for the stark message section because this section represents my own personal arrangement of the information. (In case it helps, I can suggest you review concepts such as Chebyshev’s inequality, Chebyshev’s LLN, orders of magnitude, convergence in mean-square, and convergence in probability in any decent undergraduate statistics textbook of your choice.)</p></li>
+<li><p>In general, the main textbook for this course will be Shumway and Stoffer, <em>Time Series Analysis and Its Applications with R Examples</em>, to which I will hereafter refer as “SS”. For Topic 1, you can try <strong>SS (Chapter 1.1–1.2)</strong>; but please note that the information in the stark message section is not directly from SS.</p></li>
+</ul>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Note on solutions
+<span class="screen-reader-only">Note</span>Useful textbook
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Separate solutions will not be provided — answers can be found in these notes. Use these questions to consolidate knowledge and as discussion prompts when studying with others.</p>
+<p>Given the level of detail in these lecture slides and supporting notes, I do not deem it ‘compulsory’ that you consult the textbook. My <strong>course is self-contained</strong>. Nevertheless, if (i) you wish to read further on a particular topic (e.g.&nbsp;if my exposition was perhaps insufficient); and/or (ii) you simply develop a love for the subject and want to pursue advanced studies in time series analysis, then SS is a great resource.</p>
 </div>
 </div>
-<hr>
-</section>
-<section id="further-reading" class="level2" data-number="6">
-<h2 data-number="6" class="anchored" data-anchor-id="further-reading"><span class="header-section-number">6</span> Further reading</h2>
-<ul>
-<li><strong>Statistical fundamentals</strong> — Appendix B and C of Wooldridge, <em>Introductory Econometrics</em>, or any solid undergraduate statistics textbook.</li>
-<li><strong>Main textbook</strong> — Shumway and Stoffer, <em>Time Series Analysis and Its Applications with R Examples</em> (<strong>SS</strong>). For Topic 1, see SS Chapters 1.1–1.2.</li>
-<li>The material in the stark message section is not directly from SS — it represents a specific arrangement of ideas for this course.</li>
-</ul>
 <hr>
 
 
