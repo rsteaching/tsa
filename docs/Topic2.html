@@ -238,7 +238,7 @@ window.Quarto = {
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="sample_globaltemp.png" class="img-fluid figure-img"></p>
-<figcaption>Yearly average global temperature deviations (1880–2015) in degrees centigrade.</figcaption>
+<figcaption>Data from the <code>astsa</code> package (Shumway &amp; Stoffer).</figcaption>
 </figure>
 </div>
 <ul>
@@ -246,27 +246,26 @@ window.Quarto = {
 <li><p>To formally characterise data that seemingly fluctuate in random fashion over time, statisticians assume that any real-life sample considered is obtained as a realisation of a collection of random variables (i.e.&nbsp;a stochastic process) indexed according to the order they are obtained in time.</p></li>
 <li><p>For example, we may consider as a time series the sequence of random variables, <span class="math inline">\(Y_1, Y_2, Y_3, \ldots\)</span>, where <span class="math inline">\(Y_1\)</span> denotes the value taken by the series at the first time point, the variable <span class="math inline">\(Y_2\)</span> denotes the value for the second time point, and so on. The stochastic process is denoted <span class="math inline">\(\{Y_t\}\)</span>. Note that in all our lectures, <span class="math inline">\(t\)</span> will be discrete and vary over the integers, <span class="math inline">\(t = 0, \pm 1, \pm 2, \ldots\)</span>, or some subset of the integers, such as <span class="math inline">\(t = 1, \ldots, T\)</span>. It will also be assumed that our observations are spaced equally.</p></li>
 <li><p>The next step is to <strong>understand how to specify a (parametric) statistical model that suitably characterises the inter-temporal dependence structure</strong> between the random variables within the (presumably stable) stochastic process. These are the models we will study shortly. (We will subsequently also explore the key ideas behind model selection and parameter estimation.)</p></li>
-<li><p>On the next page, we briefly contemplate the visual patterns that arise in a few more examples of time series data (chosen by me for reasons that will become clearer in future weeks). In case you are interested, the contextual details about these graphs are in <strong>SS (Chapter 1.1)</strong>.</p></li>
+<li><p>Below, we briefly contemplate the visual patterns that arise in a few more examples of real time series data (chosen for reasons that will become clearer in future weeks). As you look at them, focus on the raw patterns of movement in each case rather than the underlying context.</p></li>
 </ul>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="sample_speech.png" class="img-fluid figure-img"></p>
-<figcaption>Speech recording of the syllable aaa···hhh sampled at 10,000 points per second with n = 1020 points.</figcaption>
+<figcaption>Data from the <code>astsa</code> package (Shumway &amp; Stoffer).</figcaption>
 </figure>
 </div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="sample_disaster.png" class="img-fluid figure-img"></p>
-<figcaption>Arrival phases from an earthquake (top) and explosion (bottom) at 40 points per second.</figcaption>
+<figcaption>Data from the <code>astsa</code> package (Shumway &amp; Stoffer).</figcaption>
 </figure>
 </div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="sample_fmri.png" class="img-fluid figure-img"></p>
-<figcaption>fMRI data from various locations in the cortex, thalamus, and cerebellum; n = 128 points, one observation taken every 2 seconds.</figcaption>
+<figcaption>Each panel overlays the BOLD traces at several locations; the step function is the periodic experimental stimulus. Data from the <code>astsa</code> package (Shumway &amp; Stoffer).</figcaption>
 </figure>
 </div>
-<p><img src="mountain.jpeg" class="img-fluid"></p>
 <hr>
 </section>
 <section id="building-blocks-of-the-arma-framework" class="level2" data-number="2">
@@ -318,14 +317,26 @@ window.Quarto = {
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="sample_wnma.png" class="img-fluid figure-img"></p>
-<figcaption>Gaussian white noise series (top) and three-point moving average of the Gaussian white noise series (bottom).</figcaption>
+<figcaption>Both panels share a vertical scale, so the variance reduction from smoothing is visible directly. Simulated, following Shumway &amp; Stoffer.</figcaption>
 </figure>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> w <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="dv">500</span>,<span class="dv">0</span>,<span class="dv">1</span>) <span class="co"># creates realisations of 500 iid N(0,1) RVs</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> v <span class="ot">=</span> <span class="fu">filter</span>(w, <span class="at">sides=</span><span class="dv">2</span>, <span class="at">filter=</span><span class="fu">rep</span>(<span class="dv">1</span><span class="sc">/</span><span class="dv">3</span>,<span class="dv">3</span>)) <span class="co"># creates a moving average</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">1</span>)) <span class="co"># specifies a 2 by 1 panel layout for graphs</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">plot.ts</span>(w, <span class="at">main=</span><span class="st">"white noise"</span>)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">plot.ts</span>(v, <span class="at">ylim=</span><span class="fu">c</span>(<span class="sc">-</span><span class="dv">3</span>,<span class="dv">3</span>), <span class="at">main=</span><span class="st">"moving average"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>R code
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>w <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="dv">500</span>,<span class="dv">0</span>,<span class="dv">1</span>) <span class="co"># creates realisations of 500 iid N(0,1) RVs</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>v <span class="ot">=</span> <span class="fu">filter</span>(w, <span class="at">sides=</span><span class="dv">2</span>, <span class="at">filter=</span><span class="fu">rep</span>(<span class="dv">1</span><span class="sc">/</span><span class="dv">3</span>,<span class="dv">3</span>)) <span class="co"># creates a moving average</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">1</span>)) <span class="co"># specifies a 2 by 1 panel layout for graphs</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot.ts</span>(w, <span class="at">main=</span><span class="st">"white noise"</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot.ts</span>(v, <span class="at">ylim=</span><span class="fu">c</span>(<span class="sc">-</span><span class="dv">3</span>,<span class="dv">3</span>), <span class="at">main=</span><span class="st">"moving average"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
 <p>Consider, as a different example of a moving average, <span class="math inline">\(Y_t = \varepsilon_t + 0.5\varepsilon_{t-1}\)</span>. We have the following schematic to help describe this one-sided smoothing operation:</p>
 <p><span class="math display">\[\begin{aligned} \underset{Y_2}{\underbrace{0.5\,\varepsilon_1 \quad \varepsilon_2}} \quad \varepsilon_3 \quad \varepsilon_4 \quad \varepsilon_5 \\ \varepsilon_1 \quad \underset{Y_3}{\underbrace{0.5\,\varepsilon_2 \quad \varepsilon_3}} \quad \varepsilon_4 \quad \varepsilon_5 \\ \varepsilon_1 \quad \varepsilon_2 \quad \underset{Y_4}{\underbrace{0.5\,\varepsilon_3 \quad \varepsilon_4}} \quad \varepsilon_5 \\ \varepsilon_1 \quad \varepsilon_2 \quad \varepsilon_3 \quad \underset{Y_5}{\underbrace{0.5\,\varepsilon_4 \quad \varepsilon_5}} \end{aligned}\]</span></p>
 <p>This example brings us now to the definition of <span class="math inline">\(\mathsf{MA}(q)\)</span> processes.</p>

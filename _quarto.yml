@@ -17,7 +17,6 @@ website:
   page-footer:
     center: "Copyright © 2026 Ragvir Sabharwal. All rights reserved."
 
-bibliography: references.bib
 
 format:
   html:
@@ -47,11 +46,17 @@ format:
           });
         });
         </script>
+  pdf:
+    fig-pos: 'H'
+    include-in-header:
+      text: |
+        \usepackage{float}
+        \usepackage{placeins}
+        \raggedbottom
 
 engine: knitr
 
 filters:
   - shinylive
-  - slidebox.lua
 
 editor: source

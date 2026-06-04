@@ -176,15 +176,15 @@ These are examples of processes with and without serial correlation, respectivel
 
 library(shiny)
 
-NAVY   <- "#0D1B2A"
-AMBER  <- "#C8762A"
-BG     <- "#FAFAF8"
-BG2    <- "#F5F0E8"
+## house style (matches the tsplot look used for the Topic 2 figures)
+BLUE   <- "#2297E6"   # tsplot col = 4
 INK    <- "#2C2420"
-GRAPH  <- "#8A7A68"
-STONE  <- "#B0A494"
-RULE   <- "#E0D8CC"
-BORDER <- "#D8CEBC"
+AXIS   <- "#666666"
+GRIDC  <- "#E0E0E0"   # light-gray gridlines
+ZERO   <- "#BBBBBB"
+BG     <- "#FFFFFF"   # white background
+PANEL  <- "#F7F7F7"
+BORDER <- "#DDDDDD"
 
 ui <- fluidPage(
 
@@ -192,9 +192,9 @@ ui <- fluidPage(
     body, .shiny-frame { background:", BG, "; color:", INK, "; }
 
     .ctrl-panel {
-      background:", BG2, ";
+      background:", PANEL, ";
       border: 0.5px solid ", BORDER, ";
-      border-top: 3px solid ", AMBER, ";
+      border-top: 3px solid ", BLUE, ";
       border-radius: 4px;
       padding: 1.1rem 1.2rem;
       margin-top: 0.5rem;
@@ -203,29 +203,17 @@ ui <- fluidPage(
       font-family: 'Courier New', monospace;
       font-size: 0.85rem;
       letter-spacing: 0.15em;
-      color: ", STONE, ";
+      color: ", AXIS, ";
       margin-bottom: 0.15rem;
       display: block;
     }
-    .gamma-val {
-      font-family: 'Courier New', monospace;
-      font-size: 0.82rem;
-      color: ", AMBER, ";
-      margin-top: -0.3rem;
-      margin-bottom: 0.6rem;
-    }
-    .ctrl-divider {
-      border: none;
-      border-top: 0.5px solid ", RULE, ";
-      margin: 0.75rem 0;
-    }
-    .irs--shiny .irs-bar { background:", NAVY, "; border-color:", NAVY, "; }
-    .irs--shiny .irs-handle { border-color:", AMBER, "; }
-    .irs--shiny .irs-single { background:", NAVY, "; }
+    .irs--shiny .irs-bar { background:", BLUE, "; border-color:", BLUE, "; }
+    .irs--shiny .irs-handle { border-color:", BLUE, "; }
+    .irs--shiny .irs-single { background:", BLUE, "; }
     .irs--shiny .irs-from,
-    .irs--shiny .irs-to   { background:", NAVY, "; }
-    .irs--shiny .irs-grid-pol { background:", RULE, "; }
-    .irs--shiny .irs-line { background:", RULE, "; border-color:", RULE, "; }
+    .irs--shiny .irs-to   { background:", BLUE, "; }
+    .irs--shiny .irs-grid-pol { background:", GRIDC, "; }
+    .irs--shiny .irs-line { background:", GRIDC, "; border-color:", GRIDC, "; }
     label.control-label { display: none; }
   ")))),
 
@@ -271,18 +259,28 @@ server <- function(input, output, session) {
   base_par <- function() {
     par(
       bg        = BG,
-      col.axis  = GRAPH,
+      col.axis  = AXIS,
       col.lab   = INK,
-      col.main  = NAVY,
+      col.main  = INK,
       family    = "serif",
       mar       = c(3, 3.8, 2.2, 0.8),
       mgp       = c(2.2, 0.5, 0),
-      tcl       = -0.25,
+      tcl       = -0.3,
       cex.axis  = 0.75,
       cex.lab   = 0.82,
       cex.main  = 0.88,
       font.main = 1
     )
+  }
+
+  # draw a tsplot-style panel: white bg, gridlines, full box frame, blue line
+  ts_panel <- function(x, y, ylim, main, xlab, ylab, xaxt = "s") {
+    plot(x, y, type = "n", ylim = ylim, main = main,
+         xlab = xlab, ylab = ylab, bty = "n", xaxt = xaxt)
+    grid(nx = NULL, ny = NULL, col = GRIDC, lty = 1, lwd = 0.6)
+    abline(h = 0, col = ZERO, lwd = 0.8)
+    box(col = AXIS, lwd = 0.8)                 # full frame, tsplot-style
+    lines(x, y, col = BLUE, lwd = 1.3)
   }
 
   ylims <- reactive({
@@ -295,13 +293,10 @@ server <- function(input, output, session) {
   output$upper_plot <- renderPlot({
     s <- series()
     base_par()
-    plot(s$t, s$iid,
-         type = "l", lwd = 1.0, col = NAVY,
-         ylim = ylims(),
-         main = expression(paste("iid  ", N(0,1), "  noise")),
-         xlab = "", ylab = expression(Y[t]),
-         bty = "l", xaxt = "n")
-    abline(h = 0, col = RULE, lwd = 0.9)
+    ts_panel(s$t, s$iid,
+             ylim = ylims(),
+             main = expression(paste("iid  ", N(0,1), "  noise")),
+             xlab = "", ylab = expression(Y[t]), xaxt = "n")
   },
   bg = BG,
   width  = function() { w <- session$clientData$output_upper_plot_width;  if (is.null(w) || w < 1) 700 else w },
@@ -311,16 +306,13 @@ server <- function(input, output, session) {
     s     <- series()
     theta <- input$theta
     base_par()
-    plot(s$t, s$ma1,
-         type = "l", lwd = 1.2, col = AMBER,
-         ylim = ylims(),
-         main = bquote(
-           MA(1): ~ Y[t] == epsilon[t] + .(theta) ~ epsilon[t-1] ~
-           "    " ~ gamma(1) == .(theta)
-         ),
-         xlab = expression(t), ylab = expression(Y[t]),
-         bty = "l")
-    abline(h = 0, col = RULE, lwd = 0.9)
+    ts_panel(s$t, s$ma1,
+             ylim = ylims(),
+             main = bquote(
+               MA(1): ~ Y[t] == epsilon[t] + .(theta) ~ epsilon[t-1] ~
+               "    " ~ gamma(1) == .(theta)
+             ),
+             xlab = expression(t), ylab = expression(Y[t]))
   },
   bg = BG,
   width  = function() { w <- session$clientData$output_lower_plot_width;  if (is.null(w) || w < 1) 700 else w },
