@@ -13,3 +13,5 @@ These notes are designed to accompany the lectures and provide a self-contained 
 |-------|---------------------------------------------------|
 | 1     | [Introducing Time Series Analysis](Topic1.html)   |
 | 2     | [Introducing ARMA(p, q) models](Topic2.html)      |
+| 3     | [Measuring dependence](Topic3.html)               |
+| 4     | [Defining stationarity](Topic4.html)              |

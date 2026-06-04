@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Measuring dependence – Econometrics</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-4b3ae02ca3d2c990793b4a58c5ee5acf.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-a919569a148bfb4ab4525c1c8d5e9063.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="floating nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Econometrics</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./Topic1.html"> 
+<span class="menu-text">Topic 1</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./Topic2.html"> 
+<span class="menu-text">Topic 2</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="./Topic3.html" aria-current="page"> 
+<span class="menu-text">Topic 3</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./Topic4.html"> 
+<span class="menu-text">Topic 4</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="https://profiles.imperial.ac.uk/r.sabharwal23"> 
+<span class="menu-text"><span class="navbar-brand-name">Dr Ragvir Sabharwal</span><span class="navbar-brand-institution">Imperial Business School</span></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="99">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul class="collapse">
+  <li><a href="#characterising-a-time-series" id="toc-characterising-a-time-series" class="nav-link active" data-scroll-target="#characterising-a-time-series"><span class="header-section-number">1</span> Characterising a time series</a></li>
+  <li><a href="#autocovariance-and-autocorrelation-functions" id="toc-autocovariance-and-autocorrelation-functions" class="nav-link" data-scroll-target="#autocovariance-and-autocorrelation-functions"><span class="header-section-number">2</span> Autocovariance and autocorrelation functions</a></li>
+  <li><a href="#an-empirical-example-heathrow-temperatures" id="toc-an-empirical-example-heathrow-temperatures" class="nav-link" data-scroll-target="#an-empirical-example-heathrow-temperatures"><span class="header-section-number">3</span> An empirical example: Heathrow temperatures</a></li>
+  <li><a href="#instability-and-the-need-for-stationarity" id="toc-instability-and-the-need-for-stationarity" class="nav-link" data-scroll-target="#instability-and-the-need-for-stationarity"><span class="header-section-number">4</span> Instability and the need for stationarity</a></li>
+  <li><a href="#review-questions" id="toc-review-questions" class="nav-link" data-scroll-target="#review-questions"><span class="header-section-number">5</span> Review questions</a></li>
+  <li><a href="#further-reading" id="toc-further-reading" class="nav-link" data-scroll-target="#further-reading"><span class="header-section-number">6</span> Further reading</a></li>
+  </ul>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="Topic3.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Measuring dependence</h1>
+<p class="subtitle lead">Topic 3</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<!-- git add . && git commit -m "update" && git push  -->
+<p><span class="kicker">Goals</span></p>
+<ul>
+<li>To introduce autocovariance (ACVF) and autocorrelation functions (ACF).</li>
+</ul>
+<p><span class="kicker">Key Equation</span></p>
+<p><span class="math display">\[\gamma_Y(t,s)=\text{Cov}\left(Y_t, Y_s\right)=\mathsf{E}\!\left[\left(Y_t-\mathsf{E}(Y_t)\right)\left(Y_s-\mathsf{E}(Y_s)\right)\right] \quad \text{for } t,s \in \mathbb{Z}\]</span></p>
+<hr>
+<section id="characterising-a-time-series" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="characterising-a-time-series"><span class="header-section-number">1</span> Characterising a time series</h2>
+<div class="slidebox">
+<p><span class="slide-label">How should we characterise a time series? The entire joint CDF?</span></p>
+<div class="slide-body">
+<ul>
+<li><p>Recall we said that a time series is just a specific type of stochastic process, which is itself just a collection of random variables.</p></li>
+<li><p>As is usual in statistics, a complete description of a set of random variables, <span class="math inline">\(\{Y_1, Y_2, \ldots, Y_T\}\)</span>, would be given by their joint CDF, <span class="math display">\[\Pr(Y_{t_1} \leq c_1, Y_{t_2} \leq c_2, \ldots, Y_{t_T} \leq c_T),\]</span> for any <span class="math inline">\(T \in \mathbb{N}\)</span> and arbitrary periods <span class="math inline">\(t_1, t_2, \ldots, t_T\)</span>, whereas more economical descriptions can be had in terms of the first and second order moments alone.</p></li>
+</ul>
+</div>
+<div class="slide-footer">
+<p>The joint CDF describes a time series completely.</p>
+</div>
+</div>
+<div class="slidebox">
+<p><span class="slide-label">Or only the second-order structure?</span></p>
+<div class="slide-body">
+<ul>
+<li><p>Although the joint CDF describes a time series completely (i.e.&nbsp;since it contains joint, conditional, as well as marginal information), it is an unwieldy tool for analysis. (For instance, the joint CDF must be evaluated as a function of <span class="math inline">\(T\)</span> arguments, so any plotting of the corresponding joint PDF is virtually impossible.)</p></li>
+<li><p>Further, the joint CDF cannot usually be worked out with ease unless the random variables are jointly normal, say <span class="math inline">\(\mathbf{Y} \sim \mathcal{N}(\mu, \Sigma)\)</span>, in which case the joint density has the form (which you do not need to memorise): <span class="math display">\[f_{\mathbf{Y}}(\mathbf{y}) = (2\pi)^{-\frac{n}{2}}|\Sigma|^{-\frac{1}{2}}\exp\!\left(-\frac{1}{2}(\mathbf{y}-\mu)'\Sigma^{-1}(\mathbf{y}-\mu)\right),\]</span> for <span class="math inline">\(\mathbf{Y} := (Y_1, \ldots, Y_T)' \in \mathbb{R}^T\)</span>. (It is also called the Gaussian distribution.)</p></li>
+<li><p>Since <em>linear</em> dependence is an essential feature of most (at least introductory-level) time series analysis, the most useful descriptive measures are <strong>autocovariance and autocorrelation functions</strong>. We look at these next.</p></li>
+</ul>
+</div>
+<div class="slide-footer">
+<p>The second-order structure is the economical, workable description we will use.</p>
+</div>
+</div>
+<p>It is worth appreciating explicitly at this point that dependence can be linear or non-linear in nature. Consider, for example, <span class="math inline">\(y^{lin}_t = t + \varepsilon_t\)</span> where <span class="math inline">\(\varepsilon_t \overset{\scriptscriptstyle\text{iid}}{\sim} \mathcal{N}(0,1)\)</span> for <span class="math inline">\(t = 1, \ldots, T\)</span>. Also consider another example given by <span class="math inline">\(y^{quad}_t = t^2 + \varepsilon_t\)</span> where definitions (of <span class="math inline">\(t\)</span> and <span class="math inline">\(\varepsilon_t\)</span>) are as above. Below, we plot single sample paths from each of these two processes to illustrate how a <strong>correlation coefficient only captures linear dependence characteristics</strong>.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="sample_lindep.png" class="img-fluid figure-img"></p>
+<figcaption>An example of linear association (left, <span class="math inline">\(y^{lin}_t = t + \varepsilon_t\)</span>) and of non-linear association (right, <span class="math inline">\(y^{quad}_t = t^2 + \varepsilon_t\)</span>). Both are strongly dependent on <span class="math inline">\(t\)</span>, yet the sample correlation with <span class="math inline">\(t\)</span> is close to <span class="math inline">\(1\)</span> on the left and close to <span class="math inline">\(0\)</span> on the right. Simulated, following the source R below.</figcaption>
+</figure>
+</div>
+<p>What is the key message of the graphs? First, notice that both <span class="math inline">\(y^{lin}_t\)</span> and <span class="math inline">\(y^{quad}_t\)</span> are highly dependent on <span class="math inline">\(t\)</span>. However, the former exhibits linear dependence on <span class="math inline">\(t\)</span>, whereas the latter exhibits quadratic dependence on <span class="math inline">\(t\)</span>. The strength of dependence (while not directly comparable) can be thought of, loosely speaking, as similar in both cases; that is, since the error variance is identical. Nevertheless, the <strong>sample correlation coefficient between <span class="math inline">\(y^{lin}_t\)</span> and <span class="math inline">\(t\)</span> is close to <span class="math inline">\(1\)</span>, whereas between <span class="math inline">\(y^{quad}_t\)</span> and <span class="math inline">\(t\)</span> is close to <span class="math inline">\(0\)</span></strong>. This simple example reveals that the sample correlation coefficient is a statistic that is utterly unable to capture non-linear dependence characteristics (unlike, for example, copulas). But this is ok since our focus on covariances/correlations will already take us a long way forward in our journey through the subject.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>R code
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(<span class="at">list =</span> <span class="fu">ls</span>())                                  <span class="co"># clears global environment</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123456</span>)                                 <span class="co"># allows replicability</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>t <span class="ot">=</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>, <span class="at">by =</span> .<span class="dv">05</span>)                          <span class="co"># generates t</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>eps <span class="ot">&lt;-</span> <span class="fu">ts</span>(<span class="fu">rnorm</span>(<span class="fu">length</span>(t), <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> .<span class="dv">05</span>))   <span class="co"># simulates white noise</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>ylin  <span class="ot">&lt;-</span> t <span class="sc">+</span> eps                                  <span class="co"># generates ylin</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>yquad <span class="ot">&lt;-</span> t<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> eps                                <span class="co"># generates yquad</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">cor</span>(ylin, t))                               <span class="co"># sample correlation between ylin_t and t</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">cor</span>(yquad, t))                              <span class="co"># sample correlation between yquad_t and t</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="at">mai =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, .<span class="dv">5</span>, .<span class="dv">5</span>))        <span class="co"># invokes a panel layout for graphs</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(t, ylin,  <span class="at">main =</span> <span class="st">"An example of linear association"</span>,</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"t </span><span class="sc">\n</span><span class="st"> (sample_corr. = 0.9961)"</span>,  <span class="at">ylab =</span> <span class="st">"ylin"</span>,</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">1.5</span>, <span class="fl">1.5</span>), <span class="at">pch =</span> <span class="dv">20</span>)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(t, yquad, <span class="at">main =</span> <span class="st">"An example of non-linear association"</span>,</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"t </span><span class="sc">\n</span><span class="st">(sample_corr. = -0.0560)"</span>, <span class="at">ylab =</span> <span class="st">"yquad"</span>,</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="sc">-</span>.<span class="dv">5</span>, <span class="fl">1.5</span>),  <span class="at">pch =</span> <span class="dv">20</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="autocovariance-and-autocorrelation-functions" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="autocovariance-and-autocorrelation-functions"><span class="header-section-number">2</span> Autocovariance and autocorrelation functions</h2>
+<div class="slidebox">
+<p><span class="slide-label">What is an autocovariance function (ACVF)?</span></p>
+<div class="slide-body">
+<p><strong>Definition.</strong> Suppose that random variables in <span class="math inline">\(\{Y_t\}\)</span> are all characterised by finite variances. Then, the autocovariance function of process <span class="math inline">\(\{Y_t\}\)</span> is defined as <span class="math display">\[\gamma_Y(s, t) = \text{Cov}\left(Y_s, Y_t\right) = \mathsf{E}\!\left[\left(Y_s - \mathsf{E}(Y_s)\right)\left(Y_t - \mathsf{E}(Y_t)\right)\right]\]</span> for all <span class="math inline">\(s, t \in \mathbb{Z}\)</span>. <span class="math inline">\(\qquad\square\)</span></p>
+<ul>
+<li><p>We can drop the subscript <span class="math inline">\(Y\)</span> and just write <span class="math inline">\(\gamma(s, t)\)</span> when there is no ambiguity about which time series we are referring to.</p></li>
+<li><p>The mean function (which must exist if the autocovariance function exists) is defined as <span class="math display">\[\mu_t := \mathsf{E}(Y_t) = \int_{-\infty}^{\infty} y\, f_{Y_t}(y)\, \mathsf{d}y,\]</span> where <span class="math inline">\(f_{Y_t}(y)\)</span> represents the marginal PDF of <span class="math inline">\(Y_t\)</span> evaluated at <span class="math inline">\(y \in \mathbb{R}\)</span>.</p></li>
+<li><p>The smoother the series, the larger is the value of <span class="math inline">\(\gamma(s, t)\)</span> even for <span class="math inline">\(s\)</span> and <span class="math inline">\(t\)</span> far apart. On the other hand, choppy series tend to have values of <span class="math inline">\(\gamma(s, t)\)</span> that are nearly zero beyond low/moderate values of <span class="math inline">\(|s-t|\)</span> (at least in economics). Note that this is not a perfect measure of dependence. For instance, when <span class="math inline">\(\gamma(s, t) = 0\)</span>, the variables <span class="math inline">\(Y_s\)</span> and <span class="math inline">\(Y_t\)</span> are not linearly related, but may still be dependent in a non-linear way.</p></li>
+<li><p>For exactly the same reasons as in classical statistics, we will also define a scale-free measure of the strength of linear association. (See next slide.)</p></li>
+</ul>
+</div>
+<div class="slide-footer">
+<p>The autocovariance function summarises the linear dependence between <span class="math inline">\(Y_s\)</span> and <span class="math inline">\(Y_t\)</span>.</p>
+</div>
+</div>
+<div class="slidebox">
+<p><span class="slide-label">What is an autocorrelation function (ACF)?</span></p>
+<div class="slide-body">
+<p><strong>Definition.</strong> Suppose that random variables in <span class="math inline">\(\{Y_t\}\)</span> are all characterised by finite variances. Then, the autocorrelation function of process <span class="math inline">\(\{Y_t\}\)</span> is defined as <span class="math display">\[\rho(s, t) = \frac{\gamma(s, t)}{\sqrt{\gamma(s, s)\,\gamma(t, t)}}\]</span> for all <span class="math inline">\(s, t \in \mathbb{Z}\)</span>. <span class="math inline">\(\qquad\square\)</span></p>
+<ul>
+<li>Note that autocorrelations only take values within the <span class="math inline">\([-1, 1]\)</span> interval; and that the autocorrelation at lag <span class="math inline">\(0\)</span> is necessarily <span class="math inline">\(1\)</span>.</li>
+</ul>
+</div>
+<div class="slide-footer">
+<p>The scale-free counterpart of the autocovariance, bounded in <span class="math inline">\([-1, 1]\)</span>.</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="an-empirical-example-heathrow-temperatures" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="an-empirical-example-heathrow-temperatures"><span class="header-section-number">3</span> An empirical example: Heathrow temperatures</h2>
+<p>I will leave it to you to generate and examine plots of population autocovariances and autocorrelations associated with simple time series models (e.g.&nbsp;in the problem sets). For now, instead, I will illustrate the use of these measures by means of a real-life empirical example.</p>
+<p>Consider the following example of (the monthly average of the) maximum temperatures recorded at Heathrow between 1948 and 2026.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="heath1.png" class="img-fluid figure-img"></p>
+<figcaption>Heathrow monthly mean daily maximum temperature, 1948–2026. Data: UK Met Office historic station data (Open Government Licence); replotted.</figcaption>
+</figure>
+</div>
+<p>The series looks broadly stable over the long term (perhaps rising slightly towards the end…?) and it clearly exhibits oscillations throughout. Nevertheless, it is hard to say much more than that. Let us see how we can uncover more features about the dynamics of this series by considering relationships between the value of the series at a point, say <span class="math inline">\(Y_t\)</span>, and previous values, say <span class="math inline">\(Y_{t-h}\)</span> for different values of <span class="math inline">\(h = 1, 2, \ldots\)</span>.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="heath2.png" class="img-fluid figure-img"></p>
+<figcaption>Temperatures six months apart: <span class="math inline">\(Y_{t+6}\)</span> plotted against <span class="math inline">\(Y_t\)</span>. Data: UK Met Office (Open Government Licence); replotted.</figcaption>
+</figure>
+</div>
+<p>The previous chart plots <span class="math inline">\(Y_{t+6}\)</span> against <span class="math inline">\(Y_t\)</span> for <span class="math inline">\(t = 1, \ldots, T-6\)</span>, where <span class="math inline">\(T\)</span> is the length of the time series. As one would expect, there is a clear negative dependence between temperatures that are observed across separations of 6 months (a manifestation of seasonality). One could have created similar charts also for <span class="math inline">\(h = 1, 2, 3, \ldots\)</span>, but that would be a lot of charts to stare at!</p>
+<p>Alternatively, we could gather the sample correlation coefficients between <span class="math inline">\(Y_t\)</span> and <span class="math inline">\(Y_{t-1}\)</span>, between <span class="math inline">\(Y_t\)</span> and <span class="math inline">\(Y_{t-2}\)</span>, and between <span class="math inline">\(Y_t\)</span> and <span class="math inline">\(Y_{t-3}\)</span> and so on. I have not formally defined the so-called sample autocorrelation sequence for a stationary time series — I will certainly do so for you after the next section on stationarity. Nevertheless, suppose for the moment that we know how to compute sample autocorrelations denoted by <span class="math inline">\(\hat{\rho}_Y(1)\)</span>, <span class="math inline">\(\hat{\rho}_Y(2)\)</span>, <span class="math inline">\(\hat{\rho}_Y(3)\)</span>, and so on, where the argument denotes the lag. Then, we could plot all of these on a single graph as below.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="heath3.png" class="img-fluid figure-img"></p>
+<figcaption>The sample correlogram. Dashed lines are the approximate <span class="math inline">\(\pm 1.96/\sqrt{T}\)</span> bands. Data: UK Met Office (Open Government Licence); replotted.</figcaption>
+</figure>
+</div>
+<p>What do we learn? We see that the lag 12 sample autocorrelation is extremely high (and this is consistent with an annual temperature cycle). We also see that the lag 6 sample autocorrelation is extremely high in the negative direction (semi-annual seasonality). We further observe persistence over relatively short horizons (at lag 1 and lag 2) which conforms with the idea that temperatures evolve month-by-month in gradual fashion rather than all-of-a-sudden. All these insights (and possibly more) from just one chart!</p>
+<hr>
+</section>
+<section id="instability-and-the-need-for-stationarity" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="instability-and-the-need-for-stationarity"><span class="header-section-number">4</span> Instability and the need for stationarity</h2>
+<div class="slidebox">
+<p><span class="slide-label">Extremely important remark</span></p>
+<div class="slide-body">
+<ul>
+<li><p>So far, we have (1) started to think formally about time series models; and (2) begun to characterise their dynamic behaviour in simple ways such as by looking at the autocovariance/autocorrelation structure.</p></li>
+<li><p>But what if the process alters its behaviour over time? What if, for example, the mean of a process changes? Or the lag 1 autocorrelation increases? Such changes are very difficult to handle (at least for introductory-level analyses).</p></li>
+<li><p>If we are to characterise time series sensibly (via their distributional properties), we need to assume some sort of regularity-over-time (for these distributional properties).</p></li>
+<li><p>In simple words, <strong>our characterisation of how a series behaves over time cannot <em>itself</em> be changing over time</strong>; otherwise, analysis of the past would be pointless for forecasting the future. We turn to this concern next.</p></li>
+</ul>
+</div>
+<div class="slide-footer">
+<p>For analysis to be possible, the probabilistic structure must be regular over time.</p>
+</div>
+</div>
+<p>If you did not understand the previous slide, see examples below of so-called ‘changepoints’ which represent one possible form of instability: that is, abrupt and permanent changes in the probabilistic structure of a time series. While looking at these graphs, try to appreciate how futile it would be to use data <em>over time</em> to estimate the parameters of a model in which parameters are potentially changing <em>over time</em>.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="changepoints.png" class="img-fluid figure-img"></p>
+<figcaption>Two illustrative changepoints: an abrupt, permanent shift in the mean (top) and in the variance (bottom). The dashed line marks the changepoint. Simulated.</figcaption>
+</figure>
+</div>
+<p>Concluding remarks:</p>
+<ul>
+<li><p>Note that changes in the probability law that governs a time series can also be gradual (i.e.&nbsp;not sudden). So instabilities may not always be in terms of changepoints; rather, instability may arise, for instance, due to a slow drift in the mean or variance of a process. We will return to a discussion of these sorts of issues surrounding model instability much later in the course.</p></li>
+<li><p>For now, the goal is simply to understand that (i) there may exist instability in the data-generating process, (ii) any such instability would make time series analysis very complicated, and (iii) for this reason, we plan to formalise the notion of temporal regularity/stability — formally referred to as “stationarity” — in the next topic.</p></li>
+<li><p>Thereafter, at least for a while, we will limit our analysis to stationary time series; and only once we have analysed stationary series (that is, once we have built up our repertoire of knowledge and skills as analysts of stationary time series) will we turn our attention to non-stationary series.</p></li>
+</ul>
+<hr>
+</section>
+<section id="review-questions" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="review-questions"><span class="header-section-number">5</span> Review questions</h2>
+<ol type="1">
+<li><p>Consider applying the three-point moving average that we saw in Topic 2 to a white noise series, <span class="math inline">\(\varepsilon_t \sim \mathsf{WN}(0, \sigma^2_\varepsilon)\)</span>, as per: <span class="math display">\[Y_t = (\varepsilon_{t+1} + \varepsilon_t + \varepsilon_{t-1})/3.\]</span> Show that the autocovariance function for <span class="math inline">\(Y_t\)</span> is given by: <span class="math display">\[\gamma_Y(s, t) = \begin{cases} \frac{3}{9}\sigma^2_\varepsilon, &amp; s = t \\ \frac{2}{9}\sigma^2_\varepsilon, &amp; |s-t| = 1 \\ \frac{1}{9}\sigma^2_\varepsilon, &amp; |s-t| = 2 \\ 0, &amp; |s-t| &gt; 2. \end{cases}\]</span></p></li>
+<li><p>Consider the expression for <span class="math inline">\(\gamma_Y(s, t)\)</span> given in Question 1 above. Describe, with explicit reference to <span class="math inline">\(\gamma_Y(s, t)\)</span>, what you understand about the dynamics exhibited by <span class="math inline">\(\{Y_t\}\)</span>.</p></li>
+</ol>
+<hr>
+</section>
+<section id="further-reading" class="level2" data-number="6">
+<h2 data-number="6" class="anchored" data-anchor-id="further-reading"><span class="header-section-number">6</span> Further reading</h2>
+<ul>
+<li>See <strong>SS (Chapter 1.3)</strong>. In fact, if you would like to see specific solutions to the two review questions above, you can find them in Example 1.17 therein.</li>
+</ul>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Data sources
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The Heathrow figures are replotted from the UK Met Office historic station data for Heathrow (monthly mean daily maximum temperature, <code>tmax</code>), available under the Open Government Licence. The linear/non-linear association and changepoint figures are pure simulations (see the R above and <code>make_topic3_figs.R</code>). Per the course’s figure policy, we regenerate every figure from data rather than reproducing rendered images.</p>
+</div>
+</div>
+<hr>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p>Copyright © 2026 Ragvir Sabharwal. All rights reserved.</p>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+<script>
+document.querySelectorAll('div.audio').forEach(div => {
+  const file = div.textContent.trim();
+  div.innerHTML = '<p>' + (div.dataset.label || 'Listen') + '</p>'
+                + '<audio controls src="' + file + '"></audio>';
+  div.addEventListener('click', e => {
+    if (e.target.tagName !== 'AUDIO') div.classList.toggle('open');
+  });
+});
+</script>
+
+
+
+
+<script src="site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

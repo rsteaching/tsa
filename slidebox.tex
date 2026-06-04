@@ -1,0 +1,43 @@
+% slidebox.tex
+% PDF styling for the article-style boxes (see slidebox.lua).
+% Included via _quarto.yml -> format: pdf: include-in-header.
+
+% tcolorbox may already be loaded by Quarto's callout support; loading
+% again without options is harmless. Pull in the libraries we rely on.
+\usepackage{tcolorbox}
+\tcbuselibrary{skins,breakable}
+
+\definecolor{slnavy}{HTML}{0D1B2A}
+\definecolor{slamber}{HTML}{C8762A}
+\definecolor{slborder}{HTML}{D8CEBC}
+\definecolor{slrule}{HTML}{E0D8CC}
+\definecolor{slstone}{HTML}{B0A494}
+
+% A slidebox: white card, thin warm-grey frame, thick amber rule along
+% the top edge, bold navy sans title; optional lower part (\tcblower)
+% holds the footer in italic amber, divided by a thin rule.
+\newtcolorbox{slidebox}[1]{%
+  enhanced, breakable,
+  colback=white,
+  colframe=slborder,
+  boxrule=0.4pt,
+  arc=1.5pt,
+  left=3.5mm, right=3.5mm, top=2.2mm, bottom=2.2mm,
+  before skip=9pt, after skip=9pt,
+  borderline north={2.5pt}{0pt}{slamber},
+  title={#1},
+  halign title=left,
+  colbacktitle=white,
+  coltitle=slnavy,
+  fonttitle=\bfseries\sffamily\large,
+  toptitle=1mm, bottomtitle=1.2mm,
+  lower separated=true,
+  collower=slamber,
+  fontlower=\itshape\small,
+  segmentation style={solid, slrule, line width=0.4pt},
+}
+
+% Kicker label: Goals / Key Equation / Key Concept, etc.
+\newcommand{\kicker}[1]{%
+  {\sffamily\bfseries\footnotesize\color{slstone}\MakeUppercase{#1}}\par\vspace{2pt}%
+}

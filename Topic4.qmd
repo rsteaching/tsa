@@ -1,0 +1,206 @@
+---
+title: "Defining stationarity"
+subtitle: "Topic 4"
+format:
+  html: default
+  pdf: default
+---
+
+<!-- git add . && git commit -m "update" && git push  -->
+
+[Goals]{.kicker}
+
+- To introduce two notions of temporal regularity — strong and weak stationarity.
+- To explore the autocovariance (and autocorrelation) sequence(s) of stationary time series.
+
+[Key Concept]{.kicker}
+
+Weak stationarity.
+
+------------------------------------------------------------------------
+
+## Strong stationarity
+
+We have seen that a time series, $\{Y_t\}$, is a collection of random variables. We have also seen that the marginal probabilistic behaviour of a random variable, $Y_t$ for fixed $t$, is described by an associated function, the CDF, given by: $$F_{Y_t}(a) = \Pr(Y_t \leq a).$$ Indeed, once we have the CDF, it is possible to derive other quantities of interest concerning the random variable.[^diff] For instance, the expected value and variance are obtained as $$\mu_t := \mathsf{E}(Y_t) = \int_{-\infty}^{\infty} y\ \mathrm{d}F_{Y_t}(y), \qquad \text{and} \qquad \sigma^2_t := \text{Var}(Y_t) = \int_{-\infty}^{\infty} (y - \mu_t)^2\ \mathrm{d}F_{Y_t}(y).$$ While the marginal CDF of an individual random variable is undoubtedly a useful concept, we are typically also concerned in time series analysis with the inter-relationships between the random variables forming a stochastic process. Hence, we consider the joint CDF, which fully encapsulates not only the marginal behaviour of the concerned random variables, but also all manners of dependence (whether linear or non-linear) between them. The joint CDF represents the ultimate frontier of human knowledge about a process inherently characterised by chance and uncertainty. It is this very construct to which we turn our attention next.
+
+[^diff]: Let us assume twice continuous differentiability (for expositional convenience).
+
+::::: slidebox
+[What is strong stationarity?]{.slide-label}
+
+::: slide-body
+**Definition.** We define the time series $\{Y_t\}$ as being strongly stationary (or strictly stationary) if for any $h \in \mathbb{Z}$ and time points $t_1, \ldots, t_m$ with $m > 0$, we have $$\Pr\!\left(Y_{t_1} \leq c_1, \ldots, Y_{t_m} \leq c_m\right) = \Pr\!\left(Y_{t_1+h} \leq c_1, \ldots, Y_{t_m+h} \leq c_m\right)$$ for any real constants $c_1, \ldots, c_m$. $\qquad\square$
+
+- In other words, the joint probabilistic structure governing every collection of values $\left\{Y_{t_1}, \ldots, Y_{t_m}\right\}$ is identical to that of the time-shifted set $\left\{Y_{t_1+h}, \ldots, Y_{t_m+h}\right\}$ for any shift $h = \ldots, -1, 0, 1, \ldots$.
+:::
+
+::: slide-footer
+The entire joint distribution is invariant to shifts in time.
+:::
+:::::
+
+In particular, taking $m = 1$, the strong-stationarity definition implies that $$\Pr(Y_s \leq c) = \Pr(Y_t \leq c)$$ for any $s, t \in \mathbb{Z}$ and some constant $c \in \mathbb{R}$. Hence, all the $Y_t$'s have the same distribution function, $F_Y$, and hence the same marginal density, $f_Y$, if it exists. It means that, if the mean function, $\mu_t$ exists, then $\mu_t = \mu_s$ for any $s$ and $t$. That is, the mean of $Y_t$ for any time point $t$ must be a constant.
+
+Now taking $m = 2$, the definition implies that $$\Pr(Y_s \leq c_1, Y_t \leq c_2) = \Pr(Y_{s+h} \leq c_1, Y_{t+h} \leq c_2)$$ for any time points $s$ and $t$, and time shift $h$. Hence by the definition of $\gamma(s, t)$, $$\begin{aligned} \gamma(s, t) &= \mathsf{E}(Y_s Y_t) - \mu_s \mu_t \\ &= \mathsf{E}(Y_{s+h} Y_{t+h}) - \mu_{s+h}\mu_{t+h} \\ &= \gamma(s+h, t+h). \end{aligned}$$ It means that the autocovariance function of the process depends only on the time difference between $t$ and $s$, but not on the actual times themselves.
+
+**Clearly, strong stationarity implies much more than the first and second order moment properties above.** However, it is often too strong an assumption to verify for a real dataset. A milder, but very useful, assumption is weak stationarity.
+
+## Weak stationarity
+
+Strong stationarity (as defined above) is, in fact, too strong a requirement for most applications. Moreover, it is difficult (if not impossible) to verify whether strong stationarity is a reasonable assumption for a particular dataset. Rather than imposing conditions on all possible CDFs that characterise a time series, we typically rely upon a weaker/milder version that imposes conditions only on the second-order moment structure of a time series. Indeed, we require the second-order moment structure to be well-defined and time-invariant. We have the definition below.
+
+::::: slidebox
+[What is weak stationarity?]{.slide-label}
+
+::: slide-body
+**Definition.** A weakly stationary time series $\{Y_t\}$ is defined such that, for constants $\mu$ and $0 < \sigma^2 < \infty$ and any $s, t \in \mathbb{Z}$,
+
+(i) the mean is $\mathsf{E}(Y_t) = \mu$;
+(ii) the variance is $\text{Var}(Y_t) = \sigma^2$;
+(iii) the autocovariance, $\gamma(s, t)$, depends on $s, t$ only through the difference $|s-t|$. $\qquad\square$
+
+- **Remark 1.** It is important for you to understand that weak stationarity requires both **finiteness** and **time-invariance** of (at least) the **second-order moment structure** of the time series.[^finite]
+
+- **Remark 2.** You may treat the following terms as synonyms: stationarity, weak stationarity, covariance stationarity, second-order stationarity, wide-sense stationarity. (The concept of strong/strict stationarity is used relatively infrequently.)
+:::
+
+::: slide-footer
+Finiteness and time-invariance of the first two moments — nothing more.
+:::
+:::::
+
+[^finite]: This remark has been provided here precisely because most students forget the finiteness condition. Please do not forget! After all, how can a quantity be time-invariant if it does not exist?! You have been warned!
+
+Let us briefly comment on the relationship between strong and weak stationarity:
+
+- If a strongly stationary process has **finite mean and variance**, it is also weakly stationary. The converse is generally not true.
+
+- In general, a weakly stationary process will not be strictly stationary. However, an important exception will be a weakly stationary **Gaussian** process — see next bullet.
+
+- A process $\{Y_t\}$ is said to be a Gaussian process if for any time points $t_1, t_2, \ldots, t_n$, and any positive integer $n$, the vector $\mathbf{Y} = (Y_{t_1}, \ldots, Y_{t_n})'$ has a multivariate normal distribution with finite means and variances for the components. Recall from elementary statistics that a multivariate normal distribution is characterised completely by first and second order moments. As a reminder, if $\mathbf{Y}$ is $n$-dimensional and $\mathbf{Y} \sim \mathcal{N}(\mu, \Sigma)$, then the joint density is (no need to memorise the formula): $$f_{\mathbf{Y}}(\mathbf{y}) = (2\pi)^{-n/2}|\Sigma|^{-1/2}\exp\!\left(-\frac{1}{2}(\mathbf{y}-\mu)'\Sigma^{-1}(\mathbf{y}-\mu)\right).$$ If $\{Y_t\}$ is weakly stationary as well, then $\mu_t = \mu$ and $\gamma(t_i, t_j) = \gamma(|t_i - t_j|)$, so that the mean vector $\mu$ and the covariance matrix $\Sigma$ are independent of time. In particular, the covariance matrix depends only on the time lag of the time points $t_1, \ldots, t_n$, since the $(i, j)$-th entry of $\Sigma$ is now $\text{Cov}(Y_{t_i}, Y_{t_j}) = \gamma(|t_i - t_j|)$. Hence, every joint distribution depends only on the time lag and not on the actual times. It follows that a **weakly stationary Gaussian process is also strongly stationary**.
+
+## ACVS and ACS of a stationary time series
+
+Hereafter, we will work with the so-called autocovariance sequence (ACVS) and/or the autocorrelation sequence (ACS) of stationary time series. In case you are wondering, the slight change in terminology — i.e. from 'function' to 'sequence' — is mainly due to convention. It serves the purpose of emphasising that we are talking specifically about equally-spaced, discrete and stationary time series.
+
+::::: slidebox
+[What is the ACVS of a stationary time series?]{.slide-label}
+
+::: slide-body
+For a discrete and equally-spaced **stationary** time series, $\{Y_t\}$, the ACVF simplifies to $$\gamma(t+h, t) = \gamma(h, 0)$$ since the differences between $t$ and $t+h$ and between $0$ and $h$ are the same. This realisation allows us to simplify some notation. Indeed, the ACVF of a stationary time series can simply be denoted by $$\gamma(h) = \text{Cov}\left(Y_{t+h}, Y_t\right)$$ for any $h \in \mathbb{Z}$. We refer to $\gamma(h)$ or $\gamma_h$ as the autocovariance sequence (ACVS).
+:::
+
+::: slide-footer
+Under stationarity the ACVF collapses to a one-argument sequence, $\gamma(h)$.
+:::
+:::::
+
+::::: slidebox
+[What is the ACS of a stationary time series?]{.slide-label}
+
+::: slide-body
+Similarly, the autocorrelation sequence (ACS) of a discrete and equally-spaced stationary time series can simply be denoted by $$\rho(h) = \frac{\gamma(t+h, t)}{\sqrt{\gamma(t+h, t+h)\,\gamma(t, t)}} = \frac{\gamma(h)}{\gamma(0)},$$ and we will use the notation $\rho(h)$ or $\rho_h$ to denote the ACS at integer-valued $h$.
+:::
+
+::: slide-footer
+The scale-free sequence $\rho(h) = \gamma(h)/\gamma(0)$.
+:::
+:::::
+
+::::: slidebox
+[An important practical point for students]{.slide-label}
+
+::: slide-body
+- It is essential to understand — for when you present solutions — that the ACVS of a stationary time series is a **doubly-infinite two-sided symmetric sequence**.
+
+- That is, please remember that $h = 0, \pm 1, \pm 2, \ldots$. So say I ask you to compute an ACVS (which I will do repeatedly), then your job is to report $\gamma(h)$ for *every* $h$.
+:::
+
+::: slide-footer
+Always report $\gamma(h)$ for every $h = 0, \pm 1, \pm 2, \ldots$ — not just a few lags.
+:::
+:::::
+
+At this point, we present some intuition to aid in our understanding of the upcoming slide:
+
+- Consider a single scalar random variable, $Y_t$, with variance $\sigma^2_Y$. Suppose we were asked, "What possible values can $\sigma^2_Y$ take?"
+
+- Most of us would answer, "Well, we cannot have negative dispersion. So we must have the **constraint** that $\sigma^2_Y \geq 0$."
+
+- Now consider a bivariate random vector, $\mathbf{Y} = (Y_1, Y_2)'$. Then, we can define $$\Sigma_{\mathbf{Y}} := \text{Var}(\mathbf{Y}) = \begin{pmatrix} \sigma_{11} & \sigma_{12} \\ \sigma_{21} & \sigma_{22} \end{pmatrix},$$ where the diagonal terms are variances, and the off-diagonal terms represent covariances.
+
+- The **equivalent constraint** in a matrix context is that $\Sigma_{\mathbf{Y}}$ must be symmetric and positive semi-definite.
+  - Why must $\Sigma_{\mathbf{Y}}$ be **symmetric**? (I want *you* to think about this. See problem set.)
+  - What does **positive semi-definiteness** of $\Sigma_{\mathbf{Y}}$ mean? (Let us address this together now.)
+
+::: callout-note
+## Definition — Positive semi-definiteness
+
+A $T \times T$ matrix $\Sigma_{\mathbf{Y}}$ is positive semi-definite if for any $c \in \mathbb{R}^T$, we have $$c'\Sigma_{\mathbf{Y}}c \begin{cases} = 0, & c = 0 \\ \geq 0, & c \neq 0. \end{cases}$$ The matrix is referred to as **positive definite** if the weak inequality is replaced by a strict one. $\qquad\square$
+:::
+
+- To appreciate what positive semi-definiteness entails (i.e. in terms of the constituent scalars), consider the expression $$\begin{aligned} c'\Sigma_{\mathbf{Y}}c &= \begin{pmatrix} c_1 & c_2 \end{pmatrix} \begin{pmatrix} \sigma_{11} & \sigma_{12} \\ \sigma_{21} & \sigma_{22} \end{pmatrix} \begin{pmatrix} c_1 \\ c_2 \end{pmatrix} \\ &= \begin{pmatrix} c_1\sigma_{11} + c_2\sigma_{21} & c_1\sigma_{12} + c_2\sigma_{22} \end{pmatrix} \begin{pmatrix} c_1 \\ c_2 \end{pmatrix} \\ &= c_1^2\sigma_{11} + c_1 c_2\sigma_{21} + c_1 c_2\sigma_{12} + c_2^2\sigma_{22} \\ &= \sum_{t=1}^{2}\sum_{s=1}^{2} c_t c_s\sigma_{ts}, \end{aligned}$$ so that asking for $c'\Sigma_{\mathbf{Y}}c$ to be $\geq 0$ is identical to asking for $\sum_{t=1}^{2}\sum_{s=1}^{2} c_t c_s\sigma_{ts}$ to be $\geq 0$.
+
+How does this discussion relate to stationary time series? To understand the connection, consider that the autocovariances for a stationary time series of length $T$ can be summarised as per the symmetric $T \times T$ matrix: $$\Sigma_{\mathbf{Y}} = \begin{bmatrix} \gamma_0 & \gamma_1 & \gamma_2 & \cdots & \gamma_{T-1} \\ \gamma_1 & \gamma_0 & \gamma_1 & \cdots & \gamma_{T-2} \\ \gamma_2 & \gamma_1 & \gamma_0 & \cdots & \gamma_{T-3} \\ \vdots & \vdots & \vdots & \ddots & \vdots \\ \gamma_{T-1} & \gamma_{T-2} & \gamma_{T-3} & \cdots & \gamma_0 \end{bmatrix}.$$ It follows immediately that $\Sigma_{\mathbf{Y}}$ is positive semi-definite if for any $c \in \mathbb{R}^T$, we have $$\sum_{t=1}^{T}\sum_{s=1}^{T} c_t c_s\,\gamma_{|t-s|} \begin{cases} = 0, & c = 0 \\ \geq 0, & c \neq 0. \end{cases}$$ Accordingly, the (symmetric) sequence given by $\{\gamma_{T-1}, \ldots, \gamma_0, \ldots, \gamma_{T-1}\}$ is said to be a two-sided and symmetric **positive semi-definite sequence**. This completes our exploration of background knowledge, and we are now in a position to understand the next slide.
+
+::::: slidebox
+[What constraints must the ACVS obey?]{.slide-label}
+
+::: slide-body
+Not just any sequence can act as the ACVS of a stationary time series! Indeed, suppose we have a stationary time series, $\{Y_t\}$, of length $T \in \mathbb{N}$, with ACVS given by $\gamma_h$ for $h = -(T-1), \ldots, 0, \ldots, T-1$. Then, it must be true that $\{\gamma_h\}$ is
+
+(i) two-sided **symmetric**, i.e. $\gamma_h = \gamma_{-h}$; and
+(ii) a **positive semi-definite** sequence, i.e. the positive semi-definiteness condition above holds.
+:::
+
+::: slide-footer
+A valid ACVS must be symmetric and positive semi-definite.
+:::
+:::::
+
+## Solved examples
+
+(Solutions to Q1, Q2 and Q5 are provided below and in the review section.)
+
+**Q1.** State, with explanation, which of the following time series, $\{Y_t\}_{t \in \mathbb{Z}}$, are stationary.
+
+(a) $Y_t$'s are $iid$ random variables, each with an exponential distribution.
+(b) $Y_t = Y_{t-1} + \frac{1}{1+|t|}\varepsilon_t$, where $\varepsilon_t \overset{\scriptscriptstyle\text{iid}}{\sim} \mathcal{N}(0,1)$ and $\varepsilon_t \perp\!\!\!\perp Y_s$ for $s < t$.
+(c) $Y_t = \varepsilon_t - \varepsilon_{t-1}$, where $\varepsilon_t \overset{\scriptscriptstyle\text{iid}}{\sim} \mathcal{N}(0,1)$.
+(d) $Y_t = X$ for all $t$, where $X \sim \mathcal{N}(0,1)$.
+(e) $Y_t = X$ for all $t$, where $X$ has a Cauchy distribution.
+(f) $Y_t = Y_{-t}$ where $\{Y_t\}$ is stationary.
+
+**Q2.** Assume zero-mean time series $\{Y_t\}$ is such that $\text{Cov}(Y_t, Y_{t+h}) = 1$ for $h = 0$ and $\text{Cov}(Y_t, Y_{t+h}) = 0$ for $h \neq 0$. Further assume that $Y_t$ is Gaussian for $t \neq 0$ and Uniform for $t = 0$. Is $\{Y_t\}$ stationary? Is $\{Y_t\}$ strongly stationary?
+
+**Q3.** Let $Y_t = \varepsilon_t + \theta\varepsilon_{t-1}$, where $\varepsilon_t \sim \mathsf{WN}(0, \sigma^2_\varepsilon)$, for $t \in \mathbb{Z}$ and $0 < \sigma^2_\varepsilon < \infty$ and $\theta$ a finite constant. Show that $\{Y_t\}$ is stationary. Provide a rough sketch of the ACVS. *(In lecture.)*
+
+**Q4.** Let $Y_t = \phi Y_{t-1} + \varepsilon_t$, where $\varepsilon_t \sim \mathsf{WN}(0, \sigma^2_\varepsilon)$, for $t \in \mathbb{Z}$ and $0 < \sigma^2_\varepsilon < \infty$ and $0 < |\phi| < 1$. Show that $\{Y_t\}$ is stationary. Provide a rough sketch of the ACVS. *(In lecture.)*
+
+**Q5.** Consider the moving average process given by $$Y_t = \varepsilon_t - 2\varepsilon_{t-1} + 0.5\varepsilon_{t-2}, \quad \text{where } \varepsilon_t \sim \mathsf{WN}(0,1),$$ for $t \in \mathbb{Z}$. Show that this process is stationary and compute its ACS.
+
+::: callout-note
+## Solution to Q5
+
+To show that this process is weakly stationary, we need to show that the mean and the autocovariance function exist and are independent of time. It is clear that $$\mathsf{E}(Y_t) = \mathsf{E}(\varepsilon_t) - 2\mathsf{E}(\varepsilon_{t-1}) + 0.5\mathsf{E}(\varepsilon_{t-2}) = 0,$$ so that the mean is independent of time. For the autocovariance, when $h = 0$, we have $$\text{Cov}(Y_{t+h}, Y_t) = \text{Var}(Y_t) = \text{Var}(\varepsilon_t - 2\varepsilon_{t-1} + 0.5\varepsilon_{t-2}) = 1 + 4 + 0.25 = 5.25.$$ For $h = 1$, $$\begin{aligned} \text{Cov}(Y_{t+h}, Y_t) &= \text{Cov}(\varepsilon_{t+1} - 2\varepsilon_t + 0.5\varepsilon_{t-1},\ \varepsilon_t - 2\varepsilon_{t-1} + 0.5\varepsilon_{t-2}) \\ &= -2\,\text{Var}(\varepsilon_t) + 0.5(-2)\,\text{Var}(\varepsilon_{t-1}) \\ &= -3. \end{aligned}$$ For $h = 2$, $$\begin{aligned} \text{Cov}(Y_{t+h}, Y_t) &= \text{Cov}(\varepsilon_{t+2} - 2\varepsilon_{t+1} + 0.5\varepsilon_t,\ \varepsilon_t - 2\varepsilon_{t-1} + 0.5\varepsilon_{t-2}) \\ &= 0.5\,\text{Var}(\varepsilon_t) \\ &= 0.5. \end{aligned}$$ For $h > 2$, $$\begin{aligned} \text{Cov}(Y_{t+h}, Y_t) &= \text{Cov}(\varepsilon_{t+h} - 2\varepsilon_{t+h-1} + 0.5\varepsilon_{t+h-2},\ \varepsilon_t - 2\varepsilon_{t-1} + 0.5\varepsilon_{t-2}) \\ &= 0, \quad \text{since no time index on the left side overlaps with the right.} \end{aligned}$$ Hence, $\text{Cov}(Y_{t+h}, Y_t)$ does not depend on time $t$ for positive time shift $h$. In particular, replacing $t$ by $t-h$ in the calculations above, we then have $$\begin{aligned} \text{Cov}(Y_{t+h}, Y_t) = \text{Cov}(Y_{(t-h)+h}, Y_{t-h}) &= \text{Cov}(Y_t, Y_{t-h}) \\ &= \text{Cov}(Y_{t-h}, Y_t) \quad \text{by the symmetry of covariance.} \end{aligned}$$ We can now conclude that for this $\mathsf{MA}(2)$ process, we can write $$\text{Cov}(Y_{t+h}, Y_t) = \begin{cases} 5.25, & h = 0 \\ -3, & h = \pm 1 \\ 0.5, & h = \pm 2 \\ 0, & \text{otherwise.} \end{cases}$$ The process $\{Y_t\}$ is weakly stationary as the mean is finite and independent of time, and the autocovariances are all finite and depend only on the time lag between two time points. Note that, strictly speaking, we should only use the simplified notation $\gamma_h$ *after* we have proved that the process is stationary. So let us now define the previous expression as $\gamma_h$.
+
+The ACF of the process is then $$\rho_h = \frac{\gamma_h}{\gamma_0} = \begin{cases} 1, & h = 0 \\ -\frac{4}{7}, & h = \pm 1 \\ \frac{2}{21}, & h = \pm 2 \\ 0, & \text{otherwise.} \end{cases} \qquad\square$$
+:::
+
+------------------------------------------------------------------------
+
+## Review questions
+
+1.  What is strong stationarity? Please provide a flawless definition from memory!
+
+2.  What is weak stationarity? Please provide a flawless definition from memory!
+
+3.  Try to work on Q1 and Q2 from the solved examples. The answers are as follows: Q1: (a) **Yes**, (b) **No**, (c) **Yes**, (d) **Yes**, (e) **No**, (f) **Yes**. Q2: **Yes** and **No**.
+
+------------------------------------------------------------------------
+
+## Further reading
+
+- See **SS (Chapter 1.4)**.
+
+------------------------------------------------------------------------

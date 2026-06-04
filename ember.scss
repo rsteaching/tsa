@@ -141,7 +141,7 @@ code {
 pre {
   background: $navy !important;
   border-radius: 5px;
-  padding: 1.1rem 1.3rem;
+  padding: 1.1rem 1.6rem;
   overflow-x: auto;
   scrollbar-width: thin;
   scrollbar-color: rgba(255,255,255,0.15) transparent;
@@ -490,7 +490,7 @@ mjx-container:not([display="true"]) {
   .eq-box { padding: 0.7rem 0.85rem; overflow-x: auto; -webkit-overflow-scrolling: touch; }
   .callout { font-size: 0.88rem; }
   .insight { padding: 0.7rem 0.9rem; }
-  pre { padding: 0.85rem 1rem; }
+  pre { padding: 0.85rem 1.15rem; }
   table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
 }
 

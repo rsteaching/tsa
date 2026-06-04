@@ -1,71 +1,86 @@
--- slidebox.lua — render slideboxes as styled boxes in PDF/LaTeX only.
--- Self-contained: also injects the required LaTeX definitions into the
--- preamble, so no header file or YAML wiring is needed.
--- HTML output is left completely untouched.
+--[[
+  slidebox.lua
 
-if not FORMAT:match('latex') then
+  PDF/LaTeX rendering for the article-style fenced divs used in the
+  topic pages. The HTML look is supplied by ember.scss; LaTeX never
+  sees that CSS, so this filter rebuilds the boxes as tcolorboxes
+  (matching the original slide-pack tcolorboxes) for PDF output.
+
+  No-op for non-LaTeX formats (HTML keeps using ember.scss).
+
+  Handles:
+    ::::: slidebox
+    [Title]{.slide-label}
+    ::: slide-body  ... :::
+    ::: slide-footer ... :::
+    :::::
+  ->  \begin{slidebox}{Title} <body> \tcblower <footer> \end{slidebox}
+
+  and  [Goals]{.kicker}  ->  \kicker{Goals}
+
+  Both \slidebox (env) and \kicker (cmd) are defined in slidebox.tex.
+]]
+
+if not FORMAT:match("latex") then
   return {}
 end
 
-local PREAMBLE = [[
-\usepackage{tcolorbox}
-\tcbuselibrary{skins,breakable}
-\definecolor{embernavy}{HTML}{0D1B2A}
-\definecolor{emberamber}{HTML}{C8762A}
-\definecolor{emberrule}{HTML}{E0D8CC}
-\definecolor{emberborder}{HTML}{D8CEBC}
-\newtcolorbox{slidebox}{%
-  enhanced, breakable, colback=white, colframe=emberborder,
-  boxrule=0.4pt, arc=1.5pt,
-  left=10pt, right=10pt, top=9pt, bottom=9pt,
-  borderline north={2.5pt}{0pt}{emberamber},
-}
-\newcommand{\slidelabel}[1]{{\color{embernavy}\bfseries\large #1\par\vspace{5pt}}}
-\newenvironment{slidefooter}{%
-  \par\vspace{7pt}{\color{emberrule}\rule{\linewidth}{0.4pt}}\par\vspace{4pt}%
-  \color{emberamber}\itshape\small}{\par}
-]]
-
-function Meta(meta)
-  local inc = meta['header-includes']
-  local block = pandoc.MetaBlocks({ pandoc.RawBlock('latex', PREAMBLE) })
-  if inc == nil then
-    meta['header-includes'] = pandoc.MetaList({ block })
-  elseif inc.t == 'MetaList' then
-    inc[#inc + 1] = block
-    meta['header-includes'] = inc
-  else
-    meta['header-includes'] = pandoc.MetaList({ inc, block })
-  end
-  return meta
+-- render a list of inlines to a LaTeX string (for the box title)
+local function inlines_to_latex(inls)
+  local s = pandoc.write(pandoc.Pandoc({ pandoc.Plain(inls) }), "latex")
+  return (s:gsub("%s+$", ""))
 end
 
-function Span(el)
-  if el.classes:includes('slide-label') then
-    local out = { pandoc.RawInline('latex', '\\slidelabel{') }
-    for _, i in ipairs(el.content) do out[#out + 1] = i end
-    out[#out + 1] = pandoc.RawInline('latex', '}')
-    return out
+-- if a block is the label paragraph, return its inline content
+local function label_inlines(blk)
+  if blk.t ~= "Para" and blk.t ~= "Plain" then return nil end
+  for _, inl in ipairs(blk.content) do
+    if inl.t == "Span" and inl.classes:includes("slide-label") then
+      return inl.content
+    end
   end
+  return nil
 end
 
 function Div(el)
-  if el.classes:includes('audio') then
-    return {}
+  if not el.classes:includes("slidebox") then
+    return nil  -- leave slide-body / slide-footer / others untouched
   end
-  if el.classes:includes('slidebox') then
-    local out = { pandoc.RawBlock('latex', '\\begin{slidebox}') }
-    for _, b in ipairs(el.content) do out[#out + 1] = b end
-    out[#out + 1] = pandoc.RawBlock('latex', '\\end{slidebox}')
-    return out
+
+  local title  = ""
+  local body   = {}
+  local footer = nil
+
+  for _, blk in ipairs(el.content) do
+    if blk.t == "Div" and blk.classes:includes("slide-body") then
+      for _, b in ipairs(blk.content) do table.insert(body, b) end
+    elseif blk.t == "Div" and blk.classes:includes("slide-footer") then
+      footer = blk.content
+    else
+      local lab = label_inlines(blk)
+      if lab ~= nil then
+        title = inlines_to_latex(lab)
+      else
+        table.insert(body, blk)  -- preserve anything unexpected
+      end
+    end
   end
-  if el.classes:includes('slide-body') then
-    return el.content
+
+  local out = pandoc.List({})
+  out:insert(pandoc.RawBlock("latex", "\\begin{slidebox}{" .. title .. "}"))
+  for _, b in ipairs(body) do out:insert(b) end
+  if footer ~= nil then
+    out:insert(pandoc.RawBlock("latex", "\\tcblower"))
+    for _, b in ipairs(footer) do out:insert(b) end
   end
-  if el.classes:includes('slide-footer') then
-    local out = { pandoc.RawBlock('latex', '\\begin{slidefooter}') }
-    for _, b in ipairs(el.content) do out[#out + 1] = b end
-    out[#out + 1] = pandoc.RawBlock('latex', '\\end{slidefooter}')
-    return out
+  out:insert(pandoc.RawBlock("latex", "\\end{slidebox}"))
+  return out
+end
+
+-- kicker labels (Goals / Key Equation / Key Concept ...)
+function Span(el)
+  if el.classes:includes("kicker") then
+    return pandoc.RawInline("latex", "\\kicker{" .. inlines_to_latex(el.content) .. "}")
   end
+  return nil  -- importantly, leave .slide-label spans intact for Div above
 end

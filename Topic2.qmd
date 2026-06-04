@@ -109,7 +109,7 @@ Let us look at some graphs that help illustrate the distinction between white no
 
 ![Both panels share a vertical scale, so the variance reduction from smoothing is visible directly. Simulated, following Shumway & Stoffer.](sample_wnma.png)
 
-::: {.callout-note}
+::: {.callout-note collapse="true"}
 ## R code
 
 ```r
