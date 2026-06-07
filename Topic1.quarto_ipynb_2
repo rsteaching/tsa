@@ -2,7 +2,7 @@
  "cells": [
   {
    "cell_type": "markdown",
-   "id": "67ee776c",
+   "id": "964dc8ae",
    "metadata": {},
    "source": [
     "---\n",
@@ -56,7 +56,7 @@
     "- Estimation via OLS, MME, and MLE\n",
     "- Asymptotic evaluation of estimators — consistency, asymptotic efficiency, asymptotic normality\n",
     "\n",
-    "::: {.callout-important collapse=\"true\"}\n",
+    "::: {.callout-note collapse=\"true\"}\n",
     "## \n",
     "\n",
     "- If any of these topics are unclear to you, please seek my help in office hours as early in the term as possible.\n",

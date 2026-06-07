@@ -49,10 +49,10 @@ It is assumed that you have previously studied basic econometrics and have famil
 - Estimation via OLS, MME, and MLE
 - Asymptotic evaluation of estimators — consistency, asymptotic efficiency, asymptotic normality
 
-::: {.callout-important collapse="true"}
+::: {.callout-note collapse="true"}
 ## 
 
-- If any of these topics are unclear to you, please seek my help in office hours as early in the term as possible.
+- If any of these topics are unclear to you, please seek the module/tutorial lead's help in office hours as early in the term as possible.
 - Alternatively, review any good introductory statistics/econometrics book of your choice. I can suggest *Larsen and Marx* and/or *Jeffrey Wooldridge* for self-study.
 :::
 
@@ -82,7 +82,7 @@ A real-valued function of the sample space.
 
 - Given data $\{y_1, \ldots, y_N\}$, the standard approach models the dataset as a finite-length $N$ realisation of this stochastic process.
 
-- The relationship among the random variables is one of its critical defining features — for instance, $\{y_1, \ldots, y_N\}$ is a random sample if the random variables are iid.
+- The relationship among the random variables is one of its critical defining features — for instance, $\{y_1, \ldots, y_N\}$ is a random sample if the random variables are $iid$.
 :::
 
 ::: slide-footer
