@@ -1,16 +1,21 @@
 from manim import *
 import numpy as np
 
-NAVY     = "#0D1B2A"
-AMBER    = "#C8762A"
-COMP     = "#E05050"
-SIN_COLS = ["#5B9BD5", "#70AD47", "#ED7D31", "#9B59B6", "#14B8A6"]
+# ── locked aesthetic: pure black, crimson accent, IBM Plex, off-white geometry ──
+BLACK    = "#000000"
+OFF      = "#ECECF0"   # primary geometry / text
+ACCENT   = "#E11D48"   # crimson accent ($accent)
+FAINT    = "#9091A0"   # secondary axes / faint
+COMP     = ACCENT      # composite signal = the accent
+# component harmonics: brightest = fundamental (largest amplitude), dimmer = higher harmonics
+SIN_COLS = ["#ECECF0", "#C7C8D0", "#A9AAB5", "#86879A", "#6E6F82"]
+FONT     = "IBM Plex Sans"
 PHI = 90 * DEGREES
 
 
 class FourierWaterfall(ThreeDScene):
     def construct(self):
-        self.camera.background_color = NAVY
+        self.camera.background_color = BLACK
 
         N       = 5
         T_MAX   = TAU
@@ -35,34 +40,26 @@ class FourierWaterfall(ThreeDScene):
             )
 
         def caption(text_str, font_size=28):
-            obj = Text(text_str, color=WHITE, font_size=font_size,
+            obj = Text(text_str, color=OFF, font=FONT, font_size=font_size,
                        line_spacing=1.35, slant=ITALIC)
             obj.shift(DOWN * 3.1)
             self.add_fixed_in_frame_mobjects(obj)
             return obj
 
-        # ── Amber strip flush to top ───────────────────────────────
-        strip_h = 0.28
-        amber_bar = Rectangle(
-            width=20, height=strip_h,
-            fill_color=AMBER, fill_opacity=1, stroke_width=0,
-        ).move_to(UP * (config.frame_height / 2 - strip_h / 2))
-        self.add_fixed_in_frame_mobjects(amber_bar)
-
         # ── Axes at y=0 ───────────────────────────────────────────
         x_ax = Line(np.array([-X_HALF-0.4, 0, 0]), np.array([X_HALF+0.4, 0, 0]),
-                    color=WHITE, stroke_width=1.5)
+                    color=OFF, stroke_width=1.5)
         z_ax = Line(np.array([0, 0, -1.4]), np.array([0, 0, 1.8]),
-                    color=WHITE, stroke_width=1.5)
-        t_lbl  = MathTex("t",   color=WHITE, font_size=32).shift(RIGHT*2.65 + DOWN*0.35)
-        yt_lbl = MathTex("Y_t", color=WHITE, font_size=32).shift(UP*2.1 + LEFT*0.5)
+                    color=OFF, stroke_width=1.5)
+        t_lbl  = MathTex("t",   color=OFF, font_size=32).shift(RIGHT*2.65 + DOWN*0.35)
+        yt_lbl = MathTex("Y_t", color=OFF, font_size=32).shift(UP*2.1 + LEFT*0.5)
         self.add_fixed_in_frame_mobjects(t_lbl, yt_lbl)
 
         # ══════════════════════════════════════════════════════════
         # PHASE 1 — composite signal
         # ══════════════════════════════════════════════════════════
         self.set_camera_orientation(phi=PHI, theta=-90*DEGREES)
-        comp_curve = make_curve(composite, 0, COMP, sw=3)
+        comp_curve = make_curve(composite, 0, COMP, sw=3.5)
         cap1 = caption("We have a signal over time.")
 
         self.play(
@@ -78,7 +75,7 @@ class FourierWaterfall(ThreeDScene):
         # ══════════════════════════════════════════════════════════
         sin_curves_2d = [
             make_curve(lambda t, k=k: sine_k(k, t), 0,
-                       SIN_COLS[k], opacity=0.7, sw=2)
+                       SIN_COLS[k], opacity=0.75, sw=2)
             for k in range(N)
         ]
         self.play(
@@ -113,7 +110,7 @@ class FourierWaterfall(ThreeDScene):
         # ══════════════════════════════════════════════════════════
         sin_curves_3d = [
             make_curve(lambda t, k=k: sine_k(k, t), y_vals[k],
-                       SIN_COLS[k], opacity=0.75, sw=2.5)
+                       SIN_COLS[k], opacity=0.8, sw=2.5)
             for k in range(N)
         ]
         self.move_camera(
@@ -151,7 +148,7 @@ class FourierWaterfall(ThreeDScene):
         freq_ax = Line(
             np.array([X_HALF, -0.3, 0]),
             np.array([X_HALF, y_vals[-1]+0.5, 0]),
-            color=WHITE, stroke_width=1.5, stroke_opacity=0.5,
+            color=FAINT, stroke_width=1.5, stroke_opacity=0.6,
         )
         self.play(Create(freq_ax), run_time=0.4)
         self.play(
@@ -185,7 +182,7 @@ class FourierWaterfall(ThreeDScene):
         amp_ax = Line(
             np.array([X_HALF, -0.3, 0]),
             np.array([X_HALF, -0.3, max_spike_z*1.15]),
-            color=WHITE, stroke_width=1.5, stroke_opacity=0.5,
+            color=FAINT, stroke_width=1.5, stroke_opacity=0.6,
         )
         self.play(Create(amp_ax), run_time=0.4)
         self.wait(2.0)
@@ -202,41 +199,41 @@ class FourierWaterfall(ThreeDScene):
 
         # ── Time domain block ──────────────────────────────────────
         td_title = Text("Time domain analysis",
-                        color=AMBER, font_size=38, weight=BOLD)
+                        color=ACCENT, font=FONT, font_size=38, weight=BOLD)
         td_line1 = Text(
             "Studies a series through its autocorrelation structure.",
-            color=WHITE, font_size=26,
+            color=OFF, font=FONT, font_size=26,
         )
         td_line2 = Text(
             "Effectively, a regression of the series on lagged copies of itself.",
-            color=WHITE, font_size=26, slant=ITALIC,
+            color=OFF, font=FONT, font_size=26, slant=ITALIC,
         )
         td_block = VGroup(td_title, td_line1, td_line2).arrange(
             DOWN, aligned_edge=LEFT, buff=0.18
         )
 
         divider = Line(LEFT*5.8, RIGHT*5.8,
-                       color=AMBER, stroke_width=0.8, stroke_opacity=0.55)
+                       color=ACCENT, stroke_width=0.8, stroke_opacity=0.6)
 
         # ── Frequency domain block ─────────────────────────────────
         fd_head = VGroup(
             Text("Frequency domain analysis",
-                 color=AMBER, font_size=38, weight=BOLD),
+                 color=ACCENT, font=FONT, font_size=38, weight=BOLD),
             Text("(spectral analysis)",
-                 color=AMBER, font_size=26, slant=ITALIC),
+                 color=ACCENT, font=FONT, font_size=26, slant=ITALIC),
         ).arrange(RIGHT, buff=0.28, aligned_edge=DOWN)
 
         fd_line1 = Text(
             "Studies a series through its spectrum.",
-            color=WHITE, font_size=26,
+            color=OFF, font=FONT, font_size=26,
         )
         fd_line2 = Text(
             "Effectively, a regression of the series on sinusoids",
-            color=WHITE, font_size=26, slant=ITALIC,
+            color=OFF, font=FONT, font_size=26, slant=ITALIC,
         )
         fd_line3 = Text(
             "oscillating at different frequencies.",
-            color=WHITE, font_size=26, slant=ITALIC,
+            color=OFF, font=FONT, font_size=26, slant=ITALIC,
         )
         fd_block = VGroup(fd_head, fd_line1, fd_line2, fd_line3).arrange(
             DOWN, aligned_edge=LEFT, buff=0.18
