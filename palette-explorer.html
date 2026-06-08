@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Palette explorer — Topic 1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script>MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']]},chtml:{scale:.95}};</script>
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>
+  /* ════ PALETTES — layout/typography fixed, only colour varies ════ */
+  :root{                                   /* 1 · Slate / Amber (current) */
+    --bg:#EEF1F5; --ink:#1E2632; --head:#0D1B2A; --soft:#5A6675; --faint:#93A0AF;
+    --accent:#C8762A; --accentdk:#A85F1E; --card:#FFFFFF; --tint:#E5EAF0; --rule:#E2E7EE; --border:#D7DEE7;
+  }
+  body[data-pal="warm"]{                   /* 2 · Warm Paper / Amber (the original) */
+    --bg:#FAFAF8; --ink:#2C2420; --head:#0D1B2A; --soft:#8A7A68; --faint:#B0A494;
+    --accent:#C8762A; --accentdk:#A85F1E; --card:#FFFFFF; --tint:#F2EDE4; --rule:#E0D8CC; --border:#D8CEBC;
+  }
+  body[data-pal="oxford"]{                 /* 3 · Oxford / Oxblood */
+    --bg:#F3F1EB; --ink:#26211C; --head:#1A1714; --soft:#6B635A; --faint:#9A9085;
+    --accent:#9B2C2C; --accentdk:#7E2222; --card:#FFFDF9; --tint:#ECE7DC; --rule:#E0D9CC; --border:#DDD5C6;
+  }
+  body[data-pal="blueprint"]{              /* 4 · Blueprint / Plot-blue */
+    --bg:#FBFCFE; --ink:#172230; --head:#0F1A28; --soft:#5A6878; --faint:#90A0B2;
+    --accent:#2297E6; --accentdk:#1A6FB0; --card:#FFFFFF; --tint:#EAF1FA; --rule:#E3EAF3; --border:#D8E2EE;
+  }
+  body[data-pal="teal"]{                   /* 5 · Teal Slate */
+    --bg:#EDF2F2; --ink:#1B2A2A; --head:#0C1E1E; --soft:#566563; --faint:#8FA3A0;
+    --accent:#0E8C82; --accentdk:#0A6A62; --card:#FFFFFF; --tint:#E0ECEA; --rule:#DEE8E7; --border:#D2E0DE;
+  }
+  body[data-pal="graphite"]{               /* 6 · Graphite / Burnt-orange */
+    --bg:#F1F2F4; --ink:#23262B; --head:#14171C; --soft:#5B616B; --faint:#969CA6;
+    --accent:#D2691E; --accentdk:#A8511A; --card:#FFFFFF; --tint:#E7E9ED; --rule:#E3E5EA; --border:#D9DCE2;
+  }
+
+  *,*::before,*::after{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:'IBM Plex Sans',sans-serif;
+       font-weight:400;font-size:1.05rem;line-height:1.78;-webkit-font-smoothing:antialiased;
+       transition:background .25s ease,color .25s ease;}
+
+  /* ════ PALETTE PICKER BAR (fixed) ════ */
+  .picker{position:fixed;top:0;left:0;right:0;z-index:100;background:#0D1B2A;
+       display:flex;align-items:center;gap:.55rem;flex-wrap:wrap;padding:.7rem 1.1rem;
+       box-shadow:0 2px 14px rgba(0,0,0,.25);}
+  .picker .plabel{font-family:'IBM Plex Mono',monospace;font-size:.6rem;letter-spacing:.16em;
+       text-transform:uppercase;color:rgba(255,255,255,.5);margin-right:.4rem;}
+  .swatch{display:flex;align-items:center;gap:.45rem;cursor:pointer;border:1px solid rgba(255,255,255,.14);
+       background:rgba(255,255,255,.04);border-radius:6px;padding:.32rem .6rem;transition:border-color .15s,background .15s;}
+  .swatch:hover{border-color:rgba(255,255,255,.4);}
+  .swatch.active{border-color:#fff;background:rgba(255,255,255,.12);}
+  .swatch .dots{display:flex;}
+  .swatch .dots i{width:13px;height:13px;border-radius:50%;display:block;border:1px solid rgba(0,0,0,.15);}
+  .swatch .dots i+i{margin-left:-4px;}
+  .swatch span{font-family:'IBM Plex Mono',monospace;font-size:.62rem;letter-spacing:.05em;color:rgba(255,255,255,.82);}
+
+  /* ════ SAMPLE STAGE ════ */
+  .stage{max-width:780px;margin:0 auto;padding:5.6rem 1.5rem 4rem;}
+
+  .mininav{display:flex;justify-content:space-between;align-items:center;background:var(--head);
+       border-radius:7px;padding:.5rem 1rem;margin-bottom:2rem;}
+  .mininav .ml{display:flex;gap:1.1rem;}
+  .mininav a{font-family:'IBM Plex Mono',monospace;font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;
+       color:rgba(255,255,255,.6);text-decoration:none;}
+  .mininav a.cur{color:var(--accent);}
+  .mininav .brand{font-family:'IBM Plex Mono',monospace;font-size:.72rem;color:#fff;letter-spacing:.04em;}
+
+  .kicker{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:.64rem;letter-spacing:.18em;
+       text-transform:uppercase;color:var(--accentdk);border:1px solid var(--border);background:var(--card);
+       padding:.28em .65em;border-radius:4px;margin-bottom:1rem;}
+  h1{font-weight:700;font-size:2.6em;line-height:1.05;letter-spacing:-.03em;margin:0 0 .3em;color:var(--head);}
+  h1::after{content:'';display:block;width:52px;height:3px;background:var(--accent);margin:.5rem 0;}
+  .lede{color:var(--soft);font-size:1.12rem;margin:0 0 2rem;}
+  h2{font-weight:600;font-size:1.5em;color:var(--head);margin:2.4rem 0 1rem;display:flex;align-items:center;gap:.65rem;}
+  h2::before{content:'';width:10px;height:10px;background:var(--accent);border-radius:2px;}
+  p{margin:0 0 1rem;} strong{font-weight:600;color:var(--head);} em{color:var(--soft);}
+  a.link{color:var(--accentdk);text-decoration:none;border-bottom:1px solid var(--border);}
+  a.link:hover{border-color:var(--accent);}
+
+  .slidebox{position:relative;background:var(--card);border:1px solid var(--border);border-radius:8px;
+       padding:1.6rem 1.8rem 1.7rem;margin:1.6rem 0;box-shadow:0 4px 18px rgba(20,35,55,.07),0 1px 4px rgba(20,35,55,.05);
+       counter-increment:s;}
+  .slidebox::before{content:counter(s,decimal-leading-zero);position:absolute;top:.95rem;right:1.15rem;
+       font-family:'IBM Plex Mono',monospace;font-size:.6rem;letter-spacing:.1em;color:var(--faint);}
+  .slidebox::after{content:'';position:absolute;left:0;top:1.6rem;bottom:1.6rem;width:3px;background:var(--accent);border-radius:0 3px 3px 0;}
+  .stage{counter-reset:s;}
+  .slide-label{display:block;font-weight:600;font-size:1.22em;color:var(--head);margin-bottom:.7rem;line-height:1.22;padding-right:2.5rem;}
+  .slide-body{font-size:1rem;line-height:1.74;color:var(--ink);}
+  .slide-body ul{padding-left:1.2rem;margin:.4rem 0;}
+  .slide-footer{margin-top:1.1rem;padding-top:.7rem;border-top:1px solid var(--rule);
+       font-family:'IBM Plex Mono',monospace;font-size:.76rem;color:var(--accentdk);line-height:1.6;}
+
+  details.callout{margin:1.4rem 0;background:var(--card);border:1px solid var(--border);border-left:3px solid var(--accent);
+       border-radius:0 6px 6px 0;box-shadow:0 4px 18px rgba(20,35,55,.07);}
+  details.callout>summary{font-family:'IBM Plex Mono',monospace;font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;
+       color:var(--soft);padding:.8rem 1.1rem;cursor:pointer;list-style:none;display:flex;align-items:center;gap:.5rem;}
+  details.callout>summary::-webkit-details-marker{display:none;}
+  details.callout>summary::before{content:'▸';color:var(--accent);}
+  details.callout[open]>summary::before{content:'▾';}
+  details.callout .c-body{padding:.3rem 1.2rem 1.1rem;}
+
+  .insight{background:var(--head);border-radius:7px;padding:.9rem 1.2rem;margin:1.4rem 0;}
+  .insight .il{display:block;font-family:'IBM Plex Mono',monospace;font-size:.58rem;letter-spacing:.18em;
+       text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:.3rem;}
+  .insight .it{color:#F2F5F9;font-weight:500;line-height:1.6;}
+
+  pre.code{background:var(--head);border-radius:7px;padding:.9rem 1.2rem;margin:1.2rem 0;overflow-x:auto;
+       font-family:'IBM Plex Mono',monospace;font-size:.82rem;color:#E8EDF3;line-height:1.6;}
+  pre.code .kw{color:var(--accent);}
+
+  .hexbar{max-width:780px;margin:1rem auto 0;padding:0 1.5rem;font-family:'IBM Plex Mono',monospace;
+       font-size:.64rem;color:var(--faint);letter-spacing:.03em;}
+  .hexbar b{color:var(--accentdk);font-weight:500;}
+
+  mjx-container[display="true"]{overflow-x:auto;max-width:100%;}
+</style>
+</head>
+<body data-pal="slate">
+
+  <!-- PALETTE PICKER -->
+  <div class="picker" id="picker">
+    <span class="plabel">Palette</span>
+    <button class="swatch active" data-set="slate"><span class="dots"><i style="background:#C8762A"></i><i style="background:#EEF1F5"></i></span><span>Slate · Amber</span></button>
+    <button class="swatch" data-set="warm"><span class="dots"><i style="background:#C8762A"></i><i style="background:#FAFAF8"></i></span><span>Warm Paper</span></button>
+    <button class="swatch" data-set="oxford"><span class="dots"><i style="background:#9B2C2C"></i><i style="background:#F3F1EB"></i></span><span>Oxford · Oxblood</span></button>
+    <button class="swatch" data-set="blueprint"><span class="dots"><i style="background:#2297E6"></i><i style="background:#FBFCFE"></i></span><span>Blueprint · Blue</span></button>
+    <button class="swatch" data-set="teal"><span class="dots"><i style="background:#0E8C82"></i><i style="background:#EDF2F2"></i></span><span>Teal Slate</span></button>
+    <button class="swatch" data-set="graphite"><span class="dots"><i style="background:#D2691E"></i><i style="background:#F1F2F4"></i></span><span>Graphite · Orange</span></button>
+  </div>
+
+  <div class="hexbar" id="hexbar"></div>
+
+  <!-- SAMPLE CONTENT -->
+  <div class="stage">
+    <div class="mininav"><div class="ml"><a class="cur">Topic 1</a><a>Topic 2</a><a>Topic 3</a><a>Topic 4</a></div><span class="brand">DR RAGVIR SABHARWAL</span></div>
+
+    <span class="kicker">Topic 1</span>
+    <h1>Introducing Time Series Analysis</h1>
+    <p class="lede">Reviewing the statistical foundations, and motivating why time-ordered data demands its own techniques.</p>
+
+    <h2>Basic concepts</h2>
+
+    <div class="slidebox">
+      <span class="slide-label">What is a random variable?</span>
+      <div class="slide-body"><ul>
+        <li>A random variable is a <strong>function</strong> $Y : \Omega \mapsto \mathbb{R}$ that maps outcomes of an experiment to a real number.</li>
+        <li>Denoted by capital italic Roman letters such as $Y = Y(\omega)$, where $\omega \in \Omega$.</li>
+      </ul></div>
+      <div class="slide-footer">A real-valued function of the sample space.</div>
+    </div>
+
+    <div class="slidebox">
+      <span class="slide-label">Why is the sample mean ubiquitous?</span>
+      <div class="slide-body">
+        <p><strong>Theorem — Chebyshev's LLN.</strong> If $Y_t \overset{\text{iid}}{\sim} F_Y(\mu_Y,\sigma_Y^2)$ with $0<\sigma_Y^2<\infty$, then $$\operatorname*{plim}_{T\to\infty}\bar{Y}_T = \mu_Y.$$</p>
+        <p>That is, $\bar{Y}_T \overset{p}{\to}\mu_Y$ — the sample mean is <strong>consistent</strong> for the population mean.</p>
+      </div>
+      <div class="slide-footer">A sample moment converges in probability to its population counterpart.</div>
+    </div>
+
+    <details class="callout" open><summary>Intuition</summary>
+      <div class="c-body"><p>You would never omit cross-terms when squaring: $(a+b+c)^2$ has <em>nine</em> terms. The same slip appears with variances — see "<a class="link">A stark message</a>" below.</p></div>
+    </details>
+
+    <div class="insight">
+      <span class="il">Key takeaway</span>
+      <span class="it">Dependence is the defining feature of time series — we characterise models by their autocovariances.</span>
+    </div>
+
+    <pre class="code"><span class="kw">set.seed</span>(42); y &lt;- <span class="kw">rnorm</span>(100) + 0.5 * <span class="kw">lag</span>(<span class="kw">rnorm</span>(100))   <span style="opacity:.55"># MA(1)</span></pre>
+  </div>
+
+  <script>
+    const NAMES={slate:'Slate · Amber',warm:'Warm Paper · Amber',oxford:'Oxford · Oxblood',blueprint:'Blueprint · Plot-blue',teal:'Teal Slate',graphite:'Graphite · Burnt-orange'};
+    const ACC={slate:'#C8762A',warm:'#C8762A',oxford:'#9B2C2C',blueprint:'#2297E6',teal:'#0E8C82',graphite:'#D2691E'};
+    const BG={slate:'#EEF1F5',warm:'#FAFAF8',oxford:'#F3F1EB',blueprint:'#FBFCFE',teal:'#EDF2F2',graphite:'#F1F2F4'};
+    function pick(set){
+      document.body.dataset.pal=set;
+      document.querySelectorAll('.swatch').forEach(b=>b.classList.toggle('active',b.dataset.set===set));
+      document.getElementById('hexbar').innerHTML='<b>'+NAMES[set]+'</b> &nbsp; accent '+ACC[set]+' &nbsp;·&nbsp; canvas '+BG[set];
+    }
+    document.querySelectorAll('.swatch').forEach(b=>b.addEventListener('click',()=>pick(b.dataset.set)));
+    pick('slate');
+  </script>
+</body>
+</html>

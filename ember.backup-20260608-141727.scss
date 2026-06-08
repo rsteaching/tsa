@@ -1,186 +1,148 @@
 /*-- scss:defaults --*/
 
-// ════════════════════════════════════════════════════════════════
-//  INK / CORAL — light grey canvas, near-black ink headings, crimson accent.
-//  Accent #E11D48 — a crisp, high-contrast crimson.
-//  Type: IBM Plex Sans (body + headings) · IBM Plex Mono (chrome).
-//  To re-theme, edit only the palette block in scss:rules below.
-// ════════════════════════════════════════════════════════════════
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300;1,400&family=JetBrains+Mono:wght@400;500&display=swap');
 
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
-
-$font-family-sans-serif:  'IBM Plex Sans', system-ui, sans-serif;
-$font-family-monospace:   'IBM Plex Mono', ui-monospace, monospace;
+$font-family-sans-serif:  'DM Sans', system-ui, sans-serif;
+$font-family-monospace:   'JetBrains Mono', monospace;
 $font-size-base:          1.05rem;
-$line-height-base:        1.78;
-$body-bg:                 #F2F1F3;
-$body-color:              #26272F;
-$link-color:              #BE123C;
-$link-hover-color:        #E11D48;
-$headings-font-family:    'IBM Plex Sans', system-ui, sans-serif;
+$line-height-base:        1.82;
+$body-bg:                 #FAFAF8;
+$body-color:              #2C2420;
+$link-color:              #0D1B2A;
+$link-hover-color:        #0D1B2A;
+$headings-font-family:    'Charter', 'Bitstream Charter', 'Sitka Text', Georgia, serif;
 $headings-font-weight:    700;
-$headings-color:          #1A1B22;
-$headings-line-height:    1.1;
-$code-bg:                 #EAE8EC;
-$code-color:              #1A1B22;
+$headings-color:          #0D1B2A;
+$headings-line-height:    1.12;
+$code-bg:                 #F2EDE4;
+$code-color:              #0D1B2A;
 $blockquote-font-size:    1em;
 
 /*-- scss:rules --*/
 
-// ── Palette ───────────────────────────────────────────────────
-$head:      #1A1B22;   // headings / dark surfaces (navbar, code, insight)
-$ink:       #26272F;   // body text
-$accent:    #E11D48;   // accent (crimson)
-$accent-dk: #BE123C;   // accent (text / links)
-$soft:      #5E5F6B;   // muted text
-$faint:     #9091A0;   // faint labels
-$bg:        #F2F1F3;   // page canvas (light grey — lets cards lift)
-$card:      #FFFFFF;   // cards
-$tint:      #EAE8EC;   // tinted surfaces
-$rule:      #DFDDE3;   // hairlines
-$border:    #D4D2DA;   // card borders
-
-$sans: 'IBM Plex Sans', system-ui, sans-serif;
-$mono: 'IBM Plex Mono', ui-monospace, monospace;
-
-$shadow:    0 4px 18px rgba(30,30,42,0.07), 0 1px 4px rgba(30,30,42,0.05);
-$shadow-lg: 0 10px 34px rgba(30,30,42,0.10), 0 3px 8px rgba(30,30,42,0.06);
+$navy:     #0D1B2A;
+$amber:    #C8762A;
+$ink:      #2C2420;
+$graphite: #8A7A68;
+$stone:    #B0A494;
+$bg:       #FAFAF8;
+$bg2:      #F5F0E8;
+$bg3:      #F2EDE4;
+$rule:     #E0D8CC;
+$border:   #D8CEBC;
 
 *, *::before, *::after { box-sizing: border-box; }
 
 body {
-  font-weight: 400;
+  font-weight: 300;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-  counter-reset: slidebox;          // per-page slidebox numbering
 }
 
 // ── Headings ──────────────────────────────────────────────────
 h1 {
-  font-size: 2.0em;
+  font-size: 2.4em;
   font-weight: 700;
-  color: $head;
+  color: $navy;
   letter-spacing: -0.03em;
-  line-height: 1.06;
+  line-height: 1.08;
   margin-bottom: 0.15em;
   border: none;
   &::after {
     content: '';
     display: block;
-    width: 52px;
+    width: 48px;
     height: 3px;
-    background: $accent;
-    margin-top: 0.5rem;
+    background: $amber;
+    margin-top: 0.45rem;
     margin-bottom: 0.6rem;
   }
 }
 
 h2 {
   font-size: 1.55em;
-  font-weight: 600;
-  color: $head;
-  letter-spacing: -0.015em;
-  margin-top: 3rem;
-  margin-bottom: 1rem;
-  border: none;
-  padding-bottom: 0;
-  display: flex;
-  align-items: center;
-  gap: 0.65rem;
-  // accent square marker
-  &::before {
-    content: '';
-    flex: none;
-    width: 10px;
-    height: 10px;
-    background: $accent;
-    border-radius: 2px;
-  }
+  font-weight: 700;
+  color: $navy;
+  letter-spacing: -0.02em;
+  border-bottom: 0.5px solid $rule;
+  padding-bottom: 0.2rem;
+  margin-top: 2.4rem;
+  margin-bottom: 0.65rem;
 }
 
 h3 {
-  font-size: 1.15em;
-  font-weight: 600;
-  color: $head;
-  margin-top: 1.8rem;
-  margin-bottom: 0.5rem;
-  letter-spacing: -0.01em;
+  font-size: 1.18em;
+  font-weight: 700;
+  color: $navy;
+  margin-top: 1.7rem;
+  margin-bottom: 0.4rem;
+  letter-spacing: -0.012em;
 }
 
 h4 {
   font-size: 1em;
   font-weight: 400;
   font-style: italic;
-  color: $soft;
+  color: $graphite;
   margin-top: 1.2rem;
 }
 
 // ── Prose ─────────────────────────────────────────────────────
 p {
   font-size: 1.05rem;
-  line-height: 1.78;
-  margin-bottom: 1rem;
+  font-weight: 300;
+  line-height: 1.85;
+  margin-bottom: 0.9rem;
 }
 
-strong { font-weight: 600; color: $head; }
-em { color: $soft; }
+strong { font-weight: 500; color: $amber; }
+em { color: $graphite; }
 
 a {
-  color: $accent-dk;
-  text-decoration: none;
-  border-bottom: 1px solid $border;
+  color: $navy;
+  text-decoration-color: $rule;
   text-underline-offset: 3px;
-  transition: color 0.15s ease, border-color 0.15s ease;
-  &:hover { color: $accent; border-bottom-color: $accent; }
+  transition: color 0.15s ease;
+  &:hover { color: $navy; }
 }
 
 // ── Lists ─────────────────────────────────────────────────────
 ul, ol {
   font-size: 1rem;
-  line-height: 1.74;
-  padding-left: 1.3rem;
+  font-weight: 300;
+  line-height: 1.8;
+  padding-left: 1.4rem;
   li {
-    margin: 0.4rem 0;
-    strong { color: $head; font-weight: 600; }
+    margin: 0.28rem 0;
+    strong { color: $amber; font-weight: 500; }
   }
-}
-
-// ── Section rule (qmd `---` separators) ───────────────────────
-hr {
-  height: 1px;
-  background: $rule;
-  border: 0;
-  opacity: 1;
-  margin: 2.6rem 0;
 }
 
 // ── Blockquote ────────────────────────────────────────────────
 blockquote {
-  border-left: 3px solid $accent;
-  padding: 0.6rem 1.1rem;
-  background: $tint;
-  border-radius: 0 6px 6px 0;
+  border-left: 3px solid $amber;
+  padding: 0.55rem 1rem;
+  background: $bg3;
+  border-radius: 0 4px 4px 0;
   font-style: italic;
-  color: $soft;
-  margin: 1.2rem 0;
+  color: $graphite;
+  margin: 1.1rem 0;
 }
 
 // ── Code ──────────────────────────────────────────────────────
 code {
-  font-family: $mono;
-  font-size: 0.86em;
+  font-size: 0.87em;
   padding: 0.13em 0.4em;
   border-radius: 3px;
-  background: $tint;
-  color: $head;
+  background: $bg3;
+  color: $navy;
 }
 
 pre {
-  background: $head !important;
-  border-radius: 7px;
+  background: $navy !important;
+  border-radius: 5px;
   padding: 1.1rem 1.6rem;
   overflow-x: auto;
-  box-shadow: $shadow;
   scrollbar-width: thin;
   scrollbar-color: rgba(255,255,255,0.15) transparent;
   &::-webkit-scrollbar { height: 4px; }
@@ -188,7 +150,7 @@ pre {
   &::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.18); border-radius: 2px; }
   code {
     font-size: 0.85em;
-    color: #ECECF0 !important;
+    color: #E8E4DC !important;
     background: transparent !important;
     padding: 0 !important;
     line-height: 1.65;
@@ -198,84 +160,60 @@ pre {
 div.sourceCode { background: transparent !important; border: none !important; }
 
 // ── Tables ────────────────────────────────────────────────────
-table { font-size: 0.95rem; border-collapse: collapse; width: 100%; margin: 1rem 0; }
+table { font-size: 0.95rem; font-weight: 300; border-collapse: collapse; width: 100%; margin: 0.9rem 0; }
 thead th {
-  font-family: $mono;
+  font-family: 'JetBrains Mono', monospace;
   font-size: 0.6rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: $faint;
-  border-bottom: 1.5px solid $head;
+  color: $stone;
+  border-bottom: 1.5px solid $navy;
   padding: 0.5rem 0.75rem;
   font-weight: 500;
   text-align: left;
 }
-tbody td { padding: 0.48rem 0.75rem; border-bottom: 1px solid $rule; }
+tbody td { padding: 0.48rem 0.75rem; border-bottom: 0.5px solid $rule; font-weight: 300; }
 tbody tr:last-child td { border-bottom: none; }
 
-// ── Callouts (flat tinted panels — deliberately NOT the slidebox card) ──
-//  The slidebox = white fill + drop shadow + soft-rounded card. Callouts
-//  drop all three so they read as annotations, not slides. Each flavour
-//  carries its own tint / spine / label colour.
-$callout-flavours: (
-  "note":      (#E11D48, #EAE8EC, #BE123C),
-  "tip":       (#2F855A, #E6F0EA, #276749),
-  "warning":   (#B7791F, #F3ECD9, #8C6600),
-  "important": (#9333EA, #EFE6F8, #7C28C4),
-  "caution":   (#C2410C, #F5E6DD, #9A3412),
-);
-
+// ── Callouts ──────────────────────────────────────────────────
 .callout {
-  background: $tint;
-  border: 1px solid $border !important;
-  border-left: 3px solid $accent !important;
-  border-radius: 4px !important;
-  box-shadow: none !important;          // kill the card lift (the slidebox cue)
-  font-size: 0.96rem;
-  margin: 1.3rem 0;
-
+  background: $bg2;
+  border-radius: 4px;
+  font-size: 0.95rem;
+  font-weight: 300;
+  margin: 1rem 0;
+  border-left: none !important;
   .callout-title-container {
-    font-family: $mono;
-    font-size: 0.62rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem;
     text-transform: uppercase;
-    letter-spacing: 0.14em;
-    font-weight: 600;
-    color: $accent-dk;
+    letter-spacing: 0.13em;
+    font-weight: 500;
   }
-  .callout-icon::before { opacity: 0.85; }
-  // single flat tint — neutralise Quarto's lighter header band
-  .callout-header { background: transparent !important; border-bottom: none !important; }
-  .callout-body-container { font-size: 0.96rem; }
-  .callout-body > :last-child,
-  .callout-body-container > :last-child { margin-bottom: 0; }
 }
 
-// per-flavour colour — fill, spine and label
-@each $name, $colors in $callout-flavours {
-  .callout-#{$name} {
-    background: nth($colors, 2) !important;
-    border-top: none !important;
-    border-left: 3px solid nth($colors, 1) !important;
-    .callout-title-container { color: nth($colors, 3); }
-  }
-}
+div.callout { border-left: none !important; }
+
+.callout-note      { border-top: 2px solid $navy !important; border-left: none !important; }
+.callout-tip       { border-top: 2px solid $navy !important; border-left: none !important; }
+.callout-warning   { border-top: 2px solid $navy !important; border-left: none !important; }
+.callout-important { border-top: 2px solid $navy !important; border-left: none !important; }
 
 // ── Equation boxes ────────────────────────────────────────────
 .eq-box {
-  background: $tint;
-  border: 1px solid $border;
-  border-left: 3px solid $accent;
-  border-radius: 0 6px 6px 0;
+  background: $bg3;
+  border-left: 3px solid $amber;
+  border-radius: 0 5px 5px 0;
   padding: 0.9rem 1.2rem;
-  margin: 1rem 0;
+  margin: 0.9rem 0;
   overflow: hidden;
   .eq-label {
     display: block;
-    font-family: $mono;
+    font-family: 'JetBrains Mono', monospace;
     font-size: 0.58rem;
     text-transform: uppercase;
     letter-spacing: 0.15em;
-    color: $accent-dk;
+    color: $amber;
     margin-bottom: 0.3rem;
     user-select: none;
   }
@@ -304,11 +242,10 @@ $callout-flavours: (
 }
 
 .eq-box.result {
-  border-left-color: $head;
-  .eq-label { color: $head; }
+  border-left-color: $navy;
+  .eq-label { color: $navy; }
 }
 
-// ── MathJax overflow guards ───────────────────────────────────
 mjx-container[display="true"]:not(.eq-box mjx-container) {
   display: block !important;
   overflow-x: auto !important;
@@ -334,133 +271,87 @@ mjx-container:not([display="true"]) {
 
 // ── Dark insight block ────────────────────────────────────────
 .insight {
-  background: $head;
-  border-radius: 7px;
-  padding: 0.9rem 1.2rem;
-  margin: 1.4rem 0;
-  box-shadow: $shadow;
+  background: $navy;
+  border-radius: 5px;
+  padding: 0.85rem 1.15rem;
+  margin: 1rem 0;
   .insight-label {
     display: block;
-    font-family: $mono;
+    font-family: 'JetBrains Mono', monospace;
     font-size: 0.58rem;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: #F4859E;
-    font-weight: 600;
+    color: #E8A456;
+    font-weight: 700;
     margin-bottom: 0.3rem;
   }
   .insight-text {
-    font-family: $sans;
+    font-family: 'Charter', 'Bitstream Charter', 'Sitka Text', Georgia, serif;
+    font-style: italic;
     font-size: 1rem;
-    font-weight: 500;
-    color: #F3F2F5;
+    font-weight: 700;
+    color: #FAFAF8;
     line-height: 1.6;
   }
-  mjx-container { color: #F3F2F5 !important; }
+  mjx-container { color: #FAFAF8 !important; }
 }
 
 // ── Closing statement ─────────────────────────────────────────
 .closing {
-  font-family: $sans;
+  font-family: 'Charter', 'Bitstream Charter', 'Sitka Text', Georgia, serif;
   font-style: italic;
   font-size: 1.05rem;
   font-weight: 400;
-  color: $accent-dk;
-  border-top: 1px solid $rule;
-  padding-top: 0.7rem;
-  margin-top: 1.2rem;
+  color: $amber;
+  border-top: 0.5px solid $rule;
+  padding-top: 0.6rem;
+  margin-top: 1.1rem;
   line-height: 1.65;
 }
 
-// ── Kicker label (badge) ──────────────────────────────────────
+// ── Kicker label ──────────────────────────────────────────────
 .kicker {
-  display: inline-block;
-  font-family: $mono;
-  font-size: 0.64rem;
+  display: block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: $accent-dk;
-  border: 1px solid $border;
-  background: $card;
-  padding: 0.28em 0.65em;
-  border-radius: 4px;
-  margin-bottom: 0.9rem;
+  color: $stone;
+  margin-bottom: 0.28rem;
 }
 
 // ── Video card ────────────────────────────────────────────────
 .video-card {
   margin: 1.4rem 0;
-  border: 1px solid $border;
-  border-radius: 8px;
-  overflow: hidden;
-  background: $head;
-  box-shadow: $shadow;
-  // the leading **Bold title** becomes a mono caption bar
-  strong {
-    display: block;
-    font-family: $mono;
-    font-size: 0.64rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: rgba(255,255,255,0.82);
-    padding: 0.55rem 0.9rem;
-    border-bottom: 1px solid rgba(255,255,255,0.08);
-  }
+  box-shadow: 0 4px 16px rgba(13,27,42,0.09), 0 1px 4px rgba(13,27,42,0.05);
   video { display: block; width: 100%; }
 }
 
-// ── Slidebox (numbered card, accent left spine) ───────────────
+// ── Slidebox ──────────────────────────────────────────────────
 .slidebox {
-  position: relative;
-  background: $card;
-  border: 1px solid $border;
-  border-radius: 8px;
-  padding: 1.6rem 1.8rem 1.7rem;
-  margin: 1.8rem 0;
-  box-shadow: $shadow;
-  counter-increment: slidebox;
-
-  // leading-zero counter, top-right
-  &::before {
-    content: counter(slidebox, decimal-leading-zero);
-    position: absolute;
-    top: 0.95rem;
-    right: 1.15rem;
-    font-family: $mono;
-    font-size: 0.6rem;
-    letter-spacing: 0.1em;
-    color: $faint;
-  }
-  // accent spine
-  &::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 1.6rem;
-    bottom: 1.6rem;
-    width: 3px;
-    background: $accent;
-    border-radius: 0 3px 3px 0;
-  }
-
+  background: #FFFFFF;
+  border: 0.5px solid $border;
+  border-top: 4px solid $amber;
+  padding: 1.3rem 1.5rem;
+  margin: 1.4rem 0;
+  box-shadow: 0 4px 16px rgba(13,27,42,0.09), 0 1px 4px rgba(13,27,42,0.05);
   .slide-label {
     display: block;
-    font-family: $sans;
-    font-size: 1.22em;
-    font-weight: 600;
-    color: $head;
-    letter-spacing: -0.01em;
-    margin-bottom: 0.7rem;
-    line-height: 1.22;
-    padding-right: 2.5rem;   // clear the counter
+    font-family: 'Charter', 'Bitstream Charter', 'Sitka Text', Georgia, serif;
+    font-size: 1.18em;
+    font-weight: 700;
+    color: $navy;
+    letter-spacing: -0.012em;
+    margin-bottom: 0.6rem;
+    line-height: 1.2;
   }
   .slide-body {
-    font-family: $sans;
+    font-family: 'Charter', 'Bitstream Charter', 'Sitka Text', Georgia, serif;
     font-size: 1rem;
-    color: #2A3744;
-    line-height: 1.74;
+    color: $navy;
+    line-height: 1.72;
     font-weight: 400;
-    > :last-child { margin-bottom: 0; }
+    p:last-child { margin-bottom: 0; }
   }
   mjx-container[display="true"] {
     display: block !important;
@@ -470,27 +361,26 @@ mjx-container:not([display="true"]) {
     &::-webkit-scrollbar { display: none; }
   }
   .slide-footer {
-    margin-top: 1.1rem;
-    padding-top: 0.7rem;
-    border-top: 1px solid $rule;
-    font-family: $mono;
-    font-size: 0.76rem;
-    letter-spacing: 0.02em;
-    color: $accent-dk;
+    margin-top: 0.85rem;
+    padding-top: 0.55rem;
+    border-top: 0.5px solid $rule;
+    font-family: 'Charter', 'Bitstream Charter', 'Sitka Text', Georgia, serif;
+    font-size: 0.88rem;
+    font-style: italic;
+    color: $amber;
     line-height: 1.6;
-    font-style: normal;
-    .insight-text { font-style: normal; }
   }
 }
 
 // ── Italic aside ──────────────────────────────────────────────
 .aside-text {
   font-style: italic;
-  color: $soft;
+  color: $graphite;
   font-size: 0.95rem;
+  font-weight: 300;
   line-height: 1.7;
-  border-left: 2px solid $rule;
-  padding-left: 0.7rem;
+  border-left: 1.5px solid $rule;
+  padding-left: 0.65rem;
   margin: 0.5rem 0;
 }
 
@@ -498,26 +388,22 @@ mjx-container:not([display="true"]) {
 .hero {
   margin: 0.5rem 0 2.6rem;
   padding-bottom: 1.6rem;
-  border-bottom: 1px solid $rule;
+  border-bottom: 0.5px solid $rule;
 
   .hero-kicker {
-    display: inline-block;
-    font-family: $mono;
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
     font-size: 0.62rem;
     letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: $accent-dk;
-    border: 1px solid $border;
-    background: $card;
-    padding: 0.28em 0.65em;
-    border-radius: 4px;
-    margin-bottom: 0.9rem;
+    color: $amber;
+    margin-bottom: 0.7rem;
   }
   .hero-title {
-    font-family: $sans;
+    font-family: 'Charter', 'Bitstream Charter', 'Sitka Text', Georgia, serif;
     font-size: 2.9em;
     font-weight: 700;
-    color: $head;
+    color: $navy;
     letter-spacing: -0.03em;
     line-height: 1.05;
     margin: 0 0 0.35rem;
@@ -525,17 +411,18 @@ mjx-container:not([display="true"]) {
     &::after { display: none; }
   }
   .hero-subtitle {
-    font-family: $mono;
+    font-family: 'JetBrains Mono', monospace;
     font-size: 0.7rem;
     letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: $faint;
+    color: $stone;
     margin-bottom: 1.1rem;
   }
   .hero-lede {
-    font-size: 1.1rem;
+    font-size: 1.08rem;
+    font-weight: 300;
     line-height: 1.75;
-    color: $soft;
+    color: $ink;
     max-width: 46rem;
     margin: 0;
   }
@@ -552,17 +439,17 @@ mjx-container:not([display="true"]) {
 .topic-card {
   display: flex;
   flex-direction: column;
-  background: $card;
-  border: 1px solid $border;
-  border-top: 3px solid $accent;
-  border-radius: 0 0 8px 8px;
+  background: #FFFFFF;
+  border: 0.5px solid $border;
+  border-top: 3px solid $amber;
+  border-radius: 0 0 5px 5px;
   padding: 1.25rem 1.35rem 1.1rem;
-  box-shadow: $shadow;
+  box-shadow: 0 2px 10px rgba(13,27,42,0.05), 0 1px 3px rgba(13,27,42,0.04);
   transition: transform 0.16s ease, box-shadow 0.16s ease;
 
   &:hover {
     transform: translateY(-3px);
-    box-shadow: $shadow-lg;
+    box-shadow: 0 10px 26px rgba(13,27,42,0.11), 0 2px 6px rgba(13,27,42,0.06);
   }
 
   // Pandoc wraps each span in its own <p> — neutralise default margins
@@ -571,64 +458,64 @@ mjx-container:not([display="true"]) {
 
   .topic-num {
     display: block;
-    font-family: $mono;
+    font-family: 'JetBrains Mono', monospace;
     font-size: 0.6rem;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: $faint;
+    color: $stone;
     margin-bottom: 0.55rem;
   }
   .topic-title {
     display: block;
-    font-family: $sans;
+    font-family: 'Charter', 'Bitstream Charter', 'Sitka Text', Georgia, serif;
     font-size: 1.28rem;
-    font-weight: 600;
-    color: $head;
-    letter-spacing: -0.01em;
+    font-weight: 700;
+    color: $navy;
+    letter-spacing: -0.012em;
     line-height: 1.2;
     margin-bottom: 0.45rem;
   }
   .topic-desc {
     display: block;
     font-size: 0.94rem;
+    font-weight: 300;
     line-height: 1.62;
-    color: $soft;
+    color: $graphite;
   }
   .topic-links {
     display: flex;
     align-items: center;
     gap: 1rem;
     padding-top: 0.7rem;
-    border-top: 1px solid $rule;
+    border-top: 0.5px solid $rule;
     p { margin: 0; display: flex; align-items: center; gap: 1rem; width: 100%; }
-    font-family: $mono;
+    font-family: 'JetBrains Mono', monospace;
     font-size: 0.62rem;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     a {
       text-decoration: none;
-      border-bottom: none;
       transition: color 0.15s ease;
     }
     .topic-read {
-      color: $accent-dk;
+      color: $amber;
       font-weight: 500;
-      &:hover { color: $accent; }
+      &:hover { color: darken($amber, 12%); }
     }
     .topic-pdf {
-      color: $faint;
+      color: $stone;
       margin-left: auto;
-      &:hover { color: $head; }
+      &:hover { color: $navy; }
     }
   }
 }
 
 .topic-card.upcoming {
-  border-top-color: $faint;
+  border-top-color: $stone;
   box-shadow: none;
-  background: $tint;
+  background: $bg2;
   &:hover { transform: none; box-shadow: none; }
-  .topic-title { color: $soft; }
+  .topic-title { color: $graphite; }
 }
 
 @media (max-width: 768px) {
@@ -638,25 +525,25 @@ mjx-container:not([display="true"]) {
 
 // ── Navbar ────────────────────────────────────────────────────
 .navbar {
-  background-color: $head !important;
+  background-color: $navy !important;
   border-bottom: none;
-  padding-top: 0.4rem !important;
-  padding-bottom: 0.4rem !important;
+  padding-top: 0.35rem !important;
+  padding-bottom: 0.35rem !important;
   padding-left: 1rem !important;
   padding-right: 1rem !important;
 
   .navbar-book-title {
     display: block;
-    font-family: $sans;
+    font-family: 'Charter', 'Bitstream Charter', 'Sitka Text', Georgia, serif;
     font-size: 1.15rem;
-    font-weight: 600;
-    color: #F3F2F5 !important;
+    font-weight: 700;
+    color: #FAFAF8 !important;
     letter-spacing: -0.02em;
     line-height: 1.1;
   }
   .navbar-book-subtitle {
     display: block;
-    font-family: $mono;
+    font-family: 'JetBrains Mono', monospace;
     font-size: 0.6rem;
     letter-spacing: 0.16em;
     text-transform: uppercase;
@@ -673,40 +560,40 @@ mjx-container:not([display="true"]) {
       display: block;
       width: 20px;
       height: 1.5px;
-      background: $accent;
+      background: $amber;
       margin-top: 3px;
     }
   }
   .navbar-brand-name {
     display: block;
-    font-family: $sans;
+    font-family: 'Charter', 'Bitstream Charter', 'Sitka Text', Georgia, serif;
     font-size: 1.25rem;
-    font-weight: 600;
-    color: #F3F2F5 !important;
+    font-weight: 700;
+    color: #FAFAF8 !important;
     letter-spacing: -0.01em;
     line-height: 1.1;
   }
   .navbar-brand-institution {
     display: block;
-    font-family: $mono;
+    font-family: 'JetBrains Mono', monospace;
     font-size: 0.68rem;
     letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: rgba(255,255,255,0.4);
+    color: rgba(255,255,255,0.35);
     line-height: 1;
   }
   .navbar-nav .nav-link {
-    font-family: $mono;
+    font-family: 'JetBrains Mono', monospace;
     font-size: 0.6rem;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: rgba(255,255,255,0.58) !important;
+    color: rgba(255,255,255,0.55) !important;
     transition: color 0.15s ease;
-    &:hover { color: $accent !important; }
+    &:hover { color: #FAFAF8 !important; }
   }
   .navbar-nav .nav-link span.navbar-brand-name,
   .navbar-nav .nav-link span.navbar-brand-institution {
-    font-family: $sans;
+    font-family: 'Charter', 'Bitstream Charter', 'Sitka Text', Georgia, serif;
   }
 }
 
@@ -716,19 +603,19 @@ mjx-container:not([display="true"]) {
 }
 
 #quarto-margin-sidebar a {
-  color: $soft;
+  color: $graphite;
   text-decoration: none;
-  border-bottom: none;
   font-size: 0.82rem;
+  font-weight: 300;
 }
 
 #quarto-margin-sidebar a:hover {
-  color: $accent-dk;
+  color: $navy;
 }
 
 #quarto-margin-sidebar a.active,
 #quarto-margin-sidebar li.active > a {
-  color: $head;
+  color: $navy;
   font-weight: 500;
 }
 
@@ -738,10 +625,9 @@ mjx-container:not([display="true"]) {
   h1 { font-size: 1.8em; &::after { width: 32px; } }
   h2 { font-size: 1.3em; }
   h3 { font-size: 1.1em; }
-  p, li { font-size: 0.95rem; line-height: 1.7; }
-  .slidebox { padding: 1.2rem 1.25rem 1.3rem; }
+  p, li { font-size: 0.95rem; line-height: 1.75; }
   .eq-box { padding: 0.7rem 0.85rem; overflow-x: auto; -webkit-overflow-scrolling: touch; }
-  .callout { font-size: 0.9rem; }
+  .callout { font-size: 0.88rem; }
   .insight { padding: 0.7rem 0.9rem; }
   pre { padding: 0.85rem 1.15rem; }
   table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
@@ -755,9 +641,9 @@ mjx-container:not([display="true"]) {
   h2 { font-size: 14pt; }
   h3 { font-size: 12pt; }
   p, li { font-size: 11pt; line-height: 1.55; }
-  .eq-box { background: #EAE8EC; border-left: 2px solid #888; overflow: visible; }
+  .eq-box { background: #F5F5F5; border-left: 2px solid #888; overflow: visible; }
   mjx-container { overflow: visible !important; }
-  pre { background: $head !important; }
-  .insight { background: #131318; }
+  pre { background: $navy !important; }
+  .insight { background: #1a1a2e; }
   .slidebox { box-shadow: none; }
 }
