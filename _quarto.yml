@@ -23,8 +23,7 @@ website:
       - text: "Topic 4"
         href: Topic4.html
     right:
-      - text: "<span class='navbar-brand-name'>Dr Ragvir Sabharwal</span><span class='navbar-brand-institution'>Imperial Business School</span>"
-        href: https://profiles.imperial.ac.uk/r.sabharwal23
+      - text: "<span class='navbar-brand-name'>Dr Ragvir Sabharwal</span>"
   page-footer:
     center: "Copyright © 2026 Ragvir Sabharwal. All rights reserved."
 

@@ -6,7 +6,7 @@ number-sections: false
 
 :::: hero
 
-[BSc EFDS · Imperial Business School]{.hero-kicker}
+[BSc EFDS]{.hero-kicker}
 
 # Econometrics {.hero-title}
 

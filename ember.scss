@@ -513,15 +513,21 @@ mjx-container:not([display="true"]) {
     border-radius: 4px;
     margin-bottom: 0.9rem;
   }
-  .hero-title {
+  // Quarto stamps the {.hero-title} class on BOTH the section wrapper and the
+  // <h1>, so an `em` size compounds (2.9em × 2.9em ≈ 150px) and the long single
+  // word clips off-screen. Scope sizing to the h1 and use rem-based clamp() so
+  // it scales with the viewport and never overflows.
+  section.hero-title { font-size: inherit; }
+  h1.hero-title {
     font-family: $sans;
-    font-size: 2.9em;
+    font-size: clamp(2.2rem, 5.5vw, 4rem);
     font-weight: 700;
     color: $head;
     letter-spacing: -0.03em;
     line-height: 1.05;
     margin: 0 0 0.35rem;
     border: none;
+    overflow-wrap: break-word;
     &::after { display: none; }
   }
   .hero-subtitle {
@@ -632,7 +638,6 @@ mjx-container:not([display="true"]) {
 }
 
 @media (max-width: 768px) {
-  .hero .hero-title { font-size: 2.1em; }
   .topic-grid { grid-template-columns: 1fr; gap: 1rem; }
 }
 
