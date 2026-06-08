@@ -1,43 +1,55 @@
 % slidebox.tex
 % PDF styling for the article-style boxes (see slidebox.lua).
-% Included via _quarto.yml -> format: pdf: include-in-header.
+% Included via _quarto.yml -> format: pdf: include-in-header, AFTER
+% pdf-theme.tex (which defines the sl* Blueprint colours used below).
 
-% tcolorbox may already be loaded by Quarto's callout support; loading
-% again without options is harmless. Pull in the libraries we rely on.
 \usepackage{tcolorbox}
 \tcbuselibrary{skins,breakable}
 
-\definecolor{slnavy}{HTML}{0D1B2A}
-\definecolor{slamber}{HTML}{C8762A}
-\definecolor{slborder}{HTML}{D8CEBC}
-\definecolor{slrule}{HTML}{E0D8CC}
-\definecolor{slstone}{HTML}{B0A494}
+% leading-zero helper for the slidebox counter (01, 02, ... like the site)
+\makeatletter
+\newcommand\sbtwodigits[1]{\ifnum#1<10 0\fi\number#1}
+\makeatother
 
-% A slidebox: white card, thin warm-grey frame, thick amber rule along
-% the top edge, bold navy sans title; optional lower part (\tcblower)
-% holds the footer in italic amber, divided by a thin rule.
-\newtcolorbox{slidebox}[1]{%
+% A slidebox: white card, thin border, a blue accent rule down the LEFT
+% edge, a faint two-digit counter in the top-right corner, bold navy sans
+% title, and an optional lower part (\tcblower) holding the footer in
+% IBM Plex Mono / accent-blue, divided by a thin rule. Mirrors the
+% .slidebox component in ember.scss.
+\newtcolorbox[auto counter]{slidebox}[1]{%
   enhanced, breakable,
   colback=white,
   colframe=slborder,
   boxrule=0.4pt,
-  arc=1.5pt,
-  left=3.5mm, right=3.5mm, top=2.2mm, bottom=2.2mm,
-  before skip=9pt, after skip=9pt,
-  borderline north={2.5pt}{0pt}{slamber},
+  arc=2pt,
+  sharp corners=west,                     % square left edge for the accent rule
+  borderline west={2.2pt}{0pt}{slaccent}, % blue spine
+  left=4mm, right=4mm, top=2.4mm, bottom=2.4mm,
+  before skip=10pt, after skip=10pt,
   title={#1},
   halign title=left,
   colbacktitle=white,
-  coltitle=slnavy,
-  fonttitle=\bfseries\sffamily\large,
-  toptitle=1mm, bottomtitle=1.2mm,
+  coltitle=slhead,
+  fonttitle=\sffamily\bfseries\large,
+  toptitle=1mm, bottomtitle=1.4mm,
   lower separated=true,
-  collower=slamber,
-  fontlower=\itshape\small,
+  collower=slaccentdk,
+  fontlower=\ttfamily\small,
   segmentation style={solid, slrule, line width=0.4pt},
+  % faint leading-zero counter, top-right (first piece only)
+  overlay unbroken and first={%
+    \node[anchor=north east, inner sep=0pt,
+          font=\ttfamily\scriptsize\color{slfaint}]
+      at ([xshift=-3.2mm, yshift=-2.2mm]frame.north east)
+      {\sbtwodigits{\thetcbcounter}};%
+  },
 }
 
-% Kicker label: Goals / Key Equation / Key Concept, etc.
+% Kicker label (Goals / Key Equation / Key Concept ...): a small bordered
+% mono badge in accent-blue, mirroring the .kicker badge in ember.scss.
 \newcommand{\kicker}[1]{%
-  {\sffamily\bfseries\footnotesize\color{slstone}\MakeUppercase{#1}}\par\vspace{2pt}%
+  {\setlength{\fboxsep}{3.5pt}\setlength{\fboxrule}{0.4pt}%
+   \fcolorbox{slborder}{white}{%
+     \ttfamily\footnotesize\color{slaccentdk}\MakeUppercase{#1}}}%
+  \par\vspace{5pt}%
 }

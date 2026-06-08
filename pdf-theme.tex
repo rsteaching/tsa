@@ -1,0 +1,42 @@
+% pdf-theme.tex
+% Global Blueprint theming for PDF output — mirrors ember.scss (the website).
+% Included first via _quarto.yml -> format: pdf: include-in-header.
+% Engine-agnostic: the plex-* packages load Type1 under pdflatex and the
+% OpenType faces under xelatex/lualatex.
+
+% ── Fonts: IBM Plex (matches the site) ───────────────────────────
+\usepackage[sfdefault]{plex-sans}   % body + headings -> IBM Plex Sans
+\usepackage{plex-mono}              % \texttt / verbatim -> IBM Plex Mono
+% (math is left at the class default for legibility)
+
+% ── Blueprint palette (same hex values as ember.scss) ────────────
+\definecolor{slhead}{HTML}{0F1A28}      % headings / dark surfaces
+\definecolor{slink}{HTML}{172230}       % body text
+\definecolor{slaccent}{HTML}{2297E6}    % accent (plot blue)
+\definecolor{slaccentdk}{HTML}{1A6FB0}  % accent (text / links)
+\definecolor{slsoft}{HTML}{5A6878}      % muted text
+\definecolor{slfaint}{HTML}{90A0B2}     % faint labels
+\definecolor{sltint}{HTML}{EAF1FA}      % tinted surfaces
+\definecolor{slrule}{HTML}{E3EAF3}      % hairlines
+\definecolor{slborder}{HTML}{D8E2EE}    % card borders
+
+% ── Headings: navy, sans-bold, with a small accent square ────────
+\setkomafont{section}{\sffamily\bfseries\Large\color{slhead}}
+\setkomafont{subsection}{\sffamily\bfseries\large\color{slhead}}
+\setkomafont{subsubsection}{\sffamily\bfseries\normalsize\color{slhead}}
+\setkomafont{title}{\sffamily\bfseries\color{slhead}}
+\setkomafont{subtitle}{\sffamily\color{slsoft}}
+
+% accent square before the (numbered) section heading, like the site's h2 marker
+\renewcommand*{\sectionformat}{%
+  \raisebox{0.06ex}{\textcolor{slaccent}{\rule{0.62em}{0.62em}}}\enspace
+  \thesection\autodot\enskip}
+\renewcommand*{\subsectionformat}{\thesubsection\autodot\enskip}
+
+% ── Links: accent-coloured (matches the site) ────────────────────
+% Deferred: hyperref is loaded later in the preamble than this file.
+\AtBeginDocument{\hypersetup{colorlinks=true, linkcolor=slaccentdk, urlcolor=slaccentdk, citecolor=slaccentdk}}
+
+% ── Code: wrap long lines instead of overflowing the margin ──────
+\usepackage{fvextra}
+\AtBeginDocument{\fvset{breaklines=true, breakanywhere=true}}

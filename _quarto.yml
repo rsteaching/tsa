@@ -1,6 +1,13 @@
 project:
   type: website
   output-dir: docs
+  render:
+    - index.qmd
+    - Topic1.qmd
+    - Topic2.qmd
+    - Topic3.qmd
+    - Topic4.qmd
+    - about.qmd
 
 website:
   title: "Econometrics"
@@ -53,7 +60,11 @@ format:
         </script>
 
   pdf:
+    pdf-engine: lualatex
+    number-sections: true
+    number-depth: 2
     include-in-header:
+      - pdf-theme.tex
       - slidebox.tex
 
 engine: knitr
