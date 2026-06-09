@@ -709,9 +709,18 @@ mjx-container:not([display="true"]) {
     transition: color 0.15s ease;
     &:hover { color: $accent !important; }
   }
-  .navbar-nav .nav-link span.navbar-brand-name,
-  .navbar-nav .nav-link span.navbar-brand-institution {
+  // right-side author name — rendered as a plain nav-link in the .ms-auto
+  // group; override the uppercase-mono nav-link treatment so it reads as a
+  // brand/byline instead of a menu item.
+  .navbar-nav.ms-auto .nav-link {
     font-family: $sans;
+    font-size: 1.15rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    text-transform: none;
+    color: #F3F2F5 !important;
+    cursor: default;
+    &:hover { color: #F3F2F5 !important; }
   }
 }
 

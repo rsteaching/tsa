@@ -22,3 +22,6 @@ __pycache__/
 
 **/*.quarto_ipynb
 .positai
+
+# Manim render artifacts
+/media/

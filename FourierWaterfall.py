@@ -7,8 +7,9 @@ OFF      = "#ECECF0"   # primary geometry / text
 ACCENT   = "#E11D48"   # crimson accent ($accent)
 FAINT    = "#9091A0"   # secondary axes / faint
 COMP     = ACCENT      # composite signal = the accent
-# component harmonics: brightest = fundamental (largest amplitude), dimmer = higher harmonics
-SIN_COLS = ["#ECECF0", "#C7C8D0", "#A9AAB5", "#86879A", "#6E6F82"]
+# component harmonics: each a distinct bright hue, carried through to the
+# spectrum spikes so every frequency is colour-matched to its sinusoid.
+SIN_COLS = ["#FF5C8A", "#FFB02E", "#3DDC97", "#4CC9F0", "#C77DFF"]
 FONT     = "IBM Plex Sans"
 PHI = 90 * DEGREES
 
