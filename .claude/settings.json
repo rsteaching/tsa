@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git add *)",
+      "Bash(git reset *)",
+      "Bash(git commit -q -m 'Clean up stale files; update StructuralBreak video \\(Ybar label/caption\\) *)",
+      "Bash(git push *)",
+      "Bash(grep -n '\\\\$\\\\|color:\\\\|#[0-9a-fA-F]\\\\{6\\\\}' ember.scss)",
+      "Bash(quarto --version)",
+      "Bash(manim --version)",
+      "Bash(manim render *)",
+      "Bash(echo \"exit: $?\")"
+    ]
+  }
+}
