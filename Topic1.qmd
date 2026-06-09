@@ -345,7 +345,7 @@ Time series analysis refers to the systematic approach for addressing econometri
 ::::
 ::::: 
 
-Two approaches to time series analysis exist. The **time domain** approach studies lagged relationships — e.g. how today's value affects tomorrow's. The **frequency domain** approach studies cycles by, in effect, regressing the series on sinusoids at different frequencies. This module focuses exclusively on the time domain approach.
+Two approaches to time series analysis exist. The **time domain** approach studies lagged relationships — e.g. how today's value affects tomorrow's. The **frequency domain** approach studies cycles by, in effect, regressing the series on sinusoids at different frequencies.
 
 :::: {.callout-note collapse="true"}
 ## Watch: Illustration
@@ -354,6 +354,9 @@ Two approaches to time series analysis exist. The **time domain** approach studi
 **Time vs. Frequency Domains** <video autoplay muted playsinline loop> <source src="FourierWaterfall.mp4" type="video/mp4"> </video>
 :::
 ::::
+
+This module focuses exclusively on the time domain approach.
+
 ------------------------------------------------------------------------
 
 ## Variance, covariance, and correlation
