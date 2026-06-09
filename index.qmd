@@ -6,16 +6,21 @@ number-sections: false
 
 :::: hero
 
-[Time Series Analysis]{.hero-kicker}
-
 # Econometrics {.hero-title}
 
+[Time Series Analysis]{.hero-subtitle}
+
+
 ::: hero-lede
+Welcome!
+
 - This website is built around the slides from my lectures, with the full course narrative woven around them so that the site also works as a self-contained reference for the module. 
 
 - Throughout, you'll find animations, live R graphs, audio snippets, signposts to textbooks and other resources where relevant.
 
 - If there's any concept you'd like more support with, let me know. The syllabus is fixed, but I'm happy to add supplementary materials like an audio snippet or a screen recording where helpful.
+
+Ragvir
 
 
 :::

@@ -33,6 +33,14 @@
   \thesection\autodot\enskip}
 \renewcommand*{\subsectionformat}{\thesubsection\autodot\enskip}
 
+% ── Callouts: grey instead of Quarto's default blue ──────────────
+% Quarto defines these colours later in its own preamble, so override
+% them at \begin{document} (icon, frame, left rule and faint title tint).
+\AtBeginDocument{%
+  \definecolor{quarto-callout-note-color}{HTML}{5E5F6B}%       icon + title tint (slsoft)
+  \definecolor{quarto-callout-note-color-frame}{HTML}{5E5F6B}% frame + left rule (slsoft)
+}
+
 % ── Links: accent-coloured (matches the site) ────────────────────
 % Deferred: hyperref is loaded later in the preamble than this file.
 \AtBeginDocument{\hypersetup{colorlinks=true, linkcolor=slaccentdk, urlcolor=slaccentdk, citecolor=slaccentdk}}
