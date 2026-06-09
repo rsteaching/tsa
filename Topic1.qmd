@@ -158,7 +158,7 @@ Issues 2 and 3 may seem abstract at present, but their meaning will become clear
 :::: slide-body
 - An $iid$ process $\{Y_t\}_{t \in \mathbb{Z}}$ has no linear or non-linear dependence on the past — since the random variables are independent, the lag $h$ autocovariance, $\gamma_Y(h) := \text{Cov}(Y_t, Y_{t+h})$, satisfies $\gamma_Y(h) = 0$ for any $h \neq 0$. We will later refer to an $iid$ process as **strong white noise**.
 
-- By contrast, consider a process where $Y_t = \varepsilon_t + 0.5\varepsilon_{t-1}$ and $\{\varepsilon_t\}$ is strong white noise. We have $$\begin{aligned} \gamma_Y(-1) &= \text{Cov}(Y_t, Y_{t-1})\\ &= \text{Cov}(\varepsilon_t + 0.5\varepsilon_{t-1},\, \varepsilon_{t-1} + 0.5\varepsilon_{t-2})\\ &= 0.5\,\text{Var}(\varepsilon_{t-1}) \text{ since }\{\varepsilon_t\}\text{ is $iid$}\\ &\neq 0.\end{aligned}$$ Notice that $\gamma_Y(1) = \gamma_Y(-1) \neq 0$ and $\gamma_Y(h) = 0$ for all $|h| \geq 2$. We will later refer to this as a **moving average process of order 1**.
+- By contrast, consider a process where $Y_t = \varepsilon_t + 0.5\varepsilon_{t-1}$ and $\{\varepsilon_t\}$ is strong white noise. We have $$\begin{aligned} \gamma_Y(-1) &= \text{Cov}(Y_t, Y_{t-1})\\ &= \text{Cov}(\varepsilon_t + 0.5\varepsilon_{t-1},\, \varepsilon_{t-1} + 0.5\varepsilon_{t-2})\\ &= 0.5\,\text{Var}(\varepsilon_{t-1}) \text{ since }\{\varepsilon_t\}\text{ is $iid$}\\ &\neq 0.\end{aligned}$$ Notice that $\gamma_Y(1) = \gamma_Y(-1) \neq 0$ and $\gamma_Y(h) = 0$ for all $|h| \geq 2$. We will later refer to this as an **MA(1)** process.
 
 ::: slide-footer
 These are examples of processes with and without serial correlation, respectively. 
@@ -328,7 +328,7 @@ shinyApp(ui, server)
 :::
 ::::
 
-Students sometimes ask why I present an $iid$ process as a time series example after emphasising that time series are characterised by dependence. The answer: an $iid$ process indexed by time is a special case of a time series — one where the dependence happens to be zero. Whether you call it a "genuine" time series is a matter of perspective.
+Students sometimes ask why I present an $iid$ process as a time series example after emphasising that time series are characterised by dependence. The answer: an $iid$ process indexed by time is a special case of a time series — one where the dependence happens to be zero. Whether you think of it as a genuine time series is merely a matter of perspective.
 
 ::::: slidebox
 [What is time series analysis?]{.slide-label}
@@ -339,7 +339,7 @@ Students sometimes ask why I present an $iid$ process as a time series example a
 - Specifically, the obvious possibility of dependence introduced by the sampling of adjacent points in time can severely restrict the applicability of the many conventional statistical methods traditionally dependent on the assumption that these adjacent observations are independent and identically distributed.
 
 ::: slide-footer
-The systematic approach by which one goes about answering econometric questions posed in the presence of time-ordered data exhibiting inter-temporal dependence is commonly referred to as time series analysis.
+Time series analysis refers to the systematic approach for addressing econometric questions involving time-ordered, serially dependent data.
 
 :::
 ::::
@@ -415,7 +415,7 @@ Never omit the covariance terms!
 ## Intuition
  
 - Students don't always find variance/covariance manipulations intuitive. However, the same students would never make the mistake of omitting cross-terms in a squaring operation! The sum of two terms squared must yield a sum of four terms. Three terms must yield nine. Let's look at an example: 
-$$(a + b + c)^2 = \begin{aligned}&a^2 + ab + ac \\ + &ba + b^2 + bc \\ + &ca + cb + c^2\end{aligned}$$
+$$\begin{aligned}(a + b + c)^2 = & a^2 + ab + ac \\ + &ba + b^2 + bc \\ + &ca + cb + c^2\end{aligned}$$
 This is nine terms, right? You would never say $$(a+b+c)^2 = a^2 + b^2 + c^2.\quad \text{❌}$$ It just looks wrong!
 
 - But students make this mistake all the time with variances. They say $$\mathsf{Var}(X+Y) = \mathsf{Var}(X) + \mathsf{Var}(Y).\quad \text{❌}$$
@@ -428,7 +428,7 @@ This is nine terms, right? You would never say $$(a+b+c)^2 = a^2 + b^2 + c^2.\qu
 
 - Consider $\mathsf{Var}(Z) := \mathsf{E}(Z-\mathsf{E}(Z))^2$. Now suppose $Z = X+Y$. Then, 
 $$\begin{aligned}\mathsf{Var}(Z)=\mathsf{Var}(X+Y)&=\mathsf{E}\left((X+Y) - \mathsf{E}(X+Y)\right)^2 \\ &= \mathsf{E}(X - \mathsf{E}(X) + Y - \mathsf{E}(Y))^2\\&=\mathsf{E}\left(\tilde{X} + \tilde{Y}\right)^2, \text{ where }\tilde{X} := X- \mathsf{E}(X)\text{ and }\tilde{Y} := Y - \mathsf{E}(Y)\\&=\mathsf{E}\left(\tilde{X}^2 + \tilde{Y}^2 + 2\tilde{X}\tilde{Y}\right) \\&=\mathsf{E}\left(\tilde{X}^2\right) + \mathsf{E}\left(\tilde{Y}^2\right) + 2\mathsf{E}\left(\tilde{X}\tilde{Y}\right)\\&=\mathsf{E}(X-\mathsf{E}(X))^2 +\mathsf{E}(Y-\mathsf{E}(Y))^2 + 2 \mathsf{E}((X-\mathsf{E}(X))(Y-\mathsf{E}(Y)))\\&=\mathsf{Var}(X)+\mathsf{Var}(Y) + 2\mathsf{Cov}(X,Y).\end{aligned}$$
-- Never omit the covariance terms! 
+- Yet again, we see it is wrong to ignore the covariances.
 :::
 
 
@@ -448,15 +448,15 @@ We are now ready for the final section of Topic 1.
 :::
 
 ::: slide-footer
-$(1/N)\sum Y_i$; the most widely-used statistic in econometrics.
+$\frac{1}{N}\sum_{i=1}^N Y_i$; the most widely-used statistic in econometrics.
 :::
 :::::
 
-- Just take a moment to appreciate how widespread in your education, and in your private and professional lives generally, has been the concept of a sample mean.
+- Take a moment to appreciate how pervasive the concept of a sample mean has been throughout your education, and in your private and professional lives more generally.
 
-- It was so long ago that I cannot remember the first time I was taught to add up a set of observations and divide by their total number; and I cannot even begin to count how many times I have used this operation to get a sense of central tendency (or location) of the data-generating process behind my sample (even if I have not always used those words to describe what I was doing)!
+- I cannot remember the first time I was taught to add up a set of observations and divide by their count, and I cannot begin to count how often I have used this operation to get a sense of the central tendency (or location) of the data-generating process behind my sample —- even if I did not always use those words to describe what I was doing.
 
-- Have you ever wondered why we all turn so often to this statistic specifically? As opposed to say a sample mode, or a sample median, or a trimmed mean, or even just an arbitrary single observation?
+- Have you ever wondered why we all reach so readily for this particular statistic, rather than, say, a sample mode, a sample median, a trimmed mean, or even a single arbitrary observation?
 
 - The simple answer, whether you have been taught this or not, is Chebyshev's LLN. In other words, it is because the sample mean, $\bar{Y}_N$, converges (in probability) to the population mean, $\mathsf{E}(Y)$, as $N \to \infty$. In other words, under suitable conditions, a sample moment is a consistent estimator of its population counterpart. We will study Chebyshev's LLN in a lot of detail in the slides below.
 

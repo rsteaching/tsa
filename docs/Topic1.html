@@ -351,7 +351,7 @@ Note
 <div class="slide-body">
 <ul>
 <li><p>An <span class="math inline">\(iid\)</span> process <span class="math inline">\(\{Y_t\}_{t \in \mathbb{Z}}\)</span> has no linear or non-linear dependence on the past — since the random variables are independent, the lag <span class="math inline">\(h\)</span> autocovariance, <span class="math inline">\(\gamma_Y(h) := \text{Cov}(Y_t, Y_{t+h})\)</span>, satisfies <span class="math inline">\(\gamma_Y(h) = 0\)</span> for any <span class="math inline">\(h \neq 0\)</span>. We will later refer to an <span class="math inline">\(iid\)</span> process as <strong>strong white noise</strong>.</p></li>
-<li><p>By contrast, consider a process where <span class="math inline">\(Y_t = \varepsilon_t + 0.5\varepsilon_{t-1}\)</span> and <span class="math inline">\(\{\varepsilon_t\}\)</span> is strong white noise. We have <span class="math display">\[\begin{aligned} \gamma_Y(-1) &amp;= \text{Cov}(Y_t, Y_{t-1})\\ &amp;= \text{Cov}(\varepsilon_t + 0.5\varepsilon_{t-1},\, \varepsilon_{t-1} + 0.5\varepsilon_{t-2})\\ &amp;= 0.5\,\text{Var}(\varepsilon_{t-1}) \text{ since }\{\varepsilon_t\}\text{ is $iid$}\\ &amp;\neq 0.\end{aligned}\]</span> Notice that <span class="math inline">\(\gamma_Y(1) = \gamma_Y(-1) \neq 0\)</span> and <span class="math inline">\(\gamma_Y(h) = 0\)</span> for all <span class="math inline">\(|h| \geq 2\)</span>. We will later refer to this as a <strong>moving average process of order 1</strong>.</p></li>
+<li><p>By contrast, consider a process where <span class="math inline">\(Y_t = \varepsilon_t + 0.5\varepsilon_{t-1}\)</span> and <span class="math inline">\(\{\varepsilon_t\}\)</span> is strong white noise. We have <span class="math display">\[\begin{aligned} \gamma_Y(-1) &amp;= \text{Cov}(Y_t, Y_{t-1})\\ &amp;= \text{Cov}(\varepsilon_t + 0.5\varepsilon_{t-1},\, \varepsilon_{t-1} + 0.5\varepsilon_{t-2})\\ &amp;= 0.5\,\text{Var}(\varepsilon_{t-1}) \text{ since }\{\varepsilon_t\}\text{ is $iid$}\\ &amp;\neq 0.\end{aligned}\]</span> Notice that <span class="math inline">\(\gamma_Y(1) = \gamma_Y(-1) \neq 0\)</span> and <span class="math inline">\(\gamma_Y(h) = 0\)</span> for all <span class="math inline">\(|h| \geq 2\)</span>. We will later refer to this as an <strong>MA(1)</strong> process.</p></li>
 </ul>
 <div class="slide-footer">
 <p>These are examples of processes with and without serial correlation, respectively.</p>
@@ -525,7 +525,7 @@ shinyApp(ui, server)</code></pre>
 </div>
 </div>
 </div>
-<p>Students sometimes ask why I present an <span class="math inline">\(iid\)</span> process as a time series example after emphasising that time series are characterised by dependence. The answer: an <span class="math inline">\(iid\)</span> process indexed by time is a special case of a time series — one where the dependence happens to be zero. Whether you call it a “genuine” time series is a matter of perspective.</p>
+<p>Students sometimes ask why I present an <span class="math inline">\(iid\)</span> process as a time series example after emphasising that time series are characterised by dependence. The answer: an <span class="math inline">\(iid\)</span> process indexed by time is a special case of a time series — one where the dependence happens to be zero. Whether you think of it as a genuine time series is merely a matter of perspective.</p>
 <div class="slidebox">
 <p><span class="slide-label">What is time series analysis?</span></p>
 <div class="slide-body">
@@ -534,7 +534,7 @@ shinyApp(ui, server)</code></pre>
 <li><p>Specifically, the obvious possibility of dependence introduced by the sampling of adjacent points in time can severely restrict the applicability of the many conventional statistical methods traditionally dependent on the assumption that these adjacent observations are independent and identically distributed.</p></li>
 </ul>
 <div class="slide-footer">
-<p>The systematic approach by which one goes about answering econometric questions posed in the presence of time-ordered data exhibiting inter-temporal dependence is commonly referred to as time series analysis.</p>
+<p>Time series analysis refers to the systematic approach for addressing econometric questions involving time-ordered, serially dependent data.</p>
 </div>
 </div>
 </div>
@@ -603,7 +603,7 @@ shinyApp(ui, server)</code></pre>
 <div id="callout-5" class="callout-5-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <ul>
-<li><p>Students don’t always find variance/covariance manipulations intuitive. However, the same students would never make the mistake of omitting cross-terms in a squaring operation! The sum of two terms squared must yield a sum of four terms. Three terms must yield nine. Let’s look at an example: <span class="math display">\[(a + b + c)^2 = \begin{aligned}&amp;a^2 + ab + ac \\ + &amp;ba + b^2 + bc \\ + &amp;ca + cb + c^2\end{aligned}\]</span> This is nine terms, right? You would never say <span class="math display">\[(a+b+c)^2 = a^2 + b^2 + c^2.\quad \text{❌}\]</span> It just looks wrong!</p></li>
+<li><p>Students don’t always find variance/covariance manipulations intuitive. However, the same students would never make the mistake of omitting cross-terms in a squaring operation! The sum of two terms squared must yield a sum of four terms. Three terms must yield nine. Let’s look at an example: <span class="math display">\[\begin{aligned}(a + b + c)^2 = &amp; a^2 + ab + ac \\ + &amp;ba + b^2 + bc \\ + &amp;ca + cb + c^2\end{aligned}\]</span> This is nine terms, right? You would never say <span class="math display">\[(a+b+c)^2 = a^2 + b^2 + c^2.\quad \text{❌}\]</span> It just looks wrong!</p></li>
 <li><p>But students make this mistake all the time with variances. They say <span class="math display">\[\mathsf{Var}(X+Y) = \mathsf{Var}(X) + \mathsf{Var}(Y).\quad \text{❌}\]</span></p>
 <p>Don’t forget that a variance is a squared concept (see algebra below). You cannot just assume that the cross-terms are zero unless you are told or you know explicitly that they are zero.</p></li>
 </ul>
@@ -624,7 +624,7 @@ shinyApp(ui, server)</code></pre>
 <div class="callout-body-container callout-body">
 <ul>
 <li>Consider <span class="math inline">\(\mathsf{Var}(Z) := \mathsf{E}(Z-\mathsf{E}(Z))^2\)</span>. Now suppose <span class="math inline">\(Z = X+Y\)</span>. Then, <span class="math display">\[\begin{aligned}\mathsf{Var}(Z)=\mathsf{Var}(X+Y)&amp;=\mathsf{E}\left((X+Y) - \mathsf{E}(X+Y)\right)^2 \\ &amp;= \mathsf{E}(X - \mathsf{E}(X) + Y - \mathsf{E}(Y))^2\\&amp;=\mathsf{E}\left(\tilde{X} + \tilde{Y}\right)^2, \text{ where }\tilde{X} := X- \mathsf{E}(X)\text{ and }\tilde{Y} := Y - \mathsf{E}(Y)\\&amp;=\mathsf{E}\left(\tilde{X}^2 + \tilde{Y}^2 + 2\tilde{X}\tilde{Y}\right) \\&amp;=\mathsf{E}\left(\tilde{X}^2\right) + \mathsf{E}\left(\tilde{Y}^2\right) + 2\mathsf{E}\left(\tilde{X}\tilde{Y}\right)\\&amp;=\mathsf{E}(X-\mathsf{E}(X))^2 +\mathsf{E}(Y-\mathsf{E}(Y))^2 + 2 \mathsf{E}((X-\mathsf{E}(X))(Y-\mathsf{E}(Y)))\\&amp;=\mathsf{Var}(X)+\mathsf{Var}(Y) + 2\mathsf{Cov}(X,Y).\end{aligned}\]</span></li>
-<li>Never omit the covariance terms!</li>
+<li>Yet again, we see it is wrong to ignore the covariances.</li>
 </ul>
 </div>
 </div>
@@ -644,13 +644,13 @@ shinyApp(ui, server)</code></pre>
 </ul>
 </div>
 <div class="slide-footer">
-<p><span class="math inline">\((1/N)\sum Y_i\)</span>; the most widely-used statistic in econometrics.</p>
+<p><span class="math inline">\(\frac{1}{N}\sum_{i=1}^N Y_i\)</span>; the most widely-used statistic in econometrics.</p>
 </div>
 </div>
 <ul>
-<li><p>Just take a moment to appreciate how widespread in your education, and in your private and professional lives generally, has been the concept of a sample mean.</p></li>
-<li><p>It was so long ago that I cannot remember the first time I was taught to add up a set of observations and divide by their total number; and I cannot even begin to count how many times I have used this operation to get a sense of central tendency (or location) of the data-generating process behind my sample (even if I have not always used those words to describe what I was doing)!</p></li>
-<li><p>Have you ever wondered why we all turn so often to this statistic specifically? As opposed to say a sample mode, or a sample median, or a trimmed mean, or even just an arbitrary single observation?</p></li>
+<li><p>Take a moment to appreciate how pervasive the concept of a sample mean has been throughout your education, and in your private and professional lives more generally.</p></li>
+<li><p>I cannot remember the first time I was taught to add up a set of observations and divide by their count, and I cannot begin to count how often I have used this operation to get a sense of the central tendency (or location) of the data-generating process behind my sample —- even if I did not always use those words to describe what I was doing.</p></li>
+<li><p>Have you ever wondered why we all reach so readily for this particular statistic, rather than, say, a sample mode, a sample median, a trimmed mean, or even a single arbitrary observation?</p></li>
 <li><p>The simple answer, whether you have been taught this or not, is Chebyshev’s LLN. In other words, it is because the sample mean, <span class="math inline">\(\bar{Y}_N\)</span>, converges (in probability) to the population mean, <span class="math inline">\(\mathsf{E}(Y)\)</span>, as <span class="math inline">\(N \to \infty\)</span>. In other words, under suitable conditions, a sample moment is a consistent estimator of its population counterpart. We will study Chebyshev’s LLN in a lot of detail in the slides below.</p></li>
 <li><p>For now, we briefly contemplate the ubiquity of the sample mean. In addition to all the applications that you can undoubtedly think of yourself, let us also consider the OLS estimator for a simple linear regression model. That is, suppose <span class="math display">\[Y_t = \alpha + \beta X_t + \varepsilon_t,\]</span> and our sample is such that <span class="math inline">\(\sum_{t=1}^{T} (X_t - \bar{X}_T)^2 &gt; 0\)</span>, for <span class="math inline">\(t = 1,\ldots,T\)</span>. The OLS estimators are <span class="math display">\[(\hat{\alpha}_{\scriptscriptstyle OLS}, \hat{\beta}_{\scriptscriptstyle OLS})' = \arg\min_{a,b} \sum_{t=1}^{T}\left(Y_t - a - bX_t\right)^2,\]</span> whereby we obtain via calculus the first order conditions: <span class="math display">\[\begin{aligned} \sum_{t=1}^{T}(Y_t - \hat{\alpha}_{\scriptscriptstyle OLS} - \hat{\beta}_{\scriptscriptstyle OLS}X_t) &amp;= 0 \\ \sum_{t=1}^{T} X_t(Y_t - \hat{\alpha}_{\scriptscriptstyle OLS} - \hat{\beta}_{\scriptscriptstyle OLS}X_t) &amp;= 0. \end{aligned}\]</span> Solving the two equations above for our two unknowns, we obtain <span class="math display">\[\begin{aligned} \hat{\alpha}_{\scriptscriptstyle OLS} &amp;= \bar{Y}_T - \hat{\beta}_{\scriptscriptstyle OLS}\bar{X}_T, \text{ where} \\ \hat{\beta}_{\scriptscriptstyle OLS} &amp;= \frac{\frac{1}{T}\sum_{t=1}^{T}(X_t - \bar{X}_T)(Y_t - \bar{Y}_T)}{\frac{1}{T}\sum_{t=1}^{T}(X_t - \bar{X}_T)^2}. \end{aligned}\]</span> Technically, one would also need to check second order conditions for minimisation, but that is not our current focus. Rather, our goal is to take a moment instead to appreciate how the sample mean appears repeatedly embedded throughout the OLS (and also other estimation) procedure(s).</p></li>
 </ul>
