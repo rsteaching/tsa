@@ -7,6 +7,11 @@ project:
     - Topic2.qmd
     - Topic3.qmd
     - Topic4.qmd
+    - Topic5.qmd
+    - Topic6.qmd
+    - Topic7.qmd
+    - Topic8.qmd
+    - Topic9.qmd
     - about.qmd
 
 website:
@@ -22,6 +27,16 @@ website:
         href: Topic3.html
       - text: "Topic 4"
         href: Topic4.html
+      - text: "Topic 5"
+        href: Topic5.html
+      - text: "Topic 6"
+        href: Topic6.html
+      - text: "Topic 7"
+        href: Topic7.html
+      - text: "Topic 8"
+        href: Topic8.html
+      - text: "Topic 9"
+        href: Topic9.html
     right:
       - text: "Dr Ragvir Sabharwal"
   page-footer:

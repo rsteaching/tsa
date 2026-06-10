@@ -1,0 +1,238 @@
+---
+title: "Vector autoregressions and structural VARs"
+subtitle: "Topic 8"
+format:
+  html: default
+  pdf: default
+---
+
+<!-- git add . && git commit -m "update" && git push  -->
+
+[Goals]{.kicker}
+
+- To generalise our univariate $\mathsf{AR}$ framework to the multivariate setting via vector autoregressions (VARs).
+- To state weak stationarity and the stationarity/causality condition for vector processes.
+- To understand the identification problem in **structural** VARs, and two canonical solutions: short-run (Sims, 1980) and long-run (Blanchard & Quah, 1989) restrictions.
+- To compute impulse response functions and the forecast-error variance decomposition.
+
+[Key Equation]{.kicker}
+
+$$\mathbf{y}_t = A_1 \mathbf{y}_{t-1} + \mathbf{e}_t, \qquad \text{i.e.} \qquad A(L)\,\mathbf{y}_t = \mathbf{e}_t.$$
+
+::: aside-text
+This topic is adapted from the multivariate slide pack (Part II: *Multivariate Series — Selected Topics*). Vectors are bold lowercase ($\mathbf{y}_t, \mathbf{e}_t$), matrices uppercase ($A, \Phi, \Sigma, C$), $L$ is the lag operator, and $I_N$ is the $N \times N$ identity.
+:::
+
+------------------------------------------------------------------------
+
+## Vector-valued series
+
+Univariate models — as investigated so far — are useful for the dynamics of individual variables and serve as a great basis for learning the language of time series analysis. But we are often interested not only in a single series but in the **relationships among several** (e.g. in macroeconomics). Univariate $\mathsf{AR}$ models necessarily ignore inter-relationships between variables; **vector autoregressions (VARs)** model the dynamics of $N$ variables simultaneously, allowing each to depend on its own lagged values *and* the lagged values of the other $N-1$ variables.
+
+For example, a two-dimensional $\mathsf{VAR}(1)$ is $$\begin{aligned} y_{1,t} &= a_{11} y_{1,t-1} + a_{12} y_{2,t-1} + e_{1,t}, \\ y_{2,t} &= a_{21} y_{1,t-1} + a_{22} y_{2,t-1} + e_{2,t}, \end{aligned}$$ or more concisely $A(L)\mathbf{y}_t = \mathbf{e}_t$, where $\mathbf{y}_t = (y_{1,t}, y_{2,t})'$, $\mathbf{e}_t = (e_{1,t}, e_{2,t})'$ and $$ A(L) = \begin{pmatrix} 1 - a_{11}L & -a_{12}L \\ -a_{21}L & 1 - a_{22}L \end{pmatrix} = I_2 - A_1 L, \quad A_1 = \begin{pmatrix} a_{11} & a_{12} \\ a_{21} & a_{22} \end{pmatrix}. $$ So yet another way to write the system is $\mathbf{y}_t = A_1 \mathbf{y}_{t-1} + \mathbf{e}_t$. It is a good idea to get comfortable with all these notational styles — scalars, vectors, coefficient matrices, and matrix lag polynomials.
+
+::::: slidebox
+[What does weak stationarity mean for a vector process?]{.slide-label}
+
+::: slide-body
+A process $\{\mathbf{x}_t\}$ with $\mathbf{x}_t = (x_{t1}, \ldots, x_{tN})'$ is **weakly stationary** if
+
+(i) $\mathsf{E}(\mathbf{x}_t) = \boldsymbol{\mu}$ (constant, with finite entries); and
+(ii) $\text{Cov}(\mathbf{x}_t, \mathbf{x}_{t+\tau})$ has finite entries and depends only on $\tau$.
+
+We collect the (cross-)autocovariances in the **autocovariance matrix at lag $\tau$**, $$ \Gamma_\tau = \text{Cov}(\mathbf{x}_t, \mathbf{x}_{t+\tau}), \qquad \text{with } \Gamma_{-\tau} = \Gamma_\tau', $$ whose diagonal entries are the individual autocovariances and whose off-diagonal entries are the cross-covariances. The corresponding **correlation matrix** is $\rho_\tau = D^{-1/2}\Gamma_\tau D^{-1/2}$, where $D = \text{diag}(\Gamma_0)$.
+:::
+
+::: slide-footer
+A vector process is weakly stationary when its mean and all lag-$\tau$ (cross-)covariances are time-invariant.
+:::
+:::::
+
+We say $\boldsymbol{\epsilon}_t \sim \mathsf{WN}(\mathbf{0}, \Sigma)$ is **multivariate white noise** if $\Gamma_\tau = 0$ for $\tau \neq 0$ (and $\mathsf{E}(\boldsymbol{\epsilon}_t) = \mathbf{0}$).
+
+::::: slidebox
+[What is a $\mathsf{VARMA}(p,q)$ process, and when is it stationary?]{.slide-label}
+
+::: slide-body
+**Definition.** $\{\mathbf{x}_t\}$ is a $\mathsf{VARMA}(p,q)$ process if $$ \mathbf{x}_t = \Phi_1 \mathbf{x}_{t-1} + \cdots + \Phi_p \mathbf{x}_{t-p} + \boldsymbol{\epsilon}_t + \Theta_1 \boldsymbol{\epsilon}_{t-1} + \cdots + \Theta_q \boldsymbol{\epsilon}_{t-q}, $$ where the $\Phi_i, \Theta_j$ are $N \times N$ matrices and $\boldsymbol{\epsilon}_t \sim \mathsf{WN}(\mathbf{0}, \Sigma)$. $\qquad\square$
+
+The process is **weakly stationary and causal** if and only if $$ \det\big(I_N - \Phi_1 z - \cdots - \Phi_p z^p\big) \neq 0 \quad \text{for all } |z| \leq 1, $$ i.e. all roots of the characteristic polynomial lie outside the unit circle. When stationary, it admits the causal $\mathsf{VMA}(\infty)$ representation $\mathbf{x}_t = \sum_{j=0}^{\infty} \Psi_j \boldsymbol{\epsilon}_{t-j}$.
+:::
+
+::: slide-footer
+Same idea as the scalar case — but the stability condition is now a *determinant* equation.
+:::
+:::::
+
+**A numerical example.** Consider the $\mathsf{VAR}(1)$ with $$ \Phi_1 = \begin{pmatrix} 0.9 & 0.6 \\ -0.3 & 0.7 \end{pmatrix}, \qquad \det(I_2 - \Phi_1 z) = 1 - 1.6 z + 0.81 z^2. $$ The roots are $z \approx 0.99 \pm 0.51 i$, with modulus $\approx 1.11 > 1$ (outside the unit circle). Therefore $\{\mathbf{x}_t\}$ is weakly stationary.
+
+::::: slidebox
+[Why is the $\mathsf{VAR}(1)$ our workhorse?]{.slide-label}
+
+::: slide-body
+Any $\mathsf{VAR}(p)$ with $p > 1$ can be rewritten as a **companion** $\mathsf{VAR}(1)$ in higher dimensions. For a 2-D $\mathsf{VAR}(2)$, $\mathbf{y}_t = A_1 \mathbf{y}_{t-1} + A_2 \mathbf{y}_{t-2} + \mathbf{e}_t$, stack the lags into $\tilde{\mathbf{y}}_t = (y_{1,t}, y_{2,t}, y_{1,t-1}, y_{2,t-1})'$: $$ \begin{pmatrix} y_{1,t} \\ y_{2,t} \\ y_{1,t-1} \\ y_{2,t-1} \end{pmatrix} = \begin{pmatrix} A_1 & A_2 \\ I_2 & 0 \end{pmatrix} \begin{pmatrix} y_{1,t-1} \\ y_{2,t-1} \\ y_{1,t-2} \\ y_{2,t-2} \end{pmatrix} + \begin{pmatrix} e_{1,t} \\ e_{2,t} \\ 0 \\ 0 \end{pmatrix}, $$ i.e. $\tilde{\mathbf{y}}_t = \tilde{A}_1 \tilde{\mathbf{y}}_{t-1} + \tilde{\mathbf{e}}_t$. So it suffices to study the $\mathsf{VAR}(1)$.
+:::
+
+::: slide-footer
+Stacking lags turns any $\mathsf{VAR}(p)$ into a $\mathsf{VAR}(1)$ — so we focus on the latter.
+:::
+:::::
+
+:::: {.callout-note collapse="true"}
+## Watch: $\mathsf{VAR}(1)$ stationarity and simulated paths
+
+::: {.content-visible when-format="html"}
+```{shinylive-r}
+#| standalone: true
+#| viewerHeight: 560
+
+library(shiny)
+
+ui <- fluidPage(
+  tags$style(HTML("body{font-family:system-ui,sans-serif;}")),
+  titlePanel("A bivariate VAR(1)"),
+  sidebarLayout(
+    sidebarPanel(
+      sliderInput("a11", "a11", -1.2, 1.2, 0.9, 0.05),
+      sliderInput("a12", "a12", -1.2, 1.2, 0.6, 0.05),
+      sliderInput("a21", "a21", -1.2, 1.2, -0.3, 0.05),
+      sliderInput("a22", "a22", -1.2, 1.2, 0.7, 0.05),
+      sliderInput("T", "Length T", 50, 400, 200, 50)
+    ),
+    mainPanel(verbatimTextOutput("info"), plotOutput("plot", height = "380px"))
+  )
+)
+
+server <- function(input, output) {
+  A1 <- reactive(matrix(c(input$a11, input$a21, input$a12, input$a22), 2, 2))
+  output$info <- renderText({
+    ev <- eigen(A1())$values
+    paste0("max |eigenvalue of A1| = ", round(max(Mod(ev)), 3),
+           if (max(Mod(ev)) < 1) "  ->  STATIONARY" else "  ->  NON-STATIONARY")
+  })
+  output$plot <- renderPlot({
+    set.seed(1); n <- input$T; y <- matrix(0, n, 2)
+    for (t in 2:n) y[t, ] <- A1() %*% y[t - 1, ] + rnorm(2)
+    matplot(1:n, y, type = "l", lty = 1, lwd = 2, col = c(4, 2),
+            xlab = "t", ylab = "")
+    legend("topleft", c("y1", "y2"), col = c(4, 2), lwd = 2, bty = "n")
+  })
+}
+
+shinyApp(ui, server)
+```
+:::
+::::
+
+## Structural VAR models
+
+Economists care not just about econometric equations but about primitive **structural shocks** (e.g. monetary policy, technology) and their dynamic causal effects. Consider a three-variable macro system — output $X_t$, inflation $\pi_t$, interest rate $i_t$ — with $\mathbf{y}_t = (X_t, \pi_t, i_t)'$ and $\mathbf{y}_t = A_1 \mathbf{y}_{t-1} + \mathbf{e}_t$.
+
+::::: slidebox
+[Econometric errors versus structural shocks]{.slide-label}
+
+::: slide-body
+The econometric error $e_{i,t}$ is simply the unexplained portion of variable $i$ at time $t$. These are **not** the same as the **structural shocks** $\boldsymbol{\epsilon}_t$ — the true, primitive drivers of the economy (a monetary-policy shock, a technology shock, etc.), whose effects on the system are unobserved. The **identification problem** is to recover both the structural shocks and their dynamic effects (impulse responses) from econometric data alone.
+:::
+
+::: slide-footer
+Reduced-form residuals are a statistical by-product; structural shocks are the economic objects of interest.
+:::
+:::::
+
+::::: slidebox
+[What is the identification problem?]{.slide-label}
+
+::: slide-body
+For a causal stationary VAR, $A(L)\mathbf{y}_t = \mathbf{e}_t$ with $\mathbf{e}_t \sim \mathsf{WN}(\mathbf{0}, \Sigma_e)$, we can invert to the reduced-form moving-average representation $$ \mathbf{y}_t = B(L)\mathbf{e}_t, \qquad B(L) = A^{-1}(L). $$ But what we *want* is the structural representation $\mathbf{y}_t = C(L)\boldsymbol{\epsilon}_t$, where $\boldsymbol{\epsilon}_t$ are the structural shocks and $C(L)$ contains the **impulse response functions (IRFs)**.
+
+The difficulty is **rotational indeterminacy**: for any orthogonal matrix $P$ (with $P'P = I_N$), $$ \mathbf{y}_t = B(L)P'P\,\mathbf{e}_t = \Gamma(L)\,\mathbf{u}_t, $$ leaving the covariance structure of $\mathbf{y}_t$ unchanged. Requiring $\mathsf{Var}(\boldsymbol{\epsilon}_t) = I_N$ imposes the $N(N+1)/2$ symmetric constraints in $\Sigma_e$, leaving $N^2 - N(N+1)/2 = N(N-1)/2$ degrees of freedom that must be pinned down by **economic** restrictions.
+:::
+
+::: slide-footer
+The data fix the covariance structure but not the rotation — economics must supply the remaining $N(N-1)/2$ restrictions.
+:::
+:::::
+
+Setting $\boldsymbol{\epsilon}_t = P\mathbf{e}_t$ (so $\mathsf{Var}(\boldsymbol{\epsilon}_t) = I_N$) and $C(L) = B(L)P^{-1}$, we expand $$ \mathbf{y}_t = C_0\boldsymbol{\epsilon}_t + C_1\boldsymbol{\epsilon}_{t-1} + C_2\boldsymbol{\epsilon}_{t-2} + \cdots, \qquad C_j = B_j P^{-1}. $$ Two matrices are of special interest: $C_0 = C(0)$, the **short-run** (instantaneous) responses, and $C(1) = \sum_{j=0}^{\infty} C_j$, the **long-run** (cumulative) responses.
+
+::::: slidebox
+[Short-run restrictions — Sims (1980)]{.slide-label}
+
+::: slide-body
+We impose restrictions on $C_0$. We have exactly $N(N-1)/2$ remaining degrees of freedom — precisely the number of below-diagonal entries of an $N \times N$ matrix. A **Cholesky** decomposition delivers this structure:
+
+1. Factor $\Sigma_e = LL'$, with $L$ lower triangular (positive diagonal).
+2. Set $P = L^{-1}$.
+3. Then $P'P = (LL')^{-1} = \Sigma_e^{-1}$ (orthogonalisation) and $C_0 = B_0 P^{-1} = L$ is **lower triangular**.
+
+For the ordering $(X_t, \pi_t, i_t)$, $$ \begin{pmatrix} X_t \\ \pi_t \\ i_t \end{pmatrix} = \begin{pmatrix} c_{11}^{(0)} & 0 & 0 \\ c_{21}^{(0)} & c_{22}^{(0)} & 0 \\ c_{31}^{(0)} & c_{32}^{(0)} & c_{33}^{(0)} \end{pmatrix}\begin{pmatrix} \epsilon_{1,t} \\ \epsilon_{2,t} \\ \epsilon_{3,t} \end{pmatrix} + \cdots $$ The ordering encodes which shocks may have instantaneous effects: a variable ordered first cannot be contemporaneously affected by other shocks. (If $\epsilon_{3,t}$ is a monetary-policy shock, the third column of $C(L)$ holds its IRFs.)
+:::
+
+::: slide-footer
+Cholesky → lower-triangular $C_0$; the variable ordering *is* the identifying assumption.
+:::
+:::::
+
+::::: slidebox
+[Long-run restrictions — Blanchard & Quah (1989)]{.slide-label}
+
+::: slide-body
+Instead of restricting $C_0$, we restrict $C(1)$ — the long-run cumulative responses. If a variable enters in differences (e.g. $\Delta \ln X_t$), $C(1)$ captures the cumulative effect on the *level*; a demand shock may have only transitory effects on output, while a technology shock has a permanent one.
+
+For a bivariate system, choose $P$ so that (i) $P'P = \Sigma_e^{-1}$ and (ii) $C(1)$ is lower triangular. The procedure: Cholesky-factor $B(1)\Sigma_e B(1)' = QQ'$ (with $Q$ lower triangular), set $P = Q^{-1}B(1)$, and obtain $C(L) = B(L)P^{-1}$. One verifies $P'P = \Sigma_e^{-1}$ and $C(1) = B(1)P^{-1} = Q$, lower triangular — encoding **long-run neutrality** (e.g. $\sum_{j} c_{12}^{(j)} = 0$).
+:::
+
+::: slide-footer
+Same orthogonalisation, but the triangular restriction is imposed on the long-run matrix $C(1)$, not on $C_0$.
+:::
+:::::
+
+::::: slidebox
+[What is the forecast-error variance decomposition (FEVD)?]{.slide-label}
+
+::: slide-body
+With an identified VAR, $\mathbf{x}_t = C(L)\boldsymbol{\epsilon}_t$ and $\boldsymbol{\epsilon}_t \sim \mathsf{WN}(\mathbf{0}, I_N)$, the $s$-period-ahead forecast error is $$ \mathbf{x}_{t+s} - \mathsf{E}(\mathbf{x}_{t+s}\mid\mathcal{F}_t) = \sum_{j=0}^{s-1} C_j \boldsymbol{\epsilon}_{t+s-j}. $$ The proportion of the $s$-period-ahead forecast-error variance of variable $i$ attributable to shock $k$ is $$ \pi_{ik}^{(s)} = \frac{\sum_{j=0}^{s-1} \big(c_{ik}^{(j)}\big)^2}{\sum_{j=0}^{s-1}\sum_{k=1}^{N} \big(c_{ik}^{(j)}\big)^2}, \qquad \text{with } \sum_{k=1}^{N} \pi_{ik}^{(s)} = 1. $$ The FEVD tells us **how important each structural shock is** for explaining the variation in each variable over a given horizon.
+:::
+
+::: slide-footer
+The FEVD apportions each variable's forecast uncertainty across the structural shocks.
+:::
+:::::
+
+:::: {.callout-note collapse="true"}
+## Granger causation *(not examinable)*
+
+**A pragmatic definition.** Despite the name, Granger causality is *not* a deep notion of true causation. Granger's two components are: (1) the cause occurs *before* the effect; and (2) the cause contains *unique information* about the effect not present in any other variable. Formally, $x_{1,t}$ **Granger causes** $x_{2,t}$ if, for at least one $s > 0$, the MSE of a forecast of $x_{2,t+s}$ based on $(x_{2,t}, x_{2,t-1}, \ldots)$ alone is strictly greater than the MSE of a forecast also using $(x_{1,t}, x_{1,t-1}, \ldots)$. (A weather forecast may Granger-cause rainfall — the forecast precedes the rain and adds information — but it obviously does not *cause* the rain.)
+
+**In the VAR.** For a bivariate $\mathsf{VAR}(p)$ with lag-$j$ matrices $A_j = (a^{(j)}_{kl})$: if $a_{12}^{(j)} = 0$ for all $j$ (i.e. $A(z)$ is lower triangular), then $x_{2,t}$ fails to Granger cause $x_{1,t}$. One tests $H_0: a_{21}^{(j)} = 0$ (for all $j$) via an $F$-test; rejection implies $x_{1,t}$ Granger causes $x_{2,t}$.
+
+**Conceptual problems.** (i) *Bidirectional causality* — if both $a_{12}^{(j)} \neq 0$ and $a_{21}^{(j)} \neq 0$, each Granger-causes the other (uninformative). (ii) *Confounding* — an unobserved third variable affecting both with different delays can create spurious Granger causality. (iii) *Non-transitivity* — $x_3 \to x_2$ and $x_2 \to x_1$ need not imply $x_3 \to x_1$ at one step, though an indirect effect $a_{12}a_{23}$ appears at longer horizons.
+
+**Granger causal priority (GCP).** To address these, $x_{1,t}$ is Granger causal prior to $x_{3,t}$ if the variables can be partitioned into blocks $\mathcal{B}_1 \ni x_{1,t}$ and $\mathcal{B}_3 \ni x_{3,t}$ such that $\mathcal{B}_3$ fails to (block-) Granger cause $\mathcal{B}_1$.
+::::
+
+:::: {.callout-note collapse="true"}
+## Appendix — counting the restrictions
+
+For an $N \times N$ rotation $P$, orthogonalisation ($\mathsf{Var}(\boldsymbol{\epsilon}_t) = I_N$, with $\Sigma_e$ symmetric) imposes $N(N+1)/2$ restrictions. Identification then requires a further $N(N-1)/2$ restrictions (supplied by Cholesky ordering, long-run neutrality, etc.), for a total of $$ \frac{N(N+1)}{2} + \frac{N(N-1)}{2} = N^2 $$ restrictions — exactly the number of free parameters in $P$. (For $N = 2$: $3 + 1 = 4$.)
+::::
+
+------------------------------------------------------------------------
+
+## Review questions
+
+1.  Write a bivariate $\mathsf{VAR}(1)$ in scalar, vector, and matrix-lag-polynomial form. State the condition under which it is weakly stationary and causal.
+2.  Explain the identification problem in a structural VAR. Why are exactly $N(N-1)/2$ additional (economic) restrictions required?
+3.  Contrast short-run (Sims, 1980) and long-run (Blanchard & Quah, 1989) identification. On which matrix — $C_0$ or $C(1)$ — does each impose triangularity?
+4.  Define the forecast-error variance decomposition $\pi_{ik}^{(s)}$ and explain what it measures.
+
+------------------------------------------------------------------------
+
+## Further reading
+
+- **Sims (1980)**, *Macroeconomics and Reality*, Econometrica.
+- **Blanchard & Quah (1989)**, *The Dynamic Effects of Aggregate Demand and Supply Disturbances*, AER.
+- **Kilian & Lütkepohl**, *Structural Vector Autoregressive Analysis* (2017), for a comprehensive treatment.
+
+------------------------------------------------------------------------

@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Vector autoregressions and structural VARs – Econometrics</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-a9218564b84fdcdb2cf105b37ade5199.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-84c05313a01c9b3d2fa27326047fa828.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<meta name="shinylive:serviceworker_dir" content=".">
+<script src="site_libs/quarto-contrib/shinylive-0.10.8/shinylive/load-shinylive-sw.js" type="module"></script>
+<script src="site_libs/quarto-contrib/shinylive-0.10.8/shinylive/run-python-blocks.js" type="module"></script>
+<link href="site_libs/quarto-contrib/shinylive-0.10.8/shinylive/shinylive.css" rel="stylesheet">
+<link href="site_libs/quarto-contrib/shinylive-quarto-css/shinylive-quarto.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="floating nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Econometrics</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./Topic1.html"> 
+<span class="menu-text">Topic 1</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./Topic2.html"> 
+<span class="menu-text">Topic 2</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./Topic3.html"> 
+<span class="menu-text">Topic 3</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./Topic4.html"> 
+<span class="menu-text">Topic 4</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./Topic5.html"> 
+<span class="menu-text">Topic 5</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./Topic6.html"> 
+<span class="menu-text">Topic 6</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./Topic7.html"> 
+<span class="menu-text">Topic 7</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="./Topic8.html" aria-current="page"> 
+<span class="menu-text">Topic 8</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./Topic9.html"> 
+<span class="menu-text">Topic 9</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <span class="nav-link">
+<span class="menu-text">Dr Ragvir Sabharwal</span>
+    </span>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="99">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul class="collapse">
+  <li><a href="#vector-valued-series" id="toc-vector-valued-series" class="nav-link active" data-scroll-target="#vector-valued-series"><span class="header-section-number">1</span> Vector-valued series</a></li>
+  <li><a href="#structural-var-models" id="toc-structural-var-models" class="nav-link" data-scroll-target="#structural-var-models"><span class="header-section-number">2</span> Structural VAR models</a></li>
+  <li><a href="#review-questions" id="toc-review-questions" class="nav-link" data-scroll-target="#review-questions"><span class="header-section-number">3</span> Review questions</a></li>
+  <li><a href="#further-reading" id="toc-further-reading" class="nav-link" data-scroll-target="#further-reading"><span class="header-section-number">4</span> Further reading</a></li>
+  </ul>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="Topic8.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Vector autoregressions and structural VARs</h1>
+<p class="subtitle lead">Topic 8</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<!-- git add . && git commit -m "update" && git push  -->
+<p><span class="kicker">Goals</span></p>
+<ul>
+<li>To generalise our univariate <span class="math inline">\(\mathsf{AR}\)</span> framework to the multivariate setting via vector autoregressions (VARs).</li>
+<li>To state weak stationarity and the stationarity/causality condition for vector processes.</li>
+<li>To understand the identification problem in <strong>structural</strong> VARs, and two canonical solutions: short-run (Sims, 1980) and long-run (Blanchard &amp; Quah, 1989) restrictions.</li>
+<li>To compute impulse response functions and the forecast-error variance decomposition.</li>
+</ul>
+<p><span class="kicker">Key Equation</span></p>
+<p><span class="math display">\[\mathbf{y}_t = A_1 \mathbf{y}_{t-1} + \mathbf{e}_t, \qquad \text{i.e.} \qquad A(L)\,\mathbf{y}_t = \mathbf{e}_t.\]</span></p>
+<div class="aside-text">
+<p>This topic is adapted from the multivariate slide pack (Part II: <em>Multivariate Series — Selected Topics</em>). Vectors are bold lowercase (<span class="math inline">\(\mathbf{y}_t, \mathbf{e}_t\)</span>), matrices uppercase (<span class="math inline">\(A, \Phi, \Sigma, C\)</span>), <span class="math inline">\(L\)</span> is the lag operator, and <span class="math inline">\(I_N\)</span> is the <span class="math inline">\(N \times N\)</span> identity.</p>
+</div>
+<hr>
+<section id="vector-valued-series" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="vector-valued-series"><span class="header-section-number">1</span> Vector-valued series</h2>
+<p>Univariate models — as investigated so far — are useful for the dynamics of individual variables and serve as a great basis for learning the language of time series analysis. But we are often interested not only in a single series but in the <strong>relationships among several</strong> (e.g.&nbsp;in macroeconomics). Univariate <span class="math inline">\(\mathsf{AR}\)</span> models necessarily ignore inter-relationships between variables; <strong>vector autoregressions (VARs)</strong> model the dynamics of <span class="math inline">\(N\)</span> variables simultaneously, allowing each to depend on its own lagged values <em>and</em> the lagged values of the other <span class="math inline">\(N-1\)</span> variables.</p>
+<p>For example, a two-dimensional <span class="math inline">\(\mathsf{VAR}(1)\)</span> is <span class="math display">\[\begin{aligned} y_{1,t} &amp;= a_{11} y_{1,t-1} + a_{12} y_{2,t-1} + e_{1,t}, \\ y_{2,t} &amp;= a_{21} y_{1,t-1} + a_{22} y_{2,t-1} + e_{2,t}, \end{aligned}\]</span> or more concisely <span class="math inline">\(A(L)\mathbf{y}_t = \mathbf{e}_t\)</span>, where <span class="math inline">\(\mathbf{y}_t = (y_{1,t}, y_{2,t})'\)</span>, <span class="math inline">\(\mathbf{e}_t = (e_{1,t}, e_{2,t})'\)</span> and <span class="math display">\[ A(L) = \begin{pmatrix} 1 - a_{11}L &amp; -a_{12}L \\ -a_{21}L &amp; 1 - a_{22}L \end{pmatrix} = I_2 - A_1 L, \quad A_1 = \begin{pmatrix} a_{11} &amp; a_{12} \\ a_{21} &amp; a_{22} \end{pmatrix}. \]</span> So yet another way to write the system is <span class="math inline">\(\mathbf{y}_t = A_1 \mathbf{y}_{t-1} + \mathbf{e}_t\)</span>. It is a good idea to get comfortable with all these notational styles — scalars, vectors, coefficient matrices, and matrix lag polynomials.</p>
+<div class="slidebox">
+<p><span class="slide-label">What does weak stationarity mean for a vector process?</span></p>
+<div class="slide-body">
+<p>A process <span class="math inline">\(\{\mathbf{x}_t\}\)</span> with <span class="math inline">\(\mathbf{x}_t = (x_{t1}, \ldots, x_{tN})'\)</span> is <strong>weakly stationary</strong> if</p>
+<ol type="i">
+<li><span class="math inline">\(\mathsf{E}(\mathbf{x}_t) = \boldsymbol{\mu}\)</span> (constant, with finite entries); and</li>
+<li><span class="math inline">\(\text{Cov}(\mathbf{x}_t, \mathbf{x}_{t+\tau})\)</span> has finite entries and depends only on <span class="math inline">\(\tau\)</span>.</li>
+</ol>
+<p>We collect the (cross-)autocovariances in the <strong>autocovariance matrix at lag <span class="math inline">\(\tau\)</span></strong>, <span class="math display">\[ \Gamma_\tau = \text{Cov}(\mathbf{x}_t, \mathbf{x}_{t+\tau}), \qquad \text{with } \Gamma_{-\tau} = \Gamma_\tau', \]</span> whose diagonal entries are the individual autocovariances and whose off-diagonal entries are the cross-covariances. The corresponding <strong>correlation matrix</strong> is <span class="math inline">\(\rho_\tau = D^{-1/2}\Gamma_\tau D^{-1/2}\)</span>, where <span class="math inline">\(D = \text{diag}(\Gamma_0)\)</span>.</p>
+</div>
+<div class="slide-footer">
+<p>A vector process is weakly stationary when its mean and all lag-<span class="math inline">\(\tau\)</span> (cross-)covariances are time-invariant.</p>
+</div>
+</div>
+<p>We say <span class="math inline">\(\boldsymbol{\epsilon}_t \sim \mathsf{WN}(\mathbf{0}, \Sigma)\)</span> is <strong>multivariate white noise</strong> if <span class="math inline">\(\Gamma_\tau = 0\)</span> for <span class="math inline">\(\tau \neq 0\)</span> (and <span class="math inline">\(\mathsf{E}(\boldsymbol{\epsilon}_t) = \mathbf{0}\)</span>).</p>
+<div class="slidebox">
+<p><span class="slide-label">What is a <span class="math inline">\(\mathsf{VARMA}(p,q)\)</span> process, and when is it stationary?</span></p>
+<div class="slide-body">
+<p><strong>Definition.</strong> <span class="math inline">\(\{\mathbf{x}_t\}\)</span> is a <span class="math inline">\(\mathsf{VARMA}(p,q)\)</span> process if <span class="math display">\[ \mathbf{x}_t = \Phi_1 \mathbf{x}_{t-1} + \cdots + \Phi_p \mathbf{x}_{t-p} + \boldsymbol{\epsilon}_t + \Theta_1 \boldsymbol{\epsilon}_{t-1} + \cdots + \Theta_q \boldsymbol{\epsilon}_{t-q}, \]</span> where the <span class="math inline">\(\Phi_i, \Theta_j\)</span> are <span class="math inline">\(N \times N\)</span> matrices and <span class="math inline">\(\boldsymbol{\epsilon}_t \sim \mathsf{WN}(\mathbf{0}, \Sigma)\)</span>. <span class="math inline">\(\qquad\square\)</span></p>
+<p>The process is <strong>weakly stationary and causal</strong> if and only if <span class="math display">\[ \det\big(I_N - \Phi_1 z - \cdots - \Phi_p z^p\big) \neq 0 \quad \text{for all } |z| \leq 1, \]</span> i.e.&nbsp;all roots of the characteristic polynomial lie outside the unit circle. When stationary, it admits the causal <span class="math inline">\(\mathsf{VMA}(\infty)\)</span> representation <span class="math inline">\(\mathbf{x}_t = \sum_{j=0}^{\infty} \Psi_j \boldsymbol{\epsilon}_{t-j}\)</span>.</p>
+</div>
+<div class="slide-footer">
+<p>Same idea as the scalar case — but the stability condition is now a <em>determinant</em> equation.</p>
+</div>
+</div>
+<p><strong>A numerical example.</strong> Consider the <span class="math inline">\(\mathsf{VAR}(1)\)</span> with <span class="math display">\[ \Phi_1 = \begin{pmatrix} 0.9 &amp; 0.6 \\ -0.3 &amp; 0.7 \end{pmatrix}, \qquad \det(I_2 - \Phi_1 z) = 1 - 1.6 z + 0.81 z^2. \]</span> The roots are <span class="math inline">\(z \approx 0.99 \pm 0.51 i\)</span>, with modulus <span class="math inline">\(\approx 1.11 &gt; 1\)</span> (outside the unit circle). Therefore <span class="math inline">\(\{\mathbf{x}_t\}\)</span> is weakly stationary.</p>
+<div class="slidebox">
+<p><span class="slide-label">Why is the <span class="math inline">\(\mathsf{VAR}(1)\)</span> our workhorse?</span></p>
+<div class="slide-body">
+<p>Any <span class="math inline">\(\mathsf{VAR}(p)\)</span> with <span class="math inline">\(p &gt; 1\)</span> can be rewritten as a <strong>companion</strong> <span class="math inline">\(\mathsf{VAR}(1)\)</span> in higher dimensions. For a 2-D <span class="math inline">\(\mathsf{VAR}(2)\)</span>, <span class="math inline">\(\mathbf{y}_t = A_1 \mathbf{y}_{t-1} + A_2 \mathbf{y}_{t-2} + \mathbf{e}_t\)</span>, stack the lags into <span class="math inline">\(\tilde{\mathbf{y}}_t = (y_{1,t}, y_{2,t}, y_{1,t-1}, y_{2,t-1})'\)</span>: <span class="math display">\[ \begin{pmatrix} y_{1,t} \\ y_{2,t} \\ y_{1,t-1} \\ y_{2,t-1} \end{pmatrix} = \begin{pmatrix} A_1 &amp; A_2 \\ I_2 &amp; 0 \end{pmatrix} \begin{pmatrix} y_{1,t-1} \\ y_{2,t-1} \\ y_{1,t-2} \\ y_{2,t-2} \end{pmatrix} + \begin{pmatrix} e_{1,t} \\ e_{2,t} \\ 0 \\ 0 \end{pmatrix}, \]</span> i.e.&nbsp;<span class="math inline">\(\tilde{\mathbf{y}}_t = \tilde{A}_1 \tilde{\mathbf{y}}_{t-1} + \tilde{\mathbf{e}}_t\)</span>. So it suffices to study the <span class="math inline">\(\mathsf{VAR}(1)\)</span>.</p>
+</div>
+<div class="slide-footer">
+<p>Stacking lags turns any <span class="math inline">\(\mathsf{VAR}(p)\)</span> into a <span class="math inline">\(\mathsf{VAR}(1)\)</span> — so we focus on the latter.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Watch: <span class="math inline">\(\mathsf{VAR}(1)\)</span> stationarity and simulated paths
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<pre class="shinylive-r" data-engine="r"><code>#| '!! shinylive warning !!': |
+#|   shinylive does not work in self-contained HTML documents.
+#|   Please set `embed-resources: false` in your metadata.
+#| standalone: true
+#| viewerHeight: 560
+
+library(shiny)
+
+ui &lt;- fluidPage(
+  tags$style(HTML("body{font-family:system-ui,sans-serif;}")),
+  titlePanel("A bivariate VAR(1)"),
+  sidebarLayout(
+    sidebarPanel(
+      sliderInput("a11", "a11", -1.2, 1.2, 0.9, 0.05),
+      sliderInput("a12", "a12", -1.2, 1.2, 0.6, 0.05),
+      sliderInput("a21", "a21", -1.2, 1.2, -0.3, 0.05),
+      sliderInput("a22", "a22", -1.2, 1.2, 0.7, 0.05),
+      sliderInput("T", "Length T", 50, 400, 200, 50)
+    ),
+    mainPanel(verbatimTextOutput("info"), plotOutput("plot", height = "380px"))
+  )
+)
+
+server &lt;- function(input, output) {
+  A1 &lt;- reactive(matrix(c(input$a11, input$a21, input$a12, input$a22), 2, 2))
+  output$info &lt;- renderText({
+    ev &lt;- eigen(A1())$values
+    paste0("max |eigenvalue of A1| = ", round(max(Mod(ev)), 3),
+           if (max(Mod(ev)) &lt; 1) "  -&gt;  STATIONARY" else "  -&gt;  NON-STATIONARY")
+  })
+  output$plot &lt;- renderPlot({
+    set.seed(1); n &lt;- input$T; y &lt;- matrix(0, n, 2)
+    for (t in 2:n) y[t, ] &lt;- A1() %*% y[t - 1, ] + rnorm(2)
+    matplot(1:n, y, type = "l", lty = 1, lwd = 2, col = c(4, 2),
+            xlab = "t", ylab = "")
+    legend("topleft", c("y1", "y2"), col = c(4, 2), lwd = 2, bty = "n")
+  })
+}
+
+shinyApp(ui, server)</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="structural-var-models" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="structural-var-models"><span class="header-section-number">2</span> Structural VAR models</h2>
+<p>Economists care not just about econometric equations but about primitive <strong>structural shocks</strong> (e.g.&nbsp;monetary policy, technology) and their dynamic causal effects. Consider a three-variable macro system — output <span class="math inline">\(X_t\)</span>, inflation <span class="math inline">\(\pi_t\)</span>, interest rate <span class="math inline">\(i_t\)</span> — with <span class="math inline">\(\mathbf{y}_t = (X_t, \pi_t, i_t)'\)</span> and <span class="math inline">\(\mathbf{y}_t = A_1 \mathbf{y}_{t-1} + \mathbf{e}_t\)</span>.</p>
+<div class="slidebox">
+<p><span class="slide-label">Econometric errors versus structural shocks</span></p>
+<div class="slide-body">
+<p>The econometric error <span class="math inline">\(e_{i,t}\)</span> is simply the unexplained portion of variable <span class="math inline">\(i\)</span> at time <span class="math inline">\(t\)</span>. These are <strong>not</strong> the same as the <strong>structural shocks</strong> <span class="math inline">\(\boldsymbol{\epsilon}_t\)</span> — the true, primitive drivers of the economy (a monetary-policy shock, a technology shock, etc.), whose effects on the system are unobserved. The <strong>identification problem</strong> is to recover both the structural shocks and their dynamic effects (impulse responses) from econometric data alone.</p>
+</div>
+<div class="slide-footer">
+<p>Reduced-form residuals are a statistical by-product; structural shocks are the economic objects of interest.</p>
+</div>
+</div>
+<div class="slidebox">
+<p><span class="slide-label">What is the identification problem?</span></p>
+<div class="slide-body">
+<p>For a causal stationary VAR, <span class="math inline">\(A(L)\mathbf{y}_t = \mathbf{e}_t\)</span> with <span class="math inline">\(\mathbf{e}_t \sim \mathsf{WN}(\mathbf{0}, \Sigma_e)\)</span>, we can invert to the reduced-form moving-average representation <span class="math display">\[ \mathbf{y}_t = B(L)\mathbf{e}_t, \qquad B(L) = A^{-1}(L). \]</span> But what we <em>want</em> is the structural representation <span class="math inline">\(\mathbf{y}_t = C(L)\boldsymbol{\epsilon}_t\)</span>, where <span class="math inline">\(\boldsymbol{\epsilon}_t\)</span> are the structural shocks and <span class="math inline">\(C(L)\)</span> contains the <strong>impulse response functions (IRFs)</strong>.</p>
+<p>The difficulty is <strong>rotational indeterminacy</strong>: for any orthogonal matrix <span class="math inline">\(P\)</span> (with <span class="math inline">\(P'P = I_N\)</span>), <span class="math display">\[ \mathbf{y}_t = B(L)P'P\,\mathbf{e}_t = \Gamma(L)\,\mathbf{u}_t, \]</span> leaving the covariance structure of <span class="math inline">\(\mathbf{y}_t\)</span> unchanged. Requiring <span class="math inline">\(\mathsf{Var}(\boldsymbol{\epsilon}_t) = I_N\)</span> imposes the <span class="math inline">\(N(N+1)/2\)</span> symmetric constraints in <span class="math inline">\(\Sigma_e\)</span>, leaving <span class="math inline">\(N^2 - N(N+1)/2 = N(N-1)/2\)</span> degrees of freedom that must be pinned down by <strong>economic</strong> restrictions.</p>
+</div>
+<div class="slide-footer">
+<p>The data fix the covariance structure but not the rotation — economics must supply the remaining <span class="math inline">\(N(N-1)/2\)</span> restrictions.</p>
+</div>
+</div>
+<p>Setting <span class="math inline">\(\boldsymbol{\epsilon}_t = P\mathbf{e}_t\)</span> (so <span class="math inline">\(\mathsf{Var}(\boldsymbol{\epsilon}_t) = I_N\)</span>) and <span class="math inline">\(C(L) = B(L)P^{-1}\)</span>, we expand <span class="math display">\[ \mathbf{y}_t = C_0\boldsymbol{\epsilon}_t + C_1\boldsymbol{\epsilon}_{t-1} + C_2\boldsymbol{\epsilon}_{t-2} + \cdots, \qquad C_j = B_j P^{-1}. \]</span> Two matrices are of special interest: <span class="math inline">\(C_0 = C(0)\)</span>, the <strong>short-run</strong> (instantaneous) responses, and <span class="math inline">\(C(1) = \sum_{j=0}^{\infty} C_j\)</span>, the <strong>long-run</strong> (cumulative) responses.</p>
+<div class="slidebox">
+<p><span class="slide-label">Short-run restrictions — Sims (1980)</span></p>
+<div class="slide-body">
+<p>We impose restrictions on <span class="math inline">\(C_0\)</span>. We have exactly <span class="math inline">\(N(N-1)/2\)</span> remaining degrees of freedom — precisely the number of below-diagonal entries of an <span class="math inline">\(N \times N\)</span> matrix. A <strong>Cholesky</strong> decomposition delivers this structure:</p>
+<ol type="1">
+<li>Factor <span class="math inline">\(\Sigma_e = LL'\)</span>, with <span class="math inline">\(L\)</span> lower triangular (positive diagonal).</li>
+<li>Set <span class="math inline">\(P = L^{-1}\)</span>.</li>
+<li>Then <span class="math inline">\(P'P = (LL')^{-1} = \Sigma_e^{-1}\)</span> (orthogonalisation) and <span class="math inline">\(C_0 = B_0 P^{-1} = L\)</span> is <strong>lower triangular</strong>.</li>
+</ol>
+<p>For the ordering <span class="math inline">\((X_t, \pi_t, i_t)\)</span>, <span class="math display">\[ \begin{pmatrix} X_t \\ \pi_t \\ i_t \end{pmatrix} = \begin{pmatrix} c_{11}^{(0)} &amp; 0 &amp; 0 \\ c_{21}^{(0)} &amp; c_{22}^{(0)} &amp; 0 \\ c_{31}^{(0)} &amp; c_{32}^{(0)} &amp; c_{33}^{(0)} \end{pmatrix}\begin{pmatrix} \epsilon_{1,t} \\ \epsilon_{2,t} \\ \epsilon_{3,t} \end{pmatrix} + \cdots \]</span> The ordering encodes which shocks may have instantaneous effects: a variable ordered first cannot be contemporaneously affected by other shocks. (If <span class="math inline">\(\epsilon_{3,t}\)</span> is a monetary-policy shock, the third column of <span class="math inline">\(C(L)\)</span> holds its IRFs.)</p>
+</div>
+<div class="slide-footer">
+<p>Cholesky → lower-triangular <span class="math inline">\(C_0\)</span>; the variable ordering <em>is</em> the identifying assumption.</p>
+</div>
+</div>
+<div class="slidebox">
+<p><span class="slide-label">Long-run restrictions — Blanchard &amp; Quah (1989)</span></p>
+<div class="slide-body">
+<p>Instead of restricting <span class="math inline">\(C_0\)</span>, we restrict <span class="math inline">\(C(1)\)</span> — the long-run cumulative responses. If a variable enters in differences (e.g.&nbsp;<span class="math inline">\(\Delta \ln X_t\)</span>), <span class="math inline">\(C(1)\)</span> captures the cumulative effect on the <em>level</em>; a demand shock may have only transitory effects on output, while a technology shock has a permanent one.</p>
+<p>For a bivariate system, choose <span class="math inline">\(P\)</span> so that (i) <span class="math inline">\(P'P = \Sigma_e^{-1}\)</span> and (ii) <span class="math inline">\(C(1)\)</span> is lower triangular. The procedure: Cholesky-factor <span class="math inline">\(B(1)\Sigma_e B(1)' = QQ'\)</span> (with <span class="math inline">\(Q\)</span> lower triangular), set <span class="math inline">\(P = Q^{-1}B(1)\)</span>, and obtain <span class="math inline">\(C(L) = B(L)P^{-1}\)</span>. One verifies <span class="math inline">\(P'P = \Sigma_e^{-1}\)</span> and <span class="math inline">\(C(1) = B(1)P^{-1} = Q\)</span>, lower triangular — encoding <strong>long-run neutrality</strong> (e.g.&nbsp;<span class="math inline">\(\sum_{j} c_{12}^{(j)} = 0\)</span>).</p>
+</div>
+<div class="slide-footer">
+<p>Same orthogonalisation, but the triangular restriction is imposed on the long-run matrix <span class="math inline">\(C(1)\)</span>, not on <span class="math inline">\(C_0\)</span>.</p>
+</div>
+</div>
+<div class="slidebox">
+<p><span class="slide-label">What is the forecast-error variance decomposition (FEVD)?</span></p>
+<div class="slide-body">
+<p>With an identified VAR, <span class="math inline">\(\mathbf{x}_t = C(L)\boldsymbol{\epsilon}_t\)</span> and <span class="math inline">\(\boldsymbol{\epsilon}_t \sim \mathsf{WN}(\mathbf{0}, I_N)\)</span>, the <span class="math inline">\(s\)</span>-period-ahead forecast error is <span class="math display">\[ \mathbf{x}_{t+s} - \mathsf{E}(\mathbf{x}_{t+s}\mid\mathcal{F}_t) = \sum_{j=0}^{s-1} C_j \boldsymbol{\epsilon}_{t+s-j}. \]</span> The proportion of the <span class="math inline">\(s\)</span>-period-ahead forecast-error variance of variable <span class="math inline">\(i\)</span> attributable to shock <span class="math inline">\(k\)</span> is <span class="math display">\[ \pi_{ik}^{(s)} = \frac{\sum_{j=0}^{s-1} \big(c_{ik}^{(j)}\big)^2}{\sum_{j=0}^{s-1}\sum_{k=1}^{N} \big(c_{ik}^{(j)}\big)^2}, \qquad \text{with } \sum_{k=1}^{N} \pi_{ik}^{(s)} = 1. \]</span> The FEVD tells us <strong>how important each structural shock is</strong> for explaining the variation in each variable over a given horizon.</p>
+</div>
+<div class="slide-footer">
+<p>The FEVD apportions each variable’s forecast uncertainty across the structural shocks.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Granger causation <em>(not examinable)</em>
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><strong>A pragmatic definition.</strong> Despite the name, Granger causality is <em>not</em> a deep notion of true causation. Granger’s two components are: (1) the cause occurs <em>before</em> the effect; and (2) the cause contains <em>unique information</em> about the effect not present in any other variable. Formally, <span class="math inline">\(x_{1,t}\)</span> <strong>Granger causes</strong> <span class="math inline">\(x_{2,t}\)</span> if, for at least one <span class="math inline">\(s &gt; 0\)</span>, the MSE of a forecast of <span class="math inline">\(x_{2,t+s}\)</span> based on <span class="math inline">\((x_{2,t}, x_{2,t-1}, \ldots)\)</span> alone is strictly greater than the MSE of a forecast also using <span class="math inline">\((x_{1,t}, x_{1,t-1}, \ldots)\)</span>. (A weather forecast may Granger-cause rainfall — the forecast precedes the rain and adds information — but it obviously does not <em>cause</em> the rain.)</p>
+<p><strong>In the VAR.</strong> For a bivariate <span class="math inline">\(\mathsf{VAR}(p)\)</span> with lag-<span class="math inline">\(j\)</span> matrices <span class="math inline">\(A_j = (a^{(j)}_{kl})\)</span>: if <span class="math inline">\(a_{12}^{(j)} = 0\)</span> for all <span class="math inline">\(j\)</span> (i.e.&nbsp;<span class="math inline">\(A(z)\)</span> is lower triangular), then <span class="math inline">\(x_{2,t}\)</span> fails to Granger cause <span class="math inline">\(x_{1,t}\)</span>. One tests <span class="math inline">\(H_0: a_{21}^{(j)} = 0\)</span> (for all <span class="math inline">\(j\)</span>) via an <span class="math inline">\(F\)</span>-test; rejection implies <span class="math inline">\(x_{1,t}\)</span> Granger causes <span class="math inline">\(x_{2,t}\)</span>.</p>
+<p><strong>Conceptual problems.</strong> (i) <em>Bidirectional causality</em> — if both <span class="math inline">\(a_{12}^{(j)} \neq 0\)</span> and <span class="math inline">\(a_{21}^{(j)} \neq 0\)</span>, each Granger-causes the other (uninformative). (ii) <em>Confounding</em> — an unobserved third variable affecting both with different delays can create spurious Granger causality. (iii) <em>Non-transitivity</em> — <span class="math inline">\(x_3 \to x_2\)</span> and <span class="math inline">\(x_2 \to x_1\)</span> need not imply <span class="math inline">\(x_3 \to x_1\)</span> at one step, though an indirect effect <span class="math inline">\(a_{12}a_{23}\)</span> appears at longer horizons.</p>
+<p><strong>Granger causal priority (GCP).</strong> To address these, <span class="math inline">\(x_{1,t}\)</span> is Granger causal prior to <span class="math inline">\(x_{3,t}\)</span> if the variables can be partitioned into blocks <span class="math inline">\(\mathcal{B}_1 \ni x_{1,t}\)</span> and <span class="math inline">\(\mathcal{B}_3 \ni x_{3,t}\)</span> such that <span class="math inline">\(\mathcal{B}_3\)</span> fails to (block-) Granger cause <span class="math inline">\(\mathcal{B}_1\)</span>.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Appendix — counting the restrictions
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>For an <span class="math inline">\(N \times N\)</span> rotation <span class="math inline">\(P\)</span>, orthogonalisation (<span class="math inline">\(\mathsf{Var}(\boldsymbol{\epsilon}_t) = I_N\)</span>, with <span class="math inline">\(\Sigma_e\)</span> symmetric) imposes <span class="math inline">\(N(N+1)/2\)</span> restrictions. Identification then requires a further <span class="math inline">\(N(N-1)/2\)</span> restrictions (supplied by Cholesky ordering, long-run neutrality, etc.), for a total of <span class="math display">\[ \frac{N(N+1)}{2} + \frac{N(N-1)}{2} = N^2 \]</span> restrictions — exactly the number of free parameters in <span class="math inline">\(P\)</span>. (For <span class="math inline">\(N = 2\)</span>: <span class="math inline">\(3 + 1 = 4\)</span>.)</p>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="review-questions" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="review-questions"><span class="header-section-number">3</span> Review questions</h2>
+<ol type="1">
+<li>Write a bivariate <span class="math inline">\(\mathsf{VAR}(1)\)</span> in scalar, vector, and matrix-lag-polynomial form. State the condition under which it is weakly stationary and causal.</li>
+<li>Explain the identification problem in a structural VAR. Why are exactly <span class="math inline">\(N(N-1)/2\)</span> additional (economic) restrictions required?</li>
+<li>Contrast short-run (Sims, 1980) and long-run (Blanchard &amp; Quah, 1989) identification. On which matrix — <span class="math inline">\(C_0\)</span> or <span class="math inline">\(C(1)\)</span> — does each impose triangularity?</li>
+<li>Define the forecast-error variance decomposition <span class="math inline">\(\pi_{ik}^{(s)}\)</span> and explain what it measures.</li>
+</ol>
+<hr>
+</section>
+<section id="further-reading" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="further-reading"><span class="header-section-number">4</span> Further reading</h2>
+<ul>
+<li><strong>Sims (1980)</strong>, <em>Macroeconomics and Reality</em>, Econometrica.</li>
+<li><strong>Blanchard &amp; Quah (1989)</strong>, <em>The Dynamic Effects of Aggregate Demand and Supply Disturbances</em>, AER.</li>
+<li><strong>Kilian &amp; Lütkepohl</strong>, <em>Structural Vector Autoregressive Analysis</em> (2017), for a comprehensive treatment.</li>
+</ul>
+<hr>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p>Copyright © 2026 Ragvir Sabharwal. All rights reserved.</p>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+<script>
+document.querySelectorAll('div.audio').forEach(div => {
+  const file = div.textContent.trim();
+  div.innerHTML = '<p>' + (div.dataset.label || 'Listen') + '</p>'
+                + '<audio controls src="' + file + '"></audio>';
+  div.addEventListener('click', e => {
+    if (e.target.tagName !== 'AUDIO') div.classList.toggle('open');
+  });
+});
+</script>
+
+
+
+
+<script src="site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

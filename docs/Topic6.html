@@ -1,0 +1,1457 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Trends, unit roots and the Dickey–Fuller test – Econometrics</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-a9218564b84fdcdb2cf105b37ade5199.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-84c05313a01c9b3d2fa27326047fa828.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<meta name="shinylive:serviceworker_dir" content=".">
+<script src="site_libs/quarto-contrib/shinylive-0.10.8/shinylive/load-shinylive-sw.js" type="module"></script>
+<script src="site_libs/quarto-contrib/shinylive-0.10.8/shinylive/run-python-blocks.js" type="module"></script>
+<link href="site_libs/quarto-contrib/shinylive-0.10.8/shinylive/shinylive.css" rel="stylesheet">
+<link href="site_libs/quarto-contrib/shinylive-quarto-css/shinylive-quarto.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="floating nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Econometrics</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./Topic1.html"> 
+<span class="menu-text">Topic 1</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./Topic2.html"> 
+<span class="menu-text">Topic 2</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./Topic3.html"> 
+<span class="menu-text">Topic 3</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./Topic4.html"> 
+<span class="menu-text">Topic 4</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./Topic5.html"> 
+<span class="menu-text">Topic 5</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="./Topic6.html" aria-current="page"> 
+<span class="menu-text">Topic 6</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./Topic7.html"> 
+<span class="menu-text">Topic 7</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./Topic8.html"> 
+<span class="menu-text">Topic 8</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./Topic9.html"> 
+<span class="menu-text">Topic 9</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <span class="nav-link">
+<span class="menu-text">Dr Ragvir Sabharwal</span>
+    </span>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="99">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul class="collapse">
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">1</span> Introduction</a></li>
+  <li><a href="#towards-a-practicable-modelling-strategy" id="toc-towards-a-practicable-modelling-strategy" class="nav-link" data-scroll-target="#towards-a-practicable-modelling-strategy"><span class="header-section-number">2</span> Towards a practicable modelling strategy</a></li>
+  <li><a href="#trend-stationarity-versus-difference-stationarity" id="toc-trend-stationarity-versus-difference-stationarity" class="nav-link" data-scroll-target="#trend-stationarity-versus-difference-stationarity"><span class="header-section-number">3</span> Trend-stationarity versus difference-stationarity</a></li>
+  <li><a href="#defining-mathsfarima-models" id="toc-defining-mathsfarima-models" class="nav-link" data-scroll-target="#defining-mathsfarima-models"><span class="header-section-number">4</span> Defining <span class="math inline">\(\mathsf{ARIMA}\)</span> models</a></li>
+  <li><a href="#the-dickeyfuller-test-for-a-unit-root" id="toc-the-dickeyfuller-test-for-a-unit-root" class="nav-link" data-scroll-target="#the-dickeyfuller-test-for-a-unit-root"><span class="header-section-number">5</span> The Dickey–Fuller test for a unit root</a></li>
+  <li><a href="#wrap-up" id="toc-wrap-up" class="nav-link" data-scroll-target="#wrap-up"><span class="header-section-number">6</span> Wrap-up</a></li>
+  <li><a href="#review-questions" id="toc-review-questions" class="nav-link" data-scroll-target="#review-questions"><span class="header-section-number">7</span> Review questions</a></li>
+  <li><a href="#further-reading" id="toc-further-reading" class="nav-link" data-scroll-target="#further-reading"><span class="header-section-number">8</span> Further reading</a></li>
+  </ul>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="Topic6.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Trends, unit roots and the Dickey–Fuller test</h1>
+<p class="subtitle lead">Topic 6</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<!-- git add . && git commit -m "update" && git push  -->
+<p><span class="kicker">Goals</span></p>
+<ul>
+<li>To explore different types of non-stationarity.</li>
+<li>To discuss how to accommodate non-stationarity in our modelling framework.</li>
+<li>To draw attention specifically to ‘difference-stationarity’ (i.e.&nbsp;stochastic trends).</li>
+<li>To introduce what are <span class="math inline">\(\mathsf{ARIMA}(p,d,q)\)</span> models.</li>
+<li>To discuss the Dickey–Fuller test for a unit root.</li>
+</ul>
+<p><span class="kicker">Key Concept</span></p>
+<p>The “<span class="math inline">\(T + S + \mathsf{ARIMA}(p,d,q)\)</span>” mindset for univariate time series modelling is a good starting point.</p>
+<hr>
+<section id="introduction" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="introduction"><span class="header-section-number">1</span> Introduction</h2>
+<p>So far, we have only studied models suitable for stationary time series — that is, where some or all features of the data-generating process are well-defined and time-invariant. Plenty of real-life processes, however, exhibit slowly-varying, oscillating, or abrupt permanent changes in parameter values (or some combination of these). It is very common in economic contexts to observe:</p>
+<ul>
+<li>Long-term <strong>drift</strong> in the mean level of a process. For instance, national output data may exhibit steady growth, or inflation may cause prices to rise steadily over time.</li>
+<li>Repetitive behaviour — expansions, peaks, contractions and troughs — and then the <strong>cycle</strong> repeats. There may be no fixed frequency of oscillation, but if there is one, characterising it is of interest.</li>
+<li>Within-year <strong>seasonality</strong>, e.g.&nbsp;higher temperatures in summer, fluctuating ice cream sales over the year, or an annual stimulus to retail expenditure in the run-up to Christmas.</li>
+<li><strong>Structural breaks</strong>, or ‘changepoints’, due to financial crises or abrupt shifts in economic policy — e.g.&nbsp;financial returns switching from a low- to a high-volatility regime.</li>
+</ul>
+<p>Since most of the foundational theory concerns stationary processes, we typically (i) figure out the nature of the non-stationarity; and (ii) either model it explicitly or convert a non-stationary series into a stationary one via suitable transformations. Indeed, the main forms of non-stationarity — ‘trend-stationary’, ‘difference-stationary’, etc. — are defined with reference to the operation required to make them stationary. By the end of this topic, you can expect to have developed a versatile modelling strategy capable of <strong>accommodating the vast majority of univariate time series</strong> you will encounter. (Handling <em>multivariate</em> time series is a different matter.)</p>
+</section>
+<section id="towards-a-practicable-modelling-strategy" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="towards-a-practicable-modelling-strategy"><span class="header-section-number">2</span> Towards a practicable modelling strategy</h2>
+<p>When we consider modelling a univariate time series, we need somewhere to start. Let us talk about how to approach a real-life modelling scenario.</p>
+<section id="plotting-the-data" class="level3">
+<h3 class="anchored" data-anchor-id="plotting-the-data">Plotting the data</h3>
+<div class="slidebox">
+<p><span class="slide-label">Plot the data. Describe the visuals. Then, think.</span></p>
+<div class="slide-body">
+<ul>
+<li>Without doubt, the first step is to <strong>plot the data over time</strong>; look for broad patterns; get a sense of outliers, discontinuities and peculiarities; and try to understand the qualitative reasons behind what we observe.</li>
+<li>Where possible, the next step is to <strong>talk to the individuals/agencies who created, supplied, or already understand the data.</strong></li>
+<li>Think carefully about <strong>your goals, how you plan to achieve them, and whether these are compatible with the data.</strong> (You cannot speak to seasonality with only annual data; you cannot use data-intensive techniques with only a few observations; you cannot propose <span class="math inline">\(\log\)</span>-transformations if your data takes negative values; you cannot report a 200% sales increase when units sold rise from 1 to 3. Do not underestimate common sense.)</li>
+<li>Even plotting the data is not trivial. Graphs must be self-explanatory at a glance — with titles, units, axis labels, markers/legends, and data sources clearly shown. More importantly, the choice of scales, the size of the intercept, and the way points are plotted (continuous lines versus dots) can substantially affect how a plot ‘looks’.</li>
+</ul>
+</div>
+<div class="slide-footer">
+<p>The two panels below are generated from the <em>same</em> underlying series.</p>
+</div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="pic1000words.png" class="img-fluid figure-img"></p>
+<figcaption>A picture is worth 1000 words — but exactly who is speaking? Both panels plot the <em>same</em> simulated series under different axis scales.</figcaption>
+</figure>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(<span class="at">list =</span> <span class="fu">ls</span>()); <span class="fu">set.seed</span>(<span class="dv">3467</span>); <span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">100</span>; tee <span class="ot">&lt;-</span> (<span class="dv">1</span><span class="sc">:</span>n)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="dv">50</span> <span class="sc">+</span> <span class="fu">log</span>(tee) <span class="sc">+</span> <span class="fl">0.5</span> <span class="sc">*</span> <span class="fu">cos</span>(.<span class="dv">25</span> <span class="sc">*</span> tee) <span class="sc">+</span> <span class="fu">rnorm</span>(n, <span class="dv">0</span>, .<span class="dv">25</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot.ts</span>(y, <span class="at">col =</span> <span class="dv">2</span>, <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">50</span>, <span class="dv">55</span>), <span class="at">log =</span> <span class="st">"y"</span>, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">main =</span> <span class="st">"a picture is worth 1000 words..."</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot.ts</span>(y, <span class="at">col =</span> <span class="dv">4</span>, <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">50</span>, <span class="dv">70</span>), <span class="at">log =</span> <span class="st">"x"</span>, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">main =</span> <span class="st">"..but exactly who is speaking?"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="decomposing-a-time-series" class="level3">
+<h3 class="anchored" data-anchor-id="decomposing-a-time-series">Decomposing a time series</h3>
+<div class="slidebox">
+<p><span class="slide-label">What are the core components of a time series?</span></p>
+<div class="slide-body">
+<p>A good way to start modelling a real-life univariate time series, <span class="math inline">\(Y_t\)</span>, is to hypothesise that it is made up of additive components: <span class="math display">\[ Y_t = \widetilde{T}_t + C_t + S_t + R_t, \]</span> where</p>
+<ul>
+<li><span class="math inline">\(\widetilde{T}_t\)</span> is a deterministic <strong>trend</strong> (not necessarily linear, and it may change direction);</li>
+<li><span class="math inline">\(C_t\)</span> is a <strong>cyclical</strong> component with oscillatory behaviour but no fixed frequency;</li>
+<li><span class="math inline">\(S_t\)</span> is a <strong>seasonal</strong> recurrence pattern with a fixed period/frequency;</li>
+<li><span class="math inline">\(R_t\)</span> is a stochastic <strong>remainder</strong> term (not necessarily stationary).</li>
+</ul>
+<p>Hereafter, we consider trend and cycles-of-unknown-frequency jointly as a combined ‘trend-cycle’ component <span class="math inline">\(T_t\)</span>, so the decomposition becomes <span class="math display">\[ Y_t = T_t + S_t + R_t. \]</span></p>
+</div>
+<div class="slide-footer">
+<p>Trend-cycle, seasonality, and a stochastic remainder: <span class="math inline">\(Y_t = T_t + S_t + R_t\)</span>.</p>
+</div>
+</div>
+<p>An alternative is the <strong>multiplicative</strong> decomposition <span class="math inline">\(Y_t = T_t \cdot S_t \cdot R_t\)</span>.</p>
+<ul>
+<li>An <em>additive</em> decomposition is more appropriate when the seasonal movements and stochastic fluctuations around the trend-cycle component <strong>do not vary with the level</strong> of the series.</li>
+<li>A <em>multiplicative</em> decomposition is more appropriate when they are <strong>proportional to the level</strong> of the series.</li>
+</ul>
+<p>One can <span class="math inline">\(\log\)</span>-linearise the multiplicative specification, <span class="math inline">\(\log Y_t = \log T_t + \log S_t + \log R_t\)</span>, returning to the additive framework, so we will not discuss the multiplicative model further.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>For reference (non-examinable) — Box–Cox / variance-stabilising transformations
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Often, non-stationary processes exhibit changes in variance associated with changes in their mean levels. Consider a process <span class="math inline">\(\{ Z_t \}\)</span> with <span class="math inline">\(\mathsf{Var}(Z_t) = c\, f(\mu_t)\)</span>, where <span class="math inline">\(c\)</span> is a positive finite constant, <span class="math inline">\(\mu_t := \mathsf{E}(Z_t)\)</span>, and <span class="math inline">\(f(\cdot)\)</span> is a fixed (possibly non-linear) function. A first-order Taylor approximation, <span class="math inline">\(T(Z_t) \approx T(\mu_t) + T'(\mu_t)(Z_t - \mu_t)\)</span>, gives <span class="math display">\[ \mathsf{Var}[T(Z_t)] \approx [T'(\mu_t)]^2\, \mathsf{Var}(Z_t) = c\, [T'(\mu_t)]^2 f(\mu_t). \]</span> A variance-stabilising transformation therefore satisfies <span class="math inline">\(T'(\mu_t) = 1/\sqrt{f(\mu_t)}\)</span>, i.e.&nbsp;<span class="math inline">\(T(\mu_t) = \int 1/\sqrt{f(\mu_t)}\, \mathrm{d}\mu_t\)</span>. For example: if <span class="math inline">\(\mathsf{Var}(Z_t) = c\mu_t^2\)</span> then <span class="math inline">\(T(\mu_t) = \log(\mu_t)\)</span>; if <span class="math inline">\(\mathsf{Var}(Z_t) = c\mu_t\)</span> then <span class="math inline">\(T(\mu_t) = 2\sqrt{\mu_t}\)</span>; if <span class="math inline">\(\mathsf{Var}(Z_t) = c\mu_t^4\)</span> then <span class="math inline">\(T(\mu_t) = -1/\mu_t\)</span>.</p>
+<p>More generally, the <strong>power transformation</strong> of Box and Cox (1964) is <span class="math display">\[ T(Z_t) = \begin{cases} \dfrac{Z_t^\lambda - 1}{\lambda}, &amp; \lambda \neq 0, \\[4pt] \log(Z_t), &amp; \lambda = 0, \end{cases} \]</span> which contains many of the above as special cases:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: center;">Value of <span class="math inline">\(\lambda\)</span></th>
+<th style="text-align: center;">Transformation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(-1.0\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(1/Z_t\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(-0.5\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(1/\sqrt{Z_t}\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(0.0\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\log(Z_t)\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(0.5\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\sqrt{Z_t}\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(1.0\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(Z_t\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>These transformations are defined mainly for positive series (a constant can always be added without affecting the autocorrelation structure); a variance-stabilising transformation, if needed, should be performed <em>before</em> any other transformation such as first-differencing; and a Box–Cox transformation often also improves approximability by the normal distribution.</p>
+</div>
+</div>
+</div>
+<section id="example-of-a-time-series-decomposition" class="level4">
+<h4 class="anchored" data-anchor-id="example-of-a-time-series-decomposition">Example of a time series decomposition</h4>
+<p>Suppose the time index <span class="math inline">\(t = 1, 2, \ldots, 120\)</span> represents the month. Consider the (toy) model below, which follows the <span class="math inline">\(Y_t = T_t + S_t + R_t\)</span> framework with a couple of extra complexities for interest.</p>
+<div class="slidebox">
+<p><span class="slide-label">What is our model specification?</span></p>
+<div class="slide-body">
+<p>Consider the toy model <span class="math display">\[ Y_t = A_t + T_t + P_t + S_t + R_t, \]</span> where</p>
+<ul>
+<li><span class="math inline">\(A_t = 0\)</span> for <span class="math inline">\(t \leq 100\)</span>, and <span class="math inline">\(A_t = -150\)</span> thereafter (a <strong>changepoint</strong>);</li>
+<li><span class="math inline">\(T_t = -100 + 0.1 t + 0.02 t^2\)</span> (a polynomial <strong>trend</strong>);</li>
+<li><span class="math inline">\(P_t = 15 \times \sin(2\pi t/12)\)</span> (an annual <strong>periodic</strong> component);</li>
+<li><span class="math inline">\(S_t = 80 \times M_{12t}\)</span>, where <span class="math inline">\(M_{12t}\)</span> is a December dummy (<strong>seasonal</strong>);</li>
+<li><span class="math inline">\(R_t = 20 \times \widetilde{R}_t\)</span>, where <span class="math inline">\(\widetilde{R}_t = 0.3\, \widetilde{R}_{t-1} + \varepsilon_t\)</span> with <span class="math inline">\(\varepsilon_t \sim \mathsf{WN}(0,1)\)</span> (a stochastic <strong>remainder</strong>).</li>
+</ul>
+</div>
+<div class="slide-footer">
+<p>A changepoint, a quadratic trend, a sinusoid, a Christmas dummy, and an <span class="math inline">\(\mathsf{AR}(1)\)</span> remainder.</p>
+</div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="sp6ploty.png" class="img-fluid figure-img"></p>
+<figcaption>The constructed series <span class="math inline">\(Y_t\)</span> (top), the changepoint <span class="math inline">\(A_t\)</span> (middle), and the polynomial trend <span class="math inline">\(T_t\)</span> (bottom).</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="sp6plotc.png" class="img-fluid figure-img"></p>
+<figcaption>The changepoint component <span class="math inline">\(A_t\)</span>.</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="sp6plotT.png" class="img-fluid figure-img"></p>
+<figcaption>The polynomial trend component <span class="math inline">\(T_t\)</span>.</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="sp6plotP.png" class="img-fluid figure-img"></p>
+<figcaption>The periodic component <span class="math inline">\(P_t\)</span>.</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="sp6plotS.png" class="img-fluid figure-img"></p>
+<figcaption>The seasonal (December-dummy) component <span class="math inline">\(S_t\)</span>.</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="sp6plotR.png" class="img-fluid figure-img"></p>
+<figcaption>The stochastic <span class="math inline">\(\mathsf{AR}(1)\)</span> remainder component <span class="math inline">\(R_t\)</span>.</figcaption>
+</figure>
+</div>
+<div class="slidebox">
+<p><span class="slide-label">What can we learn from the previous exercise?</span></p>
+<div class="slide-body">
+<ol type="1">
+<li>We possess a <strong>vast array of modelling options</strong> — lines, polynomials, indicators, sinusoids, etc. — to handle real-world departures from stationarity. And with the remainder term <span class="math inline">\(R_t\)</span>, we still have the entire <span class="math inline">\(\mathsf{ARMA}\)</span> technology waiting to be harnessed.</li>
+<li>We have not even mentioned the <strong>important extension to the <span class="math inline">\(\mathsf{ARMA}\)</span> framework</strong> via ‘integrated’ processes to accommodate stochastic trends — the <span class="math inline">\(\mathsf{ARIMA}\)</span> class, discussed next.</li>
+<li>It does not take much sophistication to model relatively complicated-looking time series. In practice it is rare to need so many components at once: <strong>parsimony remains achievable.</strong></li>
+<li>Think about <strong>transitioning from simulations to empirical investigations</strong> (see below).</li>
+</ol>
+</div>
+<div class="slide-footer">
+<p>We <em>re-composed</em> a series from building blocks; the econometrician must travel the other way — from data <em>down</em> to components.</p>
+</div>
+</div>
+<p>To further illustrate the suitability of our building blocks, consider a real-life example: the FTSE 100 index over time. The resemblance — in terms of broad stylistic features — between this graph and the toy example created “in the lab” is striking.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="ftse100patterns.png" class="img-fluid figure-img"></p>
+<figcaption>The FTSE 100 index over time (Google snapshot, 24 December 2024) — trending, oscillating and volatile features resembling the toy decomposition.</figcaption>
+</figure>
+</div>
+<div class="slidebox">
+<p><span class="slide-label">The decomposition is sensible — but how do we operationalise it?</span></p>
+<div class="slide-body">
+<p>In previous studies, we learned about regression models such as <span class="math inline">\(Y_t = \beta_1 X_{1t} + \beta_2 X_{2t} + e_t\)</span>, where we use <span class="math inline">\(X_{1t}\)</span> and <span class="math inline">\(X_{2t}\)</span> to explain <span class="math inline">\(Y_t\)</span>. A labour economist might use schooling and experience to explain wages.</p>
+<p>But we are cold-hearted, mercenary time series analysts. To explain (say) the FTSE 100 index, we may choose the passage of time <span class="math inline">\(X_{1t} = t\)</span>, a non-linear impact <span class="math inline">\(X_{2t} = t^2\)</span>, a periodic waveform repeating every two years <span class="math inline">\(X_{3t} = \sin(2\pi t/24)\)</span>, and a high-frequency noise component (e.g.&nbsp;via a highly negative <span class="math inline">\(\mathsf{MA}\)</span> coefficient) — jointly capturing trending, oscillating and idiosyncratic features. We pick a reasonably general specification of candidate regressors and let the data estimate the <span class="math inline">\(\beta\)</span> parameters, without structural shackles.</p>
+</div>
+<div class="slide-footer">
+<p><em>“You enjoy your Nobel prize, Prof., and I’ll enjoy my pay cheque.”</em></p>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>For MSc students (self-study) — Fisher’s model for hidden periodicities
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Consider a monthly series, observed over several years, obtained via extraction of a quadratic trend in the month. If there is additionally a periodic pattern, say annual, in the detrended data, the stationarity assumption remains violated. The classical way to deal with this is a model with a sinusoidal component: <span class="math display">\[ Y_t = \beta_0 + \beta_1 t + \beta_2 t^2 + \gamma \cos(2\pi t/12) + \delta \sin(2\pi t/12) + \varepsilon_t. \]</span></p>
+<p>The intuition: consider a general periodic function <span class="math inline">\(R_j \cos(2\pi f_j t + \theta_j)\)</span>, where <span class="math inline">\(\theta_j\)</span> is the phase, <span class="math inline">\(f_j\)</span> the frequency, and <span class="math inline">\(R_j\)</span> the amplitude. Since <span class="math inline">\(\cos(A+B) = \cos A \cos B - \sin A \sin B\)</span>, we can always write <span class="math display">\[ R_j \cos(2\pi f_j t + \theta_j) = \gamma_j \cos(2\pi f_j t) + \delta_j \sin(2\pi f_j t), \]</span> where <span class="math inline">\(\gamma_j = R_j \cos(\theta_j)\)</span> and <span class="math inline">\(\delta_j = -R_j \sin(\theta_j)\)</span>. Generalising the trend to a <span class="math inline">\(k\)</span>th-order polynomial and the periodic part to several frequencies gives <span class="math display">\[ \sum_{j=1}^{k} \big(\gamma_j \cos(2\pi f_j t) + \delta_j \sin(2\pi f_j t)\big), \]</span> for any <span class="math inline">\(f_j \in (0, 1/2)\)</span> (the upper limit <span class="math inline">\(1/2\)</span> is the Nyquist frequency — not examinable). These models are all amenable to standard regression analysis.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="waveforms.png" class="img-fluid figure-img"></p>
+<figcaption>Exemplary sinusoids oscillating at different frequencies, linearly combined with different amplitudes.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section id="trend-stationarity-versus-difference-stationarity" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="trend-stationarity-versus-difference-stationarity"><span class="header-section-number">3</span> Trend-stationarity versus difference-stationarity</h2>
+<p>Recall our basic decomposition <span class="math inline">\(Y_t = T_t + S_t + R_t\)</span>. From this point on, we no longer discuss <span class="math inline">\(S_t\)</span> — we focus on <span class="math inline">\(T_t\)</span> and <span class="math inline">\(R_t\)</span>.</p>
+<div class="slidebox">
+<p><span class="slide-label">What is a trend?</span></p>
+<div class="slide-body">
+<ul>
+<li>The precise definition of a ‘trend’ is somewhat elusive, and the word can mean different things in different contexts.</li>
+<li>In this course, a trend refers to either a ‘deterministic’ (predictable) <strong>change in mean over time</strong>, or a ‘stochastic’ (unpredictable) change in the process that manifests as an <strong>increase in variance</strong> over time.</li>
+</ul>
+</div>
+<div class="slide-footer">
+<p>Deterministic trend = changing mean; stochastic trend = growing variance.</p>
+</div>
+</div>
+<div class="slidebox">
+<p><span class="slide-label">What is a deterministic trend?</span></p>
+<div class="slide-body">
+<p>We model deterministic trends using polynomials in <span class="math inline">\(t\)</span>: <span class="math display">\[ Y_t = \underbrace{\alpha_0 + \alpha_1 t + \alpha_2 t^2 + \cdots + \alpha_k t^k}_{T_t \text{ term}} + \underbrace{\varepsilon_t}_{R_t \text{ term}}, \]</span> where <span class="math inline">\(\varepsilon_t \sim \mathsf{WN}(0,\sigma_{\varepsilon}^2)\)</span>. In most economic and financial settings, <span class="math inline">\(k = 0, 1, 2\)</span>, or occasionally <span class="math inline">\(3\)</span>, will suffice.</p>
+<p>For <span class="math inline">\(k = 1\)</span> (a linear trend), <span class="math inline">\(\mathsf{E}(Y_t) = \alpha_0 + \alpha_1 t\)</span>, which is time-varying with period-on-period change <span class="math inline">\(\alpha_1\)</span>. The series <strong>drifts every period by a predictable amount</strong>: <span class="math display">\[\begin{aligned} Y_1 &amp;= \alpha_0 + \alpha_1 + \varepsilon_1 \\ Y_2 &amp;= \alpha_0 + \alpha_1 + \alpha_1 + \varepsilon_2 \\ &amp;\ \vdots \\ Y_t &amp;= \alpha_0 + \underbrace{\alpha_1 + \alpha_1 + \cdots + \alpha_1}_{\text{accumulation of } t \text{ terms}} + \varepsilon_t. \end{aligned}\]</span></p>
+</div>
+<div class="slide-footer">
+<p>A predictable, period-on-period drift in the mean.</p>
+</div>
+</div>
+<div class="slidebox">
+<p><span class="slide-label">What is a stochastic trend? (1 of 4: Overview)</span></p>
+<div class="slide-body">
+<ul>
+<li>Recall our general approach: <span class="math inline">\(Y_t = T_t + R_t\)</span>.</li>
+<li>To accommodate a <strong>deterministic</strong> trend, we introduce it via the <span class="math inline">\(T_t\)</span> component.</li>
+<li>To accommodate a <strong>stochastic</strong> trend, we do it via the stochastic <span class="math inline">\(R_t\)</span> component (not the deterministic <span class="math inline">\(T_t\)</span>). How? In short, we model <span class="math inline">\(R_t\)</span> as an <span class="math inline">\(\mathsf{ARIMA}\)</span> process. But first we need to (i) build intuition for what a stochastic trend is, and (ii) learn new vocabulary (‘integrated’ processes).</li>
+</ul>
+</div>
+<div class="slide-footer">
+<p>Stochastic trends live in <span class="math inline">\(R_t\)</span>, modelled via <span class="math inline">\(\mathsf{ARIMA}\)</span>.</p>
+</div>
+</div>
+<div class="slidebox">
+<p><span class="slide-label">What is a stochastic trend? (2 of 4: Intuition)</span></p>
+<div class="slide-body">
+<ul>
+<li>Many real-life economic series are non-stationary, but the precise nature of the instability is not necessarily predictable. In economics and finance, deterministic trends might be the exception rather than the norm.</li>
+<li>A deterministic trend is relatively easy to handle — a non-random function of time. These may appear in the hard sciences (astronomy, engineering, etc.).</li>
+<li>But in the social sciences, just because a segment of the series looks approximately linear, do we believe the linearity is intrinsic and will persist forever?</li>
+<li>A series with a <strong>stochastic trend</strong> may exhibit prolonged long-run increases, then prolonged declines, then another period of increases (perhaps at a different growth rate). This seems more representative of social-science time series.</li>
+</ul>
+</div>
+<div class="slide-footer">
+<p>Stochastic trends wander; they need not persist in any fixed direction.</p>
+</div>
+</div>
+<p>While drafting this section, Enders’ <em>Applied Econometric Time Series</em> (4th edn., 2014–2015) provided an apt example — a graph of US GDP using data up to 2012.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="endersgdp.png" class="img-fluid figure-img"></p>
+<figcaption>US real GDP from Enders (2014). A deterministic-trend model would predict a return to trend after the 2007–2008 crisis; in fact the downward shock appears to have persisted.</figcaption>
+</figure>
+</div>
+<p>Enders writes (p.182): <em>“…the implications [of imposing a deterministic trend] for the behavior of the business cycle are not credible. The deterministic trend implies that, whenever real GDP is below trend, in subsequent periods, there will be unusually high growth as real GDP returns to the trend. The reaction to the 2007–2008 financial crisis suggests that most economists and politicians do not take this notion very seriously.”</em> Indeed, there was no immediate upward correction in the years after the crisis — the downward shock persisted.</p>
+<div class="slidebox">
+<p><span class="slide-label">What is a stochastic trend? (3 of 4: Graph)</span></p>
+<div class="slide-body">
+<p>Below are sample paths of a random walk, to show <strong>how a stochastic trend looks</strong>. Notice there is no tendency for mean-reversion, and the non-stationarity is completely unpredictable.</p>
+</div>
+<div class="slide-footer">
+<p>No mean reversion — the walk can wander arbitrarily far from where it started.</p>
+</div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="rwpaths.png" class="img-fluid figure-img"></p>
+<figcaption>Sample paths of a random walk — a stochastic trend with no mean-reversion.</figcaption>
+</figure>
+</div>
+<div class="slidebox">
+<p><span class="slide-label">What is a stochastic trend? (4 of 4: Algebra)</span></p>
+<div class="slide-body">
+<p>Consider the random walk (the simplest model of a stochastic trend), <span class="math inline">\(Y_t = Y_{t-1} + \varepsilon_t\)</span>, with <span class="math inline">\(\varepsilon_t\)</span> noise, <span class="math inline">\(t &gt; 0\)</span> and <span class="math inline">\(Y_0 = \alpha_0\)</span>. Lagging and substituting <span class="math inline">\(t-1\)</span> times gives <span class="math display">\[ Y_t = \alpha_0 + \underbrace{\varepsilon_1 + \varepsilon_2 + \cdots + \varepsilon_t}_{\text{accumulation of } t \text{ terms}}. \]</span></p>
+<ul>
+<li>In <em>both</em> the deterministic- and stochastic-trend cases, <span class="math inline">\(Y_t\)</span> accumulates <span class="math inline">\(t\)</span> terms whose effects persist forever (coefficients of one).</li>
+<li>In the deterministic case, the accumulation is a perfectly predictable drift (<span class="math inline">\(\alpha_1\)</span> each period), so <span class="math inline">\(\mathsf{E}(Y_t) = \alpha_0 + t\alpha_1\)</span>.</li>
+<li>In the stochastic case, the accumulation is a completely unpredictable amount each period (<span class="math inline">\(\varepsilon_1, \varepsilon_2, \ldots\)</span>). The expectation stays put: <span class="math inline">\(\mathsf{E}(Y_t) = \alpha_0\)</span>. There is no drift as such, but a great deal of (growing) uncertainty.</li>
+<li>Indeed, while a deterministic trend gives period-on-period growth in the expected value, <strong>a stochastic trend gives growth in the variance:</strong> <span class="math display">\[ \mathsf{Var}(Y_t) = \mathsf{Var}(\alpha_0 + \varepsilon_1 + \cdots + \varepsilon_t) = t \cdot \sigma^2_{\varepsilon}. \]</span></li>
+</ul>
+</div>
+<div class="slide-footer">
+<p>Random walk: constant mean <span class="math inline">\(\alpha_0\)</span>, but variance <span class="math inline">\(t\sigma^2_\varepsilon\)</span> that grows without bound.</p>
+</div>
+</div>
+<div class="slidebox">
+<p><span class="slide-label">Can we see both models (plus one!) on a single slide?</span></p>
+<div class="slide-body">
+<p><strong>Model 1</strong> (noise about a <strong>linear trend</strong>): <span class="math inline">\(Y_t = \alpha_0 + \alpha_1 t + \varepsilon_t\)</span>, giving <span class="math inline">\(\mathsf{E}(Y_t) = \alpha_0 + t\alpha_1\)</span> and <span class="math inline">\(\mathsf{Var}(Y_t) = \sigma^2_{\varepsilon}\)</span>.</p>
+<p><strong>Model 2</strong> (the <strong>random walk</strong>): <span class="math inline">\(Y_t = Y_{t-1} + \varepsilon_t\)</span> with <span class="math inline">\(Y_0 = \alpha_0\)</span>. Lagging and substituting, <span class="math inline">\(Y_t = \alpha_0 + \varepsilon_1 + \cdots + \varepsilon_t\)</span>, giving <span class="math inline">\(\mathsf{E}(Y_t) = \alpha_0\)</span> and <span class="math inline">\(\mathsf{Var}(Y_t) = t\sigma^2_{\varepsilon}\)</span>.</p>
+<p><strong>Model 3</strong> (the <strong>random walk with drift</strong>): <span class="math inline">\(Y_t = \alpha_1 + Y_{t-1} + \varepsilon_t\)</span> with <span class="math inline">\(Y_0 = \alpha_0\)</span>. Lagging and substituting, <span class="math display">\[ Y_t = \alpha_0 + \underbrace{\alpha_1 + \cdots + \alpha_1}_{t \text{ terms}} + \underbrace{\varepsilon_1 + \cdots + \varepsilon_t}_{t \text{ terms}}. \]</span> (Work out the moments yourself.)</p>
+</div>
+<div class="slide-footer">
+<p>Deterministic drift grows the mean; the random-walk accumulation grows the variance.</p>
+</div>
+</div>
+<div class="slidebox">
+<p><span class="slide-label">What is trend-stationarity versus difference-stationarity?</span></p>
+<div class="slide-body">
+<ul>
+<li>A non-stationary time series is <strong>trend-stationary</strong> if it can be made stationary by deducting a deterministic trend (typically a polynomial in <span class="math inline">\(t\)</span>).</li>
+<li>A non-stationary time series is <strong>difference-stationary</strong> if it contains a stochastic trend (which cannot be eliminated by deducting a polynomial in <span class="math inline">\(t\)</span>) but can be made stationary by first-differencing.</li>
+</ul>
+</div>
+<div class="slide-footer">
+<p>Trend-stationary: de-trend. Difference-stationary: difference.</p>
+</div>
+</div>
+<div class="slidebox">
+<p><span class="slide-label">Examples of trend-stationarity and difference-stationarity</span></p>
+<div class="slide-body">
+<ul>
+<li>In <strong>Model 1</strong>, <span class="math inline">\(y_t := Y_t - \alpha_0 - \alpha_1 t\)</span> is stationary (just noise). So we estimate <span class="math inline">\(\alpha_0, \alpha_1\)</span> and de-trend <span class="math inline">\(Y_t\)</span>. (Model 1 is <strong>trend-stationary</strong>.)</li>
+<li>In <strong>Model 2</strong>, <span class="math inline">\(y_t = Y_t - Y_{t-1} = \Delta Y_t\)</span> is stationary (just noise). So we first-difference. Here, deducting a polynomial in <span class="math inline">\(t\)</span> will <strong>not</strong> make the model stationary, because the variance still grows. (Model 2 is <strong>difference-stationary</strong>.)</li>
+<li>The jargon is not always defined precisely or used uniformly throughout the literature. (Decide for yourself whether Model 3 is trend- or difference-stationary.)</li>
+</ul>
+</div>
+<div class="slide-footer">
+<p>Match the cure to the disease: de-trend a deterministic trend, difference a stochastic one.</p>
+</div>
+</div>
+<div class="slidebox">
+<p><span class="slide-label">First-differencing “to play it safe”?</span></p>
+<div class="slide-body">
+<p>Model 1 can <em>also</em> be made stationary by first-differencing. From <span class="math inline">\(Y_t = \alpha_0 + \alpha_1 t + \varepsilon_t\)</span>, <span class="math display">\[\begin{aligned} \Delta Y_t &amp;= (\alpha_0 + \alpha_1 t + \varepsilon_t) - (\alpha_0 + \alpha_1(t-1) + \varepsilon_{t-1}) \\ &amp;= \alpha_1 + \Delta\varepsilon_t, \end{aligned}\]</span> which is stationary (a constant plus an <span class="math inline">\(\mathsf{MA}(1)\)</span> process). It may therefore seem smart to difference every series with wild abandon to guarantee stationarity. However, <strong>over-differencing is not a good idea.</strong> (You will explore the reason in a problem set.)</p>
+</div>
+<div class="slide-footer">
+<p>You <em>can</em> difference a trend-stationary series, but you shouldn’t — over-differencing has costs.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Watch: deterministic vs stochastic trends
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<pre class="shinylive-r" data-engine="r"><code>#| '!! shinylive warning !!': |
+#|   shinylive does not work in self-contained HTML documents.
+#|   Please set `embed-resources: false` in your metadata.
+#| standalone: true
+#| viewerHeight: 540
+
+library(shiny)
+
+ui &lt;- fluidPage(
+  tags$style(HTML("body{font-family:system-ui,sans-serif;}")),
+  titlePanel("Three trend models"),
+  sidebarLayout(
+    sidebarPanel(
+      sliderInput("T",     "Sample size T", 50, 500, 200, 50),
+      sliderInput("drift", "Drift / slope alpha_1", 0, 1, 0.3, 0.1),
+      sliderInput("sig",   "Noise sd sigma", 0.5, 5, 1, 0.5),
+      sliderInput("seed",  "Random seed", 1, 100, 7, 1)
+    ),
+    mainPanel(plotOutput("plot", height = "440px"))
+  )
+)
+
+server &lt;- function(input, output) {
+  output$plot &lt;- renderPlot({
+    set.seed(input$seed)
+    n &lt;- input$T; e &lt;- rnorm(n, 0, input$sig)
+    linear &lt;- input$drift * (1:n) + e                 # Model 1: linear trend + noise
+    rw     &lt;- cumsum(e)                               # Model 2: random walk
+    rwd    &lt;- input$drift * (1:n) + cumsum(e)         # Model 3: random walk with drift
+    matplot(1:n, cbind(linear, rw, rwd), type = "l", lty = 1, lwd = 2,
+            col = c(4, 2, 3), xlab = "t", ylab = expression(Y[t]))
+    legend("topleft", c("linear trend + noise", "random walk", "random walk w/ drift"),
+           col = c(4, 2, 3), lwd = 2, bty = "n")
+  })
+}
+
+shinyApp(ui, server)</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="defining-mathsfarima-models" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="defining-mathsfarima-models"><span class="header-section-number">4</span> Defining <span class="math inline">\(\mathsf{ARIMA}\)</span> models</h2>
+<p>We finally come to the core slide of this topic — perhaps of the entire course. Without further delay, the celebrated <span class="math inline">\(\mathsf{ARIMA}\)</span> class of models.</p>
+<div class="slidebox">
+<p><span class="slide-label">What are <span class="math inline">\(\mathsf{ARIMA}\)</span> models? (What are integrated processes?)</span></p>
+<div class="slide-body">
+<p>We have studied the importance of <span class="math inline">\(\mathsf{ARMA}\)</span> models for stationary time series. A generalisation incorporating a wide range of non-stationary series is the <span class="math inline">\(\mathsf{ARIMA}\)</span> class — processes which, after differencing finitely many times, reduce to <span class="math inline">\(\mathsf{ARMA}\)</span> processes.</p>
+<p><strong>Definition.</strong> <span class="math inline">\(Y_t\)</span> is said to be an <span class="math inline">\(\mathsf{ARIMA}(p,d,q)\)</span> process if <span class="math inline">\(Z_t := \Delta^d Y_t\)</span> is a causal stationary <span class="math inline">\(\mathsf{ARMA}(p,q)\)</span> process, where <span class="math inline">\(d\)</span> is a non-negative finite integer. <span class="math inline">\(\qquad\square\)</span></p>
+<ul>
+<li>This means <span class="math inline">\(\{Y_t\}\)</span> satisfies <span class="math display">\[ \Phi(L)(1-L)^d Y_t = \Theta(L)\varepsilon_t, \]</span> where, for <span class="math inline">\(z \in \mathbb{C}\)</span>, <span class="math inline">\(\Phi(z)\)</span> and <span class="math inline">\(\Theta(z)\)</span> are polynomials of orders <span class="math inline">\(p\)</span> and <span class="math inline">\(q\)</span>, <span class="math inline">\(\Phi(z) \neq 0\)</span> for <span class="math inline">\(|z| \leq 1\)</span>, and <span class="math inline">\(\varepsilon_t \sim \mathsf{WN}(0,\sigma_{\varepsilon}^2)\)</span>.</li>
+<li>The process <span class="math inline">\(Y_t\)</span> is said to be (stochastically) <strong>integrated of order <span class="math inline">\(d\)</span></strong>, or <span class="math inline">\(\mathsf{I}(d)\)</span> for short.</li>
+</ul>
+</div>
+<div class="slide-footer">
+<p>Difference <span class="math inline">\(d\)</span> times and you are back to a stationary <span class="math inline">\(\mathsf{ARMA}(p,q)\)</span>.</p>
+</div>
+</div>
+</section>
+<section id="the-dickeyfuller-test-for-a-unit-root" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="the-dickeyfuller-test-for-a-unit-root"><span class="header-section-number">5</span> The Dickey–Fuller test for a unit root</h2>
+<div class="slidebox">
+<p><span class="slide-label">Where are we in our modelling strategy?</span></p>
+<div class="slide-body">
+<p>Suppose we have a univariate time series, <span class="math inline">\(Y_t\)</span>.</p>
+<ul>
+<li>First, plot and inspect the data.</li>
+<li>Next, think about the key deterministic components (<span class="math inline">\(T_t, S_t, \ldots\)</span>) and the stochastic remainder <span class="math inline">\(R_t\)</span>.</li>
+<li>We hypothesise that <span class="math inline">\(R_t\)</span> belongs to the <span class="math inline">\(\mathsf{ARIMA}(p,d,q)\)</span> class; our focus is now on identifying <span class="math inline">\(p, d, q\)</span>. Identifying <span class="math inline">\(d\)</span> takes precedence, because we want to work towards a stationary remainder we can model with <span class="math inline">\(\mathsf{ARMA}\)</span> technology. The concern is that <span class="math inline">\(R_t\)</span> may still contain a stochastic trend.</li>
+<li>This is where the <strong>Dickey–Fuller (DF) test</strong> enters: it tests for the presence of a stochastic trend in <span class="math inline">\(Y_t\)</span>.</li>
+</ul>
+</div>
+<div class="slide-footer">
+<p>Identify <span class="math inline">\(d\)</span> first — strip out any stochastic trend before <span class="math inline">\(\mathsf{ARMA}\)</span> modelling.</p>
+</div>
+</div>
+<p>Approximate linear decay of the sample ACS is often taken as a symptom of non-stationarity requiring differencing, but visual inspection is subjective. It is useful to quantify evidence of a stochastic trend. We study the unit root test due to Dickey &amp; Fuller (1979) — not the only test for non-stationarity, but certainly the most well-known.</p>
+<div class="slidebox">
+<p><span class="slide-label">What is the intuition behind the DF test? (1 of 2)</span></p>
+<div class="slide-body">
+<p>Consider an <span class="math inline">\(\mathsf{AR}(1)\)</span> model with a constant (for generality): <span class="math display">\[ Y_t = \beta_0 + \phi Y_{t-1} + \varepsilon_t, \quad \varepsilon_t \sim \mathsf{WN}(0,\sigma^2_{\varepsilon}). \]</span> Subtracting <span class="math inline">\(Y_{t-1}\)</span> from both sides re-expresses it as <span class="math display">\[ \Delta Y_t = \beta_0 + (\phi - 1) Y_{t-1} + \varepsilon_t. \]</span></p>
+</div>
+<div class="slide-footer">
+<p>Rewrite the <span class="math inline">\(\mathsf{AR}(1)\)</span> in ‘differences’ form — the coefficient on <span class="math inline">\(Y_{t-1}\)</span> becomes <span class="math inline">\(\phi - 1\)</span>.</p>
+</div>
+</div>
+<div class="slidebox">
+<p><span class="slide-label">What is the intuition behind the DF test? (2 of 2)</span></p>
+<div class="slide-body">
+<p>Write the equation as <span class="math display">\[ \Delta Y_t = \beta_0 + \beta_1 Y_{t-1} + \varepsilon_t, \tag{1} \]</span> where <span class="math inline">\(\beta_1 := \phi - 1\)</span>.</p>
+<ul>
+<li>If we restrict <span class="math inline">\(\beta_0 = \beta_1 = 0\)</span>, equation (1) reduces to <span class="math inline">\(\Delta Y_t = \varepsilon_t\)</span> — a random walk, <span class="math inline">\(Y_t = Y_{t-1} + \varepsilon_t\)</span>.</li>
+<li>If instead we allow <span class="math inline">\(\beta_0 \neq 0\)</span> and <span class="math inline">\(-2 &lt; \beta_1 &lt; 0\)</span>, equation (1) corresponds to a causal stationary <span class="math inline">\(\mathsf{AR}(1)\)</span> process.</li>
+</ul>
+<p>This logic motivates the test procedure.</p>
+</div>
+<div class="slide-footer">
+<p>A unit root means <span class="math inline">\(\beta_1 = 0\)</span>; stationarity means <span class="math inline">\(\beta_1 &lt; 0\)</span>.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>The 10-step hypothesis-test recipe
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li><strong>Assumptions</strong> (arguably the most critical step, since it affects many steps below).</li>
+<li><strong>Hypotheses</strong> (a clear statement of the null <span class="math inline">\(H_0\)</span> and the alternative <span class="math inline">\(H_1\)</span>).</li>
+<li><strong>Test statistic, <span class="math inline">\(V\)</span></strong> (a function of the data carrying information about <span class="math inline">\(H_0\)</span>).</li>
+<li><strong>Distribution of <span class="math inline">\(V\)</span> under <span class="math inline">\(H_0\)</span> and the assumptions</strong> (usually one of <span class="math inline">\(\mathcal{N}(0,1)\)</span>, <span class="math inline">\(t\)</span>, <span class="math inline">\(\chi^2\)</span> or <span class="math inline">\(F\)</span>).</li>
+<li><strong>Significance level</strong> (some exogenously chosen <span class="math inline">\(\alpha \in (0,1)\)</span>, typically small).</li>
+<li><strong>Critical value</strong> (usually from a statistical table).</li>
+<li><strong>Rejection rule</strong> (a region in the domain of the PDF of <span class="math inline">\(V\)</span> where we reject <span class="math inline">\(H_0\)</span>).</li>
+<li><strong>Computed value of <span class="math inline">\(V\)</span></strong>.</li>
+<li><strong>Test result</strong> (compare against the rejection rule; you never <em>accept</em> <span class="math inline">\(H_0\)</span> — you reject or fail to reject, at a stated significance level, or report a <span class="math inline">\(p\)</span>-value).</li>
+<li><strong>Interpretation</strong> (framing the result back in terms of the underlying context).</li>
+</ol>
+</div>
+</div>
+</div>
+<p><strong>The restricted parameter space.</strong> To understand <em>why</em> we pick the specific nulls and alternatives we do, consider the first-order autoregression <span class="math display">\[ Y_t = \beta_0 + \phi Y_{t-1} + \alpha_1 t + \varepsilon_t, \]</span> with possible values <span class="math inline">\(-1 &lt; \phi &lt; 1\)</span> or <span class="math inline">\(\phi = 1\)</span>, and <span class="math inline">\(\alpha_1 = 0\)</span> or <span class="math inline">\(\alpha_1 \neq 0\)</span>. (We exclude <span class="math inline">\(\phi &gt; 1\)</span> as non-causal, and <span class="math inline">\(\phi \le 1\)</span> values that imply nonsensical economic models.) The cases that arise are:</p>
+<ul>
+<li><strong>Case (a):</strong> <span class="math inline">\(-1 &lt; \phi &lt; 1\)</span>, <span class="math inline">\(\alpha_1 = 0\)</span> (no restriction on <span class="math inline">\(\beta_0\)</span>) — a causal <span class="math inline">\(\mathsf{AR}(1)\)</span>: <span class="math inline">\(Y_t = \beta_0 + \phi Y_{t-1} + \varepsilon_t\)</span>.</li>
+<li><strong>Case (b):</strong> <span class="math inline">\(\beta_0 = 0\)</span>, <span class="math inline">\(\phi = 1\)</span>, <span class="math inline">\(\alpha_1 = 0\)</span> — a random walk: <span class="math inline">\(Y_t = Y_{t-1} + \varepsilon_t\)</span>.</li>
+<li><strong>Case (c):</strong> <span class="math inline">\(\beta_0 \neq 0\)</span>, <span class="math inline">\(\phi = 1\)</span>, <span class="math inline">\(\alpha_1 = 0\)</span> — a random walk with drift: <span class="math inline">\(Y_t = \beta_0 + Y_{t-1} + \varepsilon_t\)</span>.</li>
+<li><strong>Case (d):</strong> <span class="math inline">\(-1 &lt; \phi &lt; 1\)</span>, <span class="math inline">\(\alpha_1 \neq 0\)</span> — a causal <span class="math inline">\(\mathsf{AR}(1)\)</span> around a deterministic linear trend: <span class="math inline">\(Y_t = \beta_0 + \phi Y_{t-1} + \alpha_1 t + \varepsilon_t\)</span>.</li>
+<li><strong>Case (e):</strong> <span class="math inline">\(\phi = 1\)</span>, <span class="math inline">\(\alpha_1 \neq 0\)</span> — extremely non-stationary (a random walk with drift around a deterministic linear trend); <strong>excluded</strong> as unlikely in practice.</li>
+</ul>
+<p>We take a pragmatic approach: plot the data and assess whether there is evidence of drift. If not, we limit the investigation to Cases (a) and (b); if so, we consider Cases (c) and (d).</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="dftestcases.png" class="img-fluid figure-img"></p>
+<figcaption>Case (a) vs (b) (left panel): a causal <span class="math inline">\(\mathsf{AR}(1)\)</span> series versus random walks. Case (c) vs (d) (right panel): a trend-stationary series versus random walks with drift.</figcaption>
+</figure>
+</div>
+<div class="slidebox">
+<p><span class="slide-label">The DF test (Case 1)</span></p>
+<div class="slide-body">
+<p>This first case corresponds to the <em>left</em> panel above.</p>
+<ol type="1">
+<li><strong>Assumptions.</strong> <span class="math inline">\(\Delta Y_t = \beta_0 + \beta_1 Y_{t-1} + \varepsilon_t\)</span>, where <span class="math inline">\(\varepsilon_t \sim iid(0,\sigma^2_{\varepsilon})\)</span>, <span class="math inline">\(t &gt; 0\)</span>, <span class="math inline">\(Y_0 = 0\)</span>.</li>
+<li><strong>Hypotheses.</strong> <span class="math inline">\(H_0: \beta_1 = 0\)</span>, <span class="math inline">\(H_1: \beta_1 &lt; 0\)</span>. (In principle we should jointly test <span class="math inline">\((\beta_0 = 0, \beta_1 = 0)\)</span> versus <span class="math inline">\((\beta_0 \neq 0, \beta_1 &lt; 0)\)</span>, but it is common to focus on the single parameter.)</li>
+<li><strong>Test statistic.</strong> <span class="math inline">\(V = \widehat{\beta}_1 / \mathrm{SE}(\widehat{\beta}_1)\)</span>.</li>
+<li><strong>Distribution of <span class="math inline">\(V\)</span> under <span class="math inline">\(H_0\)</span>.</strong> See Dickey &amp; Fuller (1979) — <strong>STOP!</strong></li>
+</ol>
+</div>
+<div class="slide-footer">
+<p>The statistic looks like a <span class="math inline">\(t\)</span>-ratio — but its distribution is <em>not</em> the usual one.</p>
+</div>
+</div>
+<div class="slidebox">
+<p><span class="slide-label">The crux of the matter</span></p>
+<div class="slide-body">
+<p>Because the null is one of non-stationarity, all standard asymptotic results (such as the CLT) fail. A key contribution of this literature is that the test statistic <span class="math inline">\(V\)</span> is <strong>not asymptotically normal</strong>. The limiting distribution is known but has <strong>no closed-form expression</strong>: its quantiles (critical values) must be derived numerically, via simulation. These critical values are in Fuller (1976). (Once we have them, steps 5–10 of the test are unremarkable.)</p>
+</div>
+<div class="slide-footer">
+<p>Non-stationarity under <span class="math inline">\(H_0\)</span> breaks the CLT — hence the bespoke Dickey–Fuller distribution.</p>
+</div>
+</div>
+<div class="slidebox">
+<p><span class="slide-label">What are the critical values for the DF test statistic?</span></p>
+<div class="slide-body">
+<p>The limiting distribution is the <strong>Dickey–Fuller distribution</strong>. Since there is no closed form, quantiles are computed by simulation:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Sample size</th>
+<th style="text-align: center;">Without trend (1%)</th>
+<th style="text-align: center;">Without trend (5%)</th>
+<th style="text-align: center;">With trend (1%)</th>
+<th style="text-align: center;">With trend (5%)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(T = 25\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(-3.75\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(-3.00\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(-4.38\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(-3.60\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(T = 50\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(-3.58\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(-2.93\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(-4.15\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(-3.50\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(T = 100\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(-3.51\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(-2.89\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(-4.04\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(-3.45\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(T = 250\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(-3.46\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(-2.88\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(-3.99\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(-3.43\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(T = 500\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(-3.44\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(-2.87\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(-3.98\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(-3.42\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(T = \infty\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(-3.43\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(-2.86\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(-3.96\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(-3.41\)</span></td>
+</tr>
+</tbody>
+</table>
+<p><em>Source: Fuller (1976), Introduction to Statistical Time Series, p.373.</em></p>
+<ul>
+<li>The distribution is skewed to the left, so critical values are smaller than for the standard normal.</li>
+<li>For ‘Case 1’, use the ‘Without trend’ panel.</li>
+<li>At 5% in a one-tailed test of <span class="math inline">\(H_0: \beta_1 = 0\)</span> against <span class="math inline">\(H_1: \beta_1 &lt; 0\)</span>, the correct large-sample critical value is <span class="math inline">\(-2.86\)</span> rather than <span class="math inline">\(-1.65\)</span>. Using standard normal tables, you may reject a unit root too often.</li>
+</ul>
+</div>
+<div class="slide-footer">
+<p>You need not memorise the table — it will be provided in the exam if required.</p>
+</div>
+</div>
+<div class="slidebox">
+<p><span class="slide-label">The DF test (Case 2)</span></p>
+<div class="slide-body">
+<p>The ‘With trend’ part of the table covers the case where we suspect drift or non-stochastic trending behaviour (the <em>right</em> panel of the figure). Critical values change, but the other aspects of the procedure carry over analogously.</p>
+<p>A concise explanation (SS, 3rd edn., pp.&nbsp;279–280): <em>One can extend the model to include a non-stochastic trend, e.g.&nbsp;<span class="math inline">\(x_t = \beta_0 + \beta_1 t + \phi x_{t-1} + w_t\)</span>. If we cannot assume <span class="math inline">\(\beta_1 = 0\)</span>, the interest is testing the null that <span class="math inline">\((\beta_1, \phi) = (0, 1)\)</span> simultaneously, versus the alternative that <span class="math inline">\(\beta_1 \neq 0\)</span> and <span class="math inline">\(|\phi| &lt; 1\)</span>. In this case the null is that the process is a random walk with drift, versus the alternative that it is stationary around a global trend.</em></p>
+</div>
+<div class="slide-footer">
+<p>With a trend, test <span class="math inline">\((\beta_1, \phi) = (0,1)\)</span> jointly — and use the ‘With trend’ critical values.</p>
+</div>
+</div>
+<div class="slidebox">
+<p><span class="slide-label">What is the augmented DF test?</span></p>
+<div class="slide-body">
+<p>A quote from Wooldridge, <em>Introductory Econometrics</em> (p.&nbsp;576): <em>More generally, we can add <span class="math inline">\(p\)</span> lags of <span class="math inline">\(\Delta y_t\)</span> to the equation to account for the dynamics in the process. We run the regression of <span class="math inline">\(\Delta y_t\)</span> on <span class="math inline">\(y_{t-1}, \Delta y_{t-1}, \ldots, \Delta y_{t-p}\)</span> and carry out the test on the coefficient on <span class="math inline">\(y_{t-1}\)</span>, just as before. This extended version is usually called the augmented Dickey–Fuller test because the regression has been augmented with the lagged changes <span class="math inline">\(\Delta y_{t-h}\)</span>. The critical values and rejection rule are the same as before. The inclusion of the lagged changes is intended to clean up any serial correlation in <span class="math inline">\(\Delta y_t\)</span>. The more lags we include, the more initial observations we lose.</em></p>
+</div>
+<div class="slide-footer">
+<p>Augment with lagged differences to mop up serial correlation; test on <span class="math inline">\(y_{t-1}\)</span> as before.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>For MSc students — <em>why</em> the augmented DF test works
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The Wooldridge explanation is correct but does not explain <em>why</em> throwing in lagged differences works. Here we explore exactly what the augmented DF (ADF) test is.</p>
+<p>Say we have an <span class="math inline">\(\mathsf{AR}(3)\)</span> process <span class="math inline">\(y_t = \alpha_0 + \alpha_1 y_{t-1} + \alpha_2 y_{t-2} + \alpha_3 y_{t-3} + \varepsilon_t\)</span>, with <span class="math inline">\(\varepsilon_t \sim iid(0,\sigma_{\varepsilon}^2)\)</span>. Denote the <span class="math inline">\(\mathsf{AR}\)</span> polynomial by <span class="math inline">\(\mathbf{A}_3(L) = 1 - \alpha_1 L - \alpha_2 L^2 - \alpha_3 L^3\)</span>. Two key insights:</p>
+<ol type="i">
+<li>The <span class="math inline">\(\mathsf{AR}\)</span> polynomial may be expressed as <span class="math display">\[\begin{aligned} \mathbf{A}_3(L) &amp;= 1 - \alpha_1 L - \alpha_2 L^2 - \alpha_3 L^3 \\ &amp;= 1 - (\alpha_1 + \alpha_2 + \alpha_3) L + (\alpha_2 + \alpha_3)(1-L) L + \alpha_3 (1-L) L^2. \end{aligned}\]</span></li>
+<li>Under the restriction <span class="math inline">\(\alpha_1 + \alpha_2 + \alpha_3 = 1\)</span>, we have <span class="math inline">\(\mathbf{A}_3(1) = 1 - (\alpha_1 + \alpha_2 + \alpha_3) = 0\)</span>. So <span class="math inline">\(\alpha_1 + \alpha_2 + \alpha_3 = 1\)</span> is a condition for the process to be <span class="math inline">\(\mathsf{I}(1)\)</span>.</li>
+</ol>
+<p>In other words, under <span class="math inline">\(H_0: \alpha_1 + \alpha_2 + \alpha_3 = 1\)</span>, there always exists a <span class="math inline">\(\mathbf{B}_2(L)\)</span> such that <span class="math inline">\(\mathbf{A}_3(L) = \mathbf{B}_2(L)(1-L)\)</span>. The implication is that the <span class="math inline">\(\mathsf{AR}(3)\)</span> model can be written as <span class="math display">\[ y_t = \alpha_0 + (\alpha_1 + \alpha_2 + \alpha_3)y_{t-1} - (\alpha_2 + \alpha_3)\Delta y_{t-1} - \alpha_3 \Delta y_{t-2} + \varepsilon_t, \]</span> which re-parametrises (subtracting <span class="math inline">\(y_{t-1}\)</span> from both sides) to <span class="math display">\[ \Delta y_t = \beta_0 + \beta_1 y_{t-1} + \beta_2 \Delta y_{t-1} + \beta_3 \Delta y_{t-2} + \varepsilon_t, \]</span> where <span class="math inline">\(\beta_0 = \alpha_0\)</span>, <span class="math inline">\(\beta_1 = \alpha_1 + \alpha_2 + \alpha_3 - 1\)</span>, <span class="math inline">\(\beta_2 = -(\alpha_2 + \alpha_3)\)</span>, <span class="math inline">\(\beta_3 = -\alpha_3\)</span>. We test <span class="math inline">\(H_0: \beta_1 = 0\)</span> against <span class="math inline">\(H_1: \beta_1 &lt; 0\)</span>. Under the null and alternative, respectively, <span class="math display">\[ \Delta y_t = \beta_2 \Delta y_{t-1} + \beta_3 \Delta y_{t-2} + \varepsilon_t \quad\text{ and }\quad \Delta y_t = \beta_0 + \beta_1 y_{t-1} + \beta_2 \Delta y_{t-1} + \beta_3 \Delta y_{t-2} + \varepsilon_t, \]</span> and the usual hypothesis-testing recipe applies.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Watch: the Dickey–Fuller statistic is not normal
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<pre class="shinylive-r" data-engine="r"><code>#| '!! shinylive warning !!': |
+#|   shinylive does not work in self-contained HTML documents.
+#|   Please set `embed-resources: false` in your metadata.
+#| standalone: true
+#| viewerHeight: 540
+
+library(shiny)
+
+ui &lt;- fluidPage(
+  tags$style(HTML("body{font-family:system-ui,sans-serif;}")),
+  titlePanel("Sampling distribution of the DF statistic"),
+  sidebarLayout(
+    sidebarPanel(
+      sliderInput("phi", "AR(1) coefficient phi (1 = unit root)", 0.5, 1.0, 1.0, 0.05),
+      sliderInput("T",   "Series length T", 50, 300, 100, 50),
+      sliderInput("reps","Monte Carlo replications", 200, 2000, 800, 200)
+    ),
+    mainPanel(plotOutput("plot", height = "440px"))
+  )
+)
+
+server &lt;- function(input, output) {
+  output$plot &lt;- renderPlot({
+    stat &lt;- replicate(input$reps, {
+      y  &lt;- numeric(input$T)
+      e  &lt;- rnorm(input$T)
+      for (t in 2:input$T) y[t] &lt;- input$phi * y[t - 1] + e[t]
+      dy &lt;- diff(y); ylag &lt;- y[-input$T]
+      fit &lt;- lm(dy ~ ylag)
+      coef(summary(fit))["ylag", "t value"]
+    })
+    hist(stat, breaks = 40, freq = FALSE, col = "grey85", border = "white",
+         main = "DF statistic vs standard normal", xlab = "beta1-hat / SE")
+    curve(dnorm(x), add = TRUE, col = 2, lwd = 2)
+    abline(v = -2.86, col = 4, lwd = 2, lty = 2)
+    legend("topleft", c("N(0,1)", "5% DF crit. (-2.86)"),
+           col = c(2, 4), lwd = 2, lty = c(1, 2), bty = "n")
+  })
+}
+
+shinyApp(ui, server)</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="wrap-up" class="level2" data-number="6">
+<h2 data-number="6" class="anchored" data-anchor-id="wrap-up"><span class="header-section-number">6</span> Wrap-up</h2>
+<div class="slidebox">
+<p><span class="slide-label">Where are we in our modelling strategy?</span></p>
+<div class="slide-body">
+<p>Suppose we have a univariate time series, <span class="math inline">\(Y_t\)</span>.</p>
+<ul>
+<li>First, plot and inspect the data.</li>
+<li>Next, think about the key deterministic components (<span class="math inline">\(T_t, S_t, \ldots\)</span>) and the stochastic remainder <span class="math inline">\(R_t\)</span>.</li>
+<li>Hypothesise that <span class="math inline">\(R_t\)</span> belongs to the <span class="math inline">\(\mathsf{ARIMA}(p,d,q)\)</span> class; focus on identifying <span class="math inline">\(d\)</span> first, working towards a stationary remainder for <span class="math inline">\(\mathsf{ARMA}\)</span> modelling.</li>
+<li>The DF test tests for a stochastic trend. Pick a large <span class="math inline">\(p_{\max}\)</span>, tentatively hypothesise an <span class="math inline">\(\mathsf{AR}(p_{\max})\)</span> model, and carry out an <strong>augmented DF test</strong>.</li>
+<li>If we fail to reject the null of non-stationarity, first-difference the data and repeat. (One or two first-differences should be plenty — avoid unnecessary over-differencing.)</li>
+<li>Once we reject the null, deploy the full model-fitting procedure for stationary processes (Topic 5).</li>
+</ul>
+<p>This strategy is not universal — just one reasonably sensible plan for starting out.</p>
+</div>
+<div class="slide-footer">
+<p>Plot → decompose → identify <span class="math inline">\(d\)</span> (via ADF) → difference if needed → fit a stationary <span class="math inline">\(\mathsf{ARMA}\)</span>.</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="review-questions" class="level2" data-number="7">
+<h2 data-number="7" class="anchored" data-anchor-id="review-questions"><span class="header-section-number">7</span> Review questions</h2>
+<ol type="1">
+<li>Suppose you have monthly data on sales of woolly jumpers, <span class="math inline">\(Y_t\)</span>. Your boss wants you to regress <span class="math inline">\(Y_t\)</span> on four quarterly dummies, <span class="math inline">\(Y_t = \delta_1 + \delta_2 Q2_t + \delta_3 Q3_t + \delta_4 Q4_t + e_t\)</span>, with the restriction that the winter boost in Q4 is identical to the summer drop in Q3. How would you implement this request?</li>
+<li>What is the difference between a deterministic and a stochastic trend? Provide minimum working examples of processes characterised by each type of trend.</li>
+<li>Consider <span class="math inline">\(Y_t = 2Y_{t-1} - Y_{t-2} + \varepsilon_t\)</span>, for <span class="math inline">\(\varepsilon_t \sim \mathsf{WN}(0,\sigma^2_{\varepsilon})\)</span>. Your friend says that <span class="math inline">\(Y_t \sim \mathsf{ARIMA}(2,0,0)\)</span>. Why is this incorrect?</li>
+<li>How would you recap the full 10-step DF test procedure for a tutorial group? (Write each step down explicitly for your own revision.)</li>
+</ol>
+<hr>
+</section>
+<section id="further-reading" class="level2" data-number="8">
+<h2 data-number="8" class="anchored" data-anchor-id="further-reading"><span class="header-section-number">8</span> Further reading</h2>
+<ul>
+<li>See <strong>SS, Chapters 1 and 5</strong> (Dickey–Fuller / unit roots in SS Chapter 5.2; critical values from Fuller (1976)).</li>
+</ul>
+<hr>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p>Copyright © 2026 Ragvir Sabharwal. All rights reserved.</p>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+<script>
+document.querySelectorAll('div.audio').forEach(div => {
+  const file = div.textContent.trim();
+  div.innerHTML = '<p>' + (div.dataset.label || 'Listen') + '</p>'
+                + '<audio controls src="' + file + '"></audio>';
+  div.addEventListener('click', e => {
+    if (e.target.tagName !== 'AUDIO') div.classList.toggle('open');
+  });
+});
+</script>
+
+
+
+
+<script src="site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>
