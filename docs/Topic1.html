@@ -432,7 +432,7 @@ ui &lt;- fluidPage(
         span(class = "ctrl-label", style = "font-size: 1.5rem;", "Coefficient"),
         div(style = "width: 100%;",
           sliderInput("theta",
-                      label = NULL, min = -1, max = 1, value = 0.5,
+                      label = NULL, min = -2, max = 2, value = 0.5,
                       step = 0.05, ticks = FALSE, width = "100%")
         )
       )
@@ -579,7 +579,7 @@ shinyApp(ui, server)</code></pre>
 <div class="audio">
 <p>audio/intro.mp3</p>
 </div>
-<p>Consider random variables <span class="math inline">\(Y_1\)</span> and <span class="math inline">\(Y_2\)</span> and constants <span class="math inline">\(a_1\)</span> and <span class="math inline">\(a_2\)</span>. The familiar variance rule states</p>
+<p>Consider random variables <span class="math inline">\(Y_1\)</span> and <span class="math inline">\(Y_2\)</span> and constants <span class="math inline">\(a_1\)</span> and <span class="math inline">\(a_2\)</span>. The familiar variance ‘rule’ states</p>
 <p><span class="math display">\[\text{Var}(a_1 Y_1 + a_2 Y_2) = a_1^2\,\text{Var}(Y_1) + 2a_1 a_2\,\text{Cov}(Y_1, Y_2) + a_2^2\,\text{Var}(Y_2).\]</span> But if you allow me to rewrite the above as:</p>
 <p><span class="math display">\[\text{Var}(a_1 Y_1 + a_2 Y_2) = a_1 a_1 \,\text{Cov}(Y_1,Y_1) + a_1 a_2\,\text{Cov}(Y_1, Y_2) + a_2 a_1\,\text{Cov}(Y_2, Y_1) +  a_2a_2\,\text{Cov}(Y_2,Y_2),\]</span> then you can see that we can also use summation notation to express the result as:</p>
 <p><span class="math display">\[\text{Var}(a_1 Y_1 + a_2 Y_2) = \sum_{t=1}^{2}\sum_{s=1}^{2} a_t a_s\,\text{Cov}(Y_t, Y_s).\]</span></p>
@@ -624,8 +624,9 @@ shinyApp(ui, server)</code></pre>
 <div id="callout-6" class="callout-6-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <ul>
-<li>Consider <span class="math inline">\(\mathsf{Var}(Z) := \mathsf{E}(Z-\mathsf{E}(Z))^2\)</span>. Now suppose <span class="math inline">\(Z = X+Y\)</span>. Then, <span class="math display">\[\begin{aligned}\mathsf{Var}(Z)=\mathsf{Var}(X+Y)&amp;=\mathsf{E}\left((X+Y) - \mathsf{E}(X+Y)\right)^2 \\ &amp;= \mathsf{E}(X - \mathsf{E}(X) + Y - \mathsf{E}(Y))^2\\&amp;=\mathsf{E}\left(\tilde{X} + \tilde{Y}\right)^2, \text{ where }\tilde{X} := X- \mathsf{E}(X)\text{ and }\tilde{Y} := Y - \mathsf{E}(Y)\\&amp;=\mathsf{E}\left(\tilde{X}^2 + \tilde{Y}^2 + 2\tilde{X}\tilde{Y}\right) \\&amp;=\mathsf{E}\left(\tilde{X}^2\right) + \mathsf{E}\left(\tilde{Y}^2\right) + 2\mathsf{E}\left(\tilde{X}\tilde{Y}\right)\\&amp;=\mathsf{E}(X-\mathsf{E}(X))^2 +\mathsf{E}(Y-\mathsf{E}(Y))^2 + 2 \mathsf{E}((X-\mathsf{E}(X))(Y-\mathsf{E}(Y)))\\&amp;=\mathsf{Var}(X)+\mathsf{Var}(Y) + 2\mathsf{Cov}(X,Y).\end{aligned}\]</span></li>
-<li>Yet again, we see it is wrong to ignore the covariances.</li>
+<li><p>Here, we see for the two-variable case where the familiar variance ‘rule’ comes from.</p></li>
+<li><p>Consider <span class="math inline">\(\mathsf{Var}(Z) := \mathsf{E}(Z-\mathsf{E}(Z))^2\)</span>. Now suppose <span class="math inline">\(Z = X+Y\)</span>. Then, <span class="math display">\[\begin{aligned}\mathsf{Var}(Z)=\mathsf{Var}(X+Y)&amp;=\mathsf{E}\left((X+Y) - \mathsf{E}(X+Y)\right)^2 \\ &amp;= \mathsf{E}(X - \mathsf{E}(X) + Y - \mathsf{E}(Y))^2\\&amp;=\mathsf{E}\left(\tilde{X} + \tilde{Y}\right)^2, \text{ where }\tilde{X} := X- \mathsf{E}(X)\text{ and }\tilde{Y} := Y - \mathsf{E}(Y)\\&amp;=\mathsf{E}\left(\tilde{X}^2 + \tilde{Y}^2 + 2\tilde{X}\tilde{Y}\right) \\&amp;=\mathsf{E}\left(\tilde{X}^2\right) + \mathsf{E}\left(\tilde{Y}^2\right) + 2\mathsf{E}\left(\tilde{X}\tilde{Y}\right)\\&amp;=\mathsf{E}(X-\mathsf{E}(X))^2 +\mathsf{E}(Y-\mathsf{E}(Y))^2 + 2 \mathsf{E}((X-\mathsf{E}(X))(Y-\mathsf{E}(Y)))\\&amp;=\mathsf{Var}(X)+\mathsf{Var}(Y) + 2\mathsf{Cov}(X,Y).\end{aligned}\]</span></p></li>
+<li><p>Yet again, we see it is wrong to ignore the covariances.</p></li>
 </ul>
 </div>
 </div>
@@ -640,12 +641,12 @@ shinyApp(ui, server)</code></pre>
 <p><span class="slide-label">What is the sample mean?</span></p>
 <div class="slide-body">
 <ul>
-<li><p>Recall one of the most <strong>widely-used</strong> tools in a statistician’s toolkit, <span class="math inline">\(\bar{Y}_N\)</span>, the humble yet ubiquitous <strong>sample mean</strong> defined as <span class="math display">\[\bar{Y}_N = \frac{1}{N}\sum_{i=1}^{N} Y_i,\]</span> where <span class="math inline">\(\{Y_i\}_{i=1}^{N}\)</span> denotes a set of random variables.</p></li>
-<li><p>Notice that <span class="math inline">\(N\)</span> appears explicitly as a subscript in the notation for <span class="math inline">\(\bar{Y}_N\)</span> in order to explicitly emphasise the <strong>dependence of the sample mean on the sample size</strong>.</p></li>
+<li><p>Recall one of the most <strong>widely used</strong> tools in a statistician’s toolkit, <span class="math inline">\(\bar{Y}_N\)</span>, the humble yet ubiquitous <strong>sample mean</strong> defined as <span class="math display">\[\bar{Y}_N = \frac{1}{N}\sum_{i=1}^{N} Y_i,\]</span> where <span class="math inline">\(\{Y_i\}_{i=1}^{N}\)</span> denotes a set of random variables.</p></li>
+<li><p>Notice that <span class="math inline">\(N\)</span> appears explicitly as a subscript in the notation for <span class="math inline">\(\bar{Y}_N\)</span> in order to explicitly emphasise the dependence of the sample mean on the sample size.</p></li>
 </ul>
 </div>
 <div class="slide-footer">
-<p><span class="math inline">\(\frac{1}{N}\sum_{i=1}^N Y_i\)</span>; the most widely-used statistic in econometrics.</p>
+<p><span class="math inline">\(\frac{1}{N}\sum_{i=1}^N Y_i\)</span>, the sample mean, is the most widely-used statistic in econometrics.</p>
 </div>
 </div>
 <ul>
@@ -658,27 +659,27 @@ shinyApp(ui, server)</code></pre>
 <div class="slidebox">
 <p><span class="slide-label">Why is the sample mean ubiquitous?</span></p>
 <div class="slide-body">
-<p><strong>Theorem — Chebyshev’s LLN.</strong> Suppose <span class="math inline">\(Y_t \overset{\scriptscriptstyle\text{iid}}{\sim} F_Y(\mu_Y, \sigma_Y^2)\)</span> for <span class="math inline">\(t = 1,\ldots,T\)</span> where <span class="math inline">\(0 &lt; \sigma_Y^2 &lt; \infty\)</span>. Then, it holds that <span class="math display">\[\operatorname*{plim}_{T\to\infty}\bar{Y}_T = \mu_Y.\]</span></p>
-<p><em>Proof.</em> [See next slide.] <span class="math inline">\(\qquad\square\)</span></p>
+<p><strong>Chebyshev’s LLN.</strong> Suppose <span class="math inline">\(Y_t \overset{iid}{\sim} F_Y(\mu_Y, \sigma_Y^2)\)</span> for <span class="math inline">\(t = 1,\ldots,T\)</span> where <span class="math inline">\(0 &lt; \sigma_Y^2 &lt; \infty\)</span>. Then, it holds that <span class="math display">\[\operatorname*{plim}_{T\to\infty}\bar{Y}_T = \mu_Y.\]</span></p>
+<p><em>Proof.</em> [See next slide.]</p>
 <ul>
 <li><p>The generic “<span class="math inline">\(F_Y\)</span>” notation denotes deliberate agnosticism about the distribution.</p></li>
-<li><p>The result is one of convergence in probability of <span class="math inline">\(\bar{Y}_T\)</span> to <span class="math inline">\(\mu_Y\)</span>. What does it mean? Estimator <span class="math inline">\(\hat{\theta}_T\)</span> is said to converge in probability to parameter <span class="math inline">\(\theta\)</span> if and only if there exists an arbitrarily small <span class="math inline">\(e &gt; 0\)</span> such that <span class="math display">\[\lim_{T\to\infty} \Pr\!\left(\left|\hat{\theta}_T - \theta\right| &gt; e\right) = 0.\]</span> We alternatively say that <span class="math inline">\(\hat{\theta}_T \overset{p}{\to} \theta\)</span> as <span class="math inline">\(T \to \infty\)</span>, or that <span class="math inline">\(\hat{\theta}_T\)</span> is <strong>consistent</strong> for <span class="math inline">\(\theta\)</span>.</p></li>
+<li><p>The result is one of convergence in probability of <span class="math inline">\(\bar{Y}_T\)</span> to <span class="math inline">\(\mu_Y\)</span>. What is convergence in probability? Estimator <span class="math inline">\(\hat{\theta}_T\)</span> is said to converge in probability to parameter <span class="math inline">\(\theta\)</span> if and only if there exists an arbitrarily small <span class="math inline">\(e &gt; 0\)</span> such that <span class="math display">\[\lim_{T\to\infty} \Pr\!\left(\left|\hat{\theta}_T - \theta\right| &gt; e\right) = 0.\]</span> We alternatively say that <span class="math inline">\(\hat{\theta}_T \overset{p}{\to} \theta\)</span> as <span class="math inline">\(T \to \infty\)</span>, or that <span class="math inline">\(\hat{\theta}_T\)</span> is <strong>consistent</strong> for <span class="math inline">\(\theta\)</span>.</p></li>
 </ul>
 </div>
 <div class="slide-footer">
-<p>A sample moment converges in probability to its population counterpart — this is why the sample mean is ubiquitous.</p>
+<p>A sample moment is a consistent estimator for its population counterpart — this is why the sample mean is so widely used.</p>
 </div>
 </div>
 <p>Note, before proceeding, that convergence in mean-square, as defined by <span class="math display">\[\lim_{T\to\infty} \text{MSE}(\hat{\theta}_T) = \lim_{T\to\infty}\left(\text{Var}(\hat{\theta}_T) + \text{Bias}^2(\hat{\theta}_T)\right) = 0 \text{ given an arbitrary estimator } \hat{\theta}_T,\]</span> implies convergence in probability due to Chebyshev’s inequality (see next slide).</p>
 <div class="slidebox">
 <p><span class="slide-label">What is the mechanism behind Chebyshev’s LLN?</span></p>
 <div class="slide-body">
-<p><strong>Theorem — Chebyshev’s LLN.</strong> Suppose <span class="math inline">\(Y_t \overset{\scriptscriptstyle\text{iid}}{\sim} F_Y(\mu_Y, \sigma_Y^2)\)</span> for <span class="math inline">\(t = 1,\ldots,T\)</span> where <span class="math inline">\(0 &lt; \sigma_Y^2 &lt; \infty\)</span>. Then, it holds that <span class="math display">\[\operatorname*{plim}_{T\to\infty}\bar{Y}_T = \mu_Y.\]</span></p>
-<p><em>Proof.</em> Consider <span class="math inline">\(\bar{Y}_T = (1/T)\sum_{t=1}^{T} Y_t\)</span>. We have, by linearity of expectations, that <span class="math display">\[\mathsf{E}(\bar{Y}_T) = \mathsf{E}\!\left(\frac{1}{T}\sum_{t=1}^{T} Y_t\right) = \frac{1}{T}\sum_{t=1}^{T}\mathsf{E}(Y_t) = \frac{T\mu_Y}{T} = \mu_Y,\]</span> so the estimator <span class="math inline">\(\bar{Y}_T\)</span> is unbiased for <span class="math inline">\(\mu_Y\)</span>. Further, <span class="math display">\[\begin{aligned} \text{Var}(\bar{Y}_T) &amp;= \text{Var}\!\left(\frac{1}{T}\sum_{t=1}^{T} Y_t\right) \\ &amp;= \frac{1}{T^2}\sum_{t=1}^{T}\sum_{s=1}^{T}\text{Cov}(Y_t, Y_s) \\ &amp;= \frac{1}{T^2}\sum_{t=1}^{T}\text{Cov}(Y_t, Y_t) \text{ due to independence,} \\ &amp;= \frac{T}{T^2}\text{Var}(Y_t) \text{ due to identical distributions,} \\ &amp;= \frac{\sigma_Y^2}{T}. \end{aligned}\]</span> It follows (recall what is mean-square error, or “MSE”, of an estimator) that <span class="math display">\[\lim_{T\to\infty}\text{MSE}(\bar{Y}_T) = \lim_{T\to\infty}\frac{\sigma_Y^2}{T} = 0\]</span> since <span class="math inline">\(\sigma_Y^2\)</span> is finite. By Chebyshev’s inequality, we obtain that for any <span class="math inline">\(e &gt; 0\)</span>, <span class="math display">\[\Pr\!\left(\left|\bar{Y}_T - \mu_Y\right| &gt; e\right) \leq \frac{\sigma_Y^2}{Te^2},\]</span> which, together with convergence in <span class="math inline">\(m.s.\)</span>, completes the proof. <span class="math inline">\(\qquad\square\)</span></p>
+<p><strong>Chebyshev’s LLN.</strong> Suppose <span class="math inline">\(Y_t \overset{iid}{\sim} F_Y(\mu_Y, \sigma_Y^2)\)</span> for <span class="math inline">\(t = 1,\ldots,T\)</span> where <span class="math inline">\(0 &lt; \sigma_Y^2 &lt; \infty\)</span>. Then, it holds that <span class="math display">\[\operatorname*{plim}_{T\to\infty}\bar{Y}_T = \mu_Y.\]</span></p>
+<p><em>Proof.</em> Consider <span class="math inline">\(\bar{Y}_T = (1/T)\sum_{t=1}^{T} Y_t\)</span>. We have, by linearity of expectations, that <span class="math display">\[\mathsf{E}(\bar{Y}_T) = \mathsf{E}\!\left(\frac{1}{T}\sum_{t=1}^{T} Y_t\right) = \frac{1}{T}\sum_{t=1}^{T}\mathsf{E}(Y_t) = \frac{T\mu_Y}{T} = \mu_Y,\]</span> so the estimator <span class="math inline">\(\bar{Y}_T\)</span> is unbiased for <span class="math inline">\(\mu_Y\)</span>. Further, <span class="math display">\[\begin{aligned} \text{Var}(\bar{Y}_T) &amp;= \text{Var}\!\left(\frac{1}{T}\sum_{t=1}^{T} Y_t\right) \\ &amp;= \frac{1}{T^2}\sum_{t=1}^{T}\sum_{s=1}^{T}\text{Cov}(Y_t, Y_s) \\ &amp;= \frac{1}{T^2}\sum_{t=1}^{T}\text{Cov}(Y_t, Y_t) \text{ due to independence,} \\ &amp;= \frac{T}{T^2}\text{Var}(Y_t) \text{ due to identical distributions,} \\ &amp;= \frac{\sigma_Y^2}{T}. \end{aligned}\]</span> It follows (recall what is mean-square error, or “MSE”, of an estimator) that <span class="math display">\[\lim_{T\to\infty}\text{MSE}(\bar{Y}_T) = \lim_{T\to\infty}\frac{\sigma_Y^2}{T} = 0\]</span> since <span class="math inline">\(\sigma_Y^2\)</span> is finite. By Chebyshev’s inequality, we obtain that for any <span class="math inline">\(e &gt; 0\)</span>, <span class="math display">\[\Pr\!\left(\left|\bar{Y}_T - \mu_Y\right| &gt; e\right) \leq \frac{\sigma_Y^2}{Te^2},\]</span> which, together with convergence in mean-square, completes the proof. <span class="math inline">\(\qquad\square\)</span></p>
 <p>(Please work on PS1, Q2 if you cannot understand these two final steps.)</p>
 </div>
 <div class="slide-footer">
-<p>Unbiasedness plus <span class="math inline">\(\text{Var}(\bar{Y}_T) = \sigma^2_Y/T \to 0\)</span> gives convergence in m.s., hence in probability.</p>
+<p>Unbiasedness and asymptotically vanishing variance gives convergence in mean-square, and hence (due to Chebyshev’s inequality) in probability.</p>
 </div>
 </div>
 <div class="slidebox">

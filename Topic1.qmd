@@ -230,7 +230,7 @@ ui <- fluidPage(
         span(class = "ctrl-label", style = "font-size: 1.5rem;", "Coefficient"),
         div(style = "width: 100%;",
           sliderInput("theta",
-                      label = NULL, min = -1, max = 1, value = 0.5,
+                      label = NULL, min = -2, max = 2, value = 0.5,
                       step = 0.05, ticks = FALSE, width = "100%")
         )
       )
@@ -392,7 +392,7 @@ Correlation is a scale-free measure of the strength of linear association, and $
 audio/intro.mp3
 :::
 
-Consider random variables $Y_1$ and $Y_2$ and constants $a_1$ and $a_2$. The familiar variance rule states
+Consider random variables $Y_1$ and $Y_2$ and constants $a_1$ and $a_2$. The familiar variance 'rule' states
 
 $$\text{Var}(a_1 Y_1 + a_2 Y_2) = a_1^2\,\text{Var}(Y_1) + 2a_1 a_2\,\text{Cov}(Y_1, Y_2) + a_2^2\,\text{Var}(Y_2).$$
 But if you allow me to rewrite the above as: 
@@ -429,6 +429,8 @@ This is nine terms, right? You would never say $$(a+b+c)^2 = a^2 + b^2 + c^2.\qu
 ::: {.callout-note collapse="true"}
 ## Algebra
 
+- Here, we see for the two-variable case where the familiar variance 'rule' comes from. 
+
 - Consider $\mathsf{Var}(Z) := \mathsf{E}(Z-\mathsf{E}(Z))^2$. Now suppose $Z = X+Y$. Then, 
 $$\begin{aligned}\mathsf{Var}(Z)=\mathsf{Var}(X+Y)&=\mathsf{E}\left((X+Y) - \mathsf{E}(X+Y)\right)^2 \\ &= \mathsf{E}(X - \mathsf{E}(X) + Y - \mathsf{E}(Y))^2\\&=\mathsf{E}\left(\tilde{X} + \tilde{Y}\right)^2, \text{ where }\tilde{X} := X- \mathsf{E}(X)\text{ and }\tilde{Y} := Y - \mathsf{E}(Y)\\&=\mathsf{E}\left(\tilde{X}^2 + \tilde{Y}^2 + 2\tilde{X}\tilde{Y}\right) \\&=\mathsf{E}\left(\tilde{X}^2\right) + \mathsf{E}\left(\tilde{Y}^2\right) + 2\mathsf{E}\left(\tilde{X}\tilde{Y}\right)\\&=\mathsf{E}(X-\mathsf{E}(X))^2 +\mathsf{E}(Y-\mathsf{E}(Y))^2 + 2 \mathsf{E}((X-\mathsf{E}(X))(Y-\mathsf{E}(Y)))\\&=\mathsf{Var}(X)+\mathsf{Var}(Y) + 2\mathsf{Cov}(X,Y).\end{aligned}$$
 - Yet again, we see it is wrong to ignore the covariances.
@@ -445,13 +447,13 @@ We are now ready for the final section of Topic 1.
 [What is the sample mean?]{.slide-label}
 
 ::: slide-body
-- Recall one of the most **widely-used** tools in a statistician's toolkit, $\bar{Y}_N$, the humble yet ubiquitous **sample mean** defined as $$\bar{Y}_N = \frac{1}{N}\sum_{i=1}^{N} Y_i,$$ where $\{Y_i\}_{i=1}^{N}$ denotes a set of random variables.
+- Recall one of the most **widely used** tools in a statistician's toolkit, $\bar{Y}_N$, the humble yet ubiquitous **sample mean** defined as $$\bar{Y}_N = \frac{1}{N}\sum_{i=1}^{N} Y_i,$$ where $\{Y_i\}_{i=1}^{N}$ denotes a set of random variables.
 
-- Notice that $N$ appears explicitly as a subscript in the notation for $\bar{Y}_N$ in order to explicitly emphasise the **dependence of the sample mean on the sample size**.
+- Notice that $N$ appears explicitly as a subscript in the notation for $\bar{Y}_N$ in order to explicitly emphasise the dependence of the sample mean on the sample size.
 :::
 
 ::: slide-footer
-$\frac{1}{N}\sum_{i=1}^N Y_i$; the most widely-used statistic in econometrics.
+$\frac{1}{N}\sum_{i=1}^N Y_i$, the sample mean, is the most widely-used statistic in econometrics.
 :::
 :::::
 
@@ -469,17 +471,17 @@ $\frac{1}{N}\sum_{i=1}^N Y_i$; the most widely-used statistic in econometrics.
 [Why is the sample mean ubiquitous?]{.slide-label}
 
 ::: slide-body
-**Theorem — Chebyshev's LLN.** Suppose $Y_t \overset{\scriptscriptstyle\text{iid}}{\sim} F_Y(\mu_Y, \sigma_Y^2)$ for $t = 1,\ldots,T$ where $0 < \sigma_Y^2 < \infty$. Then, it holds that $$\operatorname*{plim}_{T\to\infty}\bar{Y}_T = \mu_Y.$$
+**Chebyshev's LLN.** Suppose $Y_t \overset{iid}{\sim} F_Y(\mu_Y, \sigma_Y^2)$ for $t = 1,\ldots,T$ where $0 < \sigma_Y^2 < \infty$. Then, it holds that $$\operatorname*{plim}_{T\to\infty}\bar{Y}_T = \mu_Y.$$
 
-*Proof.* [See next slide.] $\qquad\square$
+*Proof.* [See next slide.] 
 
 - The generic "$F_Y$" notation denotes deliberate agnosticism about the distribution.
 
-- The result is one of convergence in probability of $\bar{Y}_T$ to $\mu_Y$. What does it mean? Estimator $\hat{\theta}_T$ is said to converge in probability to parameter $\theta$ if and only if there exists an arbitrarily small $e > 0$ such that $$\lim_{T\to\infty} \Pr\!\left(\left|\hat{\theta}_T - \theta\right| > e\right) = 0.$$ We alternatively say that $\hat{\theta}_T \overset{p}{\to} \theta$ as $T \to \infty$, or that $\hat{\theta}_T$ is **consistent** for $\theta$.
+- The result is one of convergence in probability of $\bar{Y}_T$ to $\mu_Y$. What is convergence in probability? Estimator $\hat{\theta}_T$ is said to converge in probability to parameter $\theta$ if and only if there exists an arbitrarily small $e > 0$ such that $$\lim_{T\to\infty} \Pr\!\left(\left|\hat{\theta}_T - \theta\right| > e\right) = 0.$$ We alternatively say that $\hat{\theta}_T \overset{p}{\to} \theta$ as $T \to \infty$, or that $\hat{\theta}_T$ is **consistent** for $\theta$.
 :::
 
 ::: slide-footer
-A sample moment converges in probability to its population counterpart — this is why the sample mean is ubiquitous.
+A sample moment is a consistent estimator for its population counterpart — this is why the sample mean is so widely used. 
 :::
 :::::
 
@@ -489,15 +491,15 @@ Note, before proceeding, that convergence in mean-square, as defined by $$\lim_{
 [What is the mechanism behind Chebyshev's LLN?]{.slide-label}
 
 ::: slide-body
-**Theorem — Chebyshev's LLN.** Suppose $Y_t \overset{\scriptscriptstyle\text{iid}}{\sim} F_Y(\mu_Y, \sigma_Y^2)$ for $t = 1,\ldots,T$ where $0 < \sigma_Y^2 < \infty$. Then, it holds that $$\operatorname*{plim}_{T\to\infty}\bar{Y}_T = \mu_Y.$$
+**Chebyshev's LLN.** Suppose $Y_t \overset{iid}{\sim} F_Y(\mu_Y, \sigma_Y^2)$ for $t = 1,\ldots,T$ where $0 < \sigma_Y^2 < \infty$. Then, it holds that $$\operatorname*{plim}_{T\to\infty}\bar{Y}_T = \mu_Y.$$
 
-*Proof.* Consider $\bar{Y}_T = (1/T)\sum_{t=1}^{T} Y_t$. We have, by linearity of expectations, that $$\mathsf{E}(\bar{Y}_T) = \mathsf{E}\!\left(\frac{1}{T}\sum_{t=1}^{T} Y_t\right) = \frac{1}{T}\sum_{t=1}^{T}\mathsf{E}(Y_t) = \frac{T\mu_Y}{T} = \mu_Y,$$ so the estimator $\bar{Y}_T$ is unbiased for $\mu_Y$. Further, $$\begin{aligned} \text{Var}(\bar{Y}_T) &= \text{Var}\!\left(\frac{1}{T}\sum_{t=1}^{T} Y_t\right) \\ &= \frac{1}{T^2}\sum_{t=1}^{T}\sum_{s=1}^{T}\text{Cov}(Y_t, Y_s) \\ &= \frac{1}{T^2}\sum_{t=1}^{T}\text{Cov}(Y_t, Y_t) \text{ due to independence,} \\ &= \frac{T}{T^2}\text{Var}(Y_t) \text{ due to identical distributions,} \\ &= \frac{\sigma_Y^2}{T}. \end{aligned}$$ It follows (recall what is mean-square error, or "MSE", of an estimator) that $$\lim_{T\to\infty}\text{MSE}(\bar{Y}_T) = \lim_{T\to\infty}\frac{\sigma_Y^2}{T} = 0$$ since $\sigma_Y^2$ is finite. By Chebyshev's inequality, we obtain that for any $e > 0$, $$\Pr\!\left(\left|\bar{Y}_T - \mu_Y\right| > e\right) \leq \frac{\sigma_Y^2}{Te^2},$$ which, together with convergence in $m.s.$, completes the proof. $\qquad\square$
+*Proof.* Consider $\bar{Y}_T = (1/T)\sum_{t=1}^{T} Y_t$. We have, by linearity of expectations, that $$\mathsf{E}(\bar{Y}_T) = \mathsf{E}\!\left(\frac{1}{T}\sum_{t=1}^{T} Y_t\right) = \frac{1}{T}\sum_{t=1}^{T}\mathsf{E}(Y_t) = \frac{T\mu_Y}{T} = \mu_Y,$$ so the estimator $\bar{Y}_T$ is unbiased for $\mu_Y$. Further, $$\begin{aligned} \text{Var}(\bar{Y}_T) &= \text{Var}\!\left(\frac{1}{T}\sum_{t=1}^{T} Y_t\right) \\ &= \frac{1}{T^2}\sum_{t=1}^{T}\sum_{s=1}^{T}\text{Cov}(Y_t, Y_s) \\ &= \frac{1}{T^2}\sum_{t=1}^{T}\text{Cov}(Y_t, Y_t) \text{ due to independence,} \\ &= \frac{T}{T^2}\text{Var}(Y_t) \text{ due to identical distributions,} \\ &= \frac{\sigma_Y^2}{T}. \end{aligned}$$ It follows (recall what is mean-square error, or "MSE", of an estimator) that $$\lim_{T\to\infty}\text{MSE}(\bar{Y}_T) = \lim_{T\to\infty}\frac{\sigma_Y^2}{T} = 0$$ since $\sigma_Y^2$ is finite. By Chebyshev's inequality, we obtain that for any $e > 0$, $$\Pr\!\left(\left|\bar{Y}_T - \mu_Y\right| > e\right) \leq \frac{\sigma_Y^2}{Te^2},$$ which, together with convergence in mean-square, completes the proof. $\qquad\square$
 
 (Please work on PS1, Q2 if you cannot understand these two final steps.)
 :::
 
 ::: slide-footer
-Unbiasedness plus $\text{Var}(\bar{Y}_T) = \sigma^2_Y/T \to 0$ gives convergence in m.s., hence in probability.
+Unbiasedness and asymptotically vanishing variance gives convergence in mean-square, and hence (due to Chebyshev's inequality) in probability.
 :::
 :::::
 
